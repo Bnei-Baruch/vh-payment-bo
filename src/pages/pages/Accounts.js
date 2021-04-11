@@ -44,12 +44,32 @@ const Button = styled(MuiButton)(spacing);
 
 const Typography = styled(MuiTypography)(display);
 
-function Accounts() {
+function InvoiceDetails() {
   return (
     <React.Fragment>
-      <Helmet title="Account" />
+      <Helmet title="Invoice Details" />
+
+      <Typography variant="h3" gutterBottom display="inline">
+        Invoice #000112
+      </Typography>
+
+      <Breadcrumbs aria-label="Breadcrumb" mt={2}>
+        <Link component={NavLink} exact to="/">
+          Dashboard
+        </Link>
+        <Link component={NavLink} exact to="/">
+          Pages
+        </Link>
+        <Link component={NavLink} exact to="/">
+          Invoices
+        </Link>
+        <Typography>Details</Typography>
+      </Breadcrumbs>
+
+      <Divider my={6} />
+
       <Grid container justify="center">
-        <Grid item xs={12} lg={12}>
+        <Grid item xs={12} lg={10}>
           <Shadow>
             <Card px={6} pt={6}>
               <CardContent>
@@ -192,4 +212,4 @@ function Accounts() {
   );
 }
 
-export default Accounts;
+export default InvoiceDetails;

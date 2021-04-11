@@ -11,7 +11,8 @@ import {
   Breadcrumbs as MuiBreadcrumbs,
   Card as MuiCard,
   Divider as MuiDivider,
-  Typography
+  Typography,
+  Button as MuiButton,
 } from "@material-ui/core";
 
 import { spacing } from "@material-ui/system";
@@ -21,20 +22,26 @@ const NavLink = React.forwardRef((props, ref) => (
 ));
 
 const Card = styled(MuiCard)(spacing);
-
-const Divider = styled(MuiDivider)(spacing);
-
-const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
+const Button = styled(MuiButton)(spacing);
+const ExportButton = styled(Button)`
+padding: 4px 10px;
+min-width: 0;
+background-color : #E84118;
+color : #fff;
+:hover {
+  background-color : #E84118;
+}
+`;
 
 function EmptyCard() {
   return (
     <Card mb={6}>
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          Empty card
+          Reports
         </Typography>
         <Typography variant="body2" gutterBottom>
-          Empty card
+          Monthly Pailed Payments <ExportButton size="small" mr={2}>Export</ExportButton>
         </Typography>
       </CardContent>
     </Card>
@@ -44,23 +51,7 @@ function EmptyCard() {
 function Blank() {
   return (
     <React.Fragment>
-      <Helmet title="Blank" />
-      <Typography variant="h3" gutterBottom display="inline">
-        Blank
-      </Typography>
-
-      <Breadcrumbs aria-label="Breadcrumb" mt={2}>
-        <Link component={NavLink} exact to="/">
-          Dashboard
-        </Link>
-        <Link component={NavLink} exact to="/">
-          Pages
-        </Link>
-        <Typography>Blank</Typography>
-      </Breadcrumbs>
-
-      <Divider my={6} />
-
+      <Helmet title="Reports"/>
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <EmptyCard />
