@@ -10,7 +10,7 @@ import {
   IconButton as MuiIconButton,
   Toolbar
 } from "@material-ui/core";
-
+import { useTranslation } from "react-i18next";
 import { Menu as MenuIcon } from "@material-ui/icons";
 
 import {
@@ -30,23 +30,57 @@ const IconButton = styled(MuiIconButton)`
   }
 `;
 
+const StyledGrid = styled(Grid)`
+  display : contents;
+`;
+
 const Flag = styled.img`
   border-radius: 50%;
   width: 22px;
   height: 22px;
 `;
 
-function LanguageMenu() {
-  const [anchorMenu, setAnchorMenu] = useState(null);
+const languages = [
+  { code: 'US', label: 'United States', lang: 'English', phone: '1' },
+  { code: 'IL', label: 'Israel', lang: 'Hebrew', phone: '972' },
+  { code: 'ES', label: 'Spain', lang: 'Spanish', phone: '34' },
+  { code: 'RU', label: 'Russian', lang: 'Russian', phone: '7' }
+];
 
+function countryToFlag(isoCode) {
+  return typeof String.fromCodePoint !== 'undefined'
+    ? isoCode
+      .toUpperCase()
+      .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+    : isoCode;
+}
+
+function setDirection(dir) {
+  document.body.style.direction = dir;
+}
+function LanguageMenu() {
+  const [anchorMenu, setAnchorMenu] = React.useState(null);
+  const [lang, setLang] = React.useState({
+    "lang" : "English",
+    "code" : "US"
+  });
+  const { i18n } = useTranslation();
   const toggleMenu = event => {
     setAnchorMenu(event.currentTarget);
   };
-
-  const closeMenu = () => {
+  const closeMenu = (lang, code) => {
     setAnchorMenu(null);
+    setLang({
+      "lang" : lang,
+      "code" : code
+    })
+    if (code === "IL") {
+      setDirection('rtl');
+    } else {
+      setDirection('ltr');
+    }
+    i18n.changeLanguage(code.toLowerCase());
   };
-
   return (
     <React.Fragment>
       <IconButton
@@ -54,27 +88,22 @@ function LanguageMenu() {
         aria-haspopup="true"
         onClick={toggleMenu}
         color="inherit"
+        className="lang-label"
       >
-        <Flag src="/static/img/flags/us.png" alt="English" />
+        {countryToFlag(lang.code)}
       </IconButton>
+      <div className="header-lang-text" onClick={toggleMenu}>{lang.lang}</div>
       <Menu
         id="menu-appbar"
         anchorEl={anchorMenu}
         open={Boolean(anchorMenu)}
-        onClose={closeMenu}
+        onClose={(e) => setAnchorMenu(null)}
       >
-        <MenuItem onClick={closeMenu}>
-          English
-        </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          French
-        </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          German
-        </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          Dutch
-        </MenuItem>
+        {languages && languages.map(item => {
+          return <MenuItem onClick={(e) => closeMenu(item.lang, item.code)}>
+            {item.lang}
+          </MenuItem>
+        })}
       </Menu>
     </React.Fragment>
   )
@@ -137,10 +166,10 @@ const Header = ({ onDrawerToggle }) => (
           <Grid item>
           </Grid>
           <Grid item xs />
-          <Grid item>
+          <StyledGrid item>
             <LanguageMenu />
             <UserMenu />
-          </Grid>
+          </StyledGrid>
         </Grid>
       </Toolbar>
     </AppBar>
