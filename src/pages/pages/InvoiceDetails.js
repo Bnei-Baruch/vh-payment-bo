@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { NavLink as RouterNavLink } from "react-router-dom";
-
 import Helmet from 'react-helmet';
 
 import {
@@ -9,7 +7,6 @@ import {
   Grid,
   Link,
   Button as MuiButton,
-  Breadcrumbs as MuiBreadcrumbs,
   Card as MuiCard,
   Divider as MuiDivider,
   Table,
@@ -22,15 +19,10 @@ import {
 
 import { spacing, display } from "@material-ui/system";
 
-const NavLink = React.forwardRef((props, ref) => (
-  <RouterNavLink innerRef={ref} {...props} />
-));
-
 const Card = styled(MuiCard)`
   ${spacing};
-
   box-shadow: none;
-`
+`;
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -38,10 +30,7 @@ const Shadow = styled.div`
   box-shadow: ${props => props.theme.shadows[1]};
 `;
 
-const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
-
 const Button = styled(MuiButton)(spacing);
-
 const Typography = styled(MuiTypography)(display);
 
 function Accounts() {

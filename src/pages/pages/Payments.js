@@ -1,20 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { NavLink as RouterNavLink, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import Helmet from 'react-helmet';
 
 import {
   Avatar as MuiAvatar,
   Box,
-  Breadcrumbs as MuiBreadcrumbs,
-  Button,
   Checkbox,
   Chip as MuiChip,
   Divider as MuiDivider,
   Grid,
   IconButton,
-  Link,
   Paper as MuiPaper,
   Table,
   TableBody,
@@ -32,7 +29,6 @@ import {
 import { green, orange } from "@material-ui/core/colors";
 
 import {
-  Add as AddIcon,
   Archive as ArchiveIcon,
   FilterList as FilterListIcon,
   RemoveRedEye as RemoveRedEyeIcon,
@@ -42,12 +38,7 @@ import {
 
 import { spacing } from "@material-ui/system";
 
-const NavLink = React.forwardRef((props, ref) => (
-  <RouterNavLink innerRef={ref} {...props} />
-));
-
 const Divider = styled(MuiDivider)(spacing);
-const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
 const Paper = styled(MuiPaper)(spacing);
 const Chip = styled(MuiChip)`
   ${spacing};

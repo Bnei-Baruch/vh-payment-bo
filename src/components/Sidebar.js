@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { rgba } from "polished";
-
 import { NavLink as RouterNavLink, withRouter } from "react-router-dom";
-import { darken } from "polished";
-
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "../vendor/perfect-scrollbar.css";
 import Logo from "../asset/img/Logo.png";

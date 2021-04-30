@@ -1,25 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import { NavLink as RouterNavLink } from "react-router-dom";
-
 import Helmet from 'react-helmet';
 
 import {
   CardContent,
   Grid,
-  Link,
-  Breadcrumbs as MuiBreadcrumbs,
   Card as MuiCard,
-  Divider as MuiDivider,
   Typography,
   Button as MuiButton,
 } from "@material-ui/core";
 
 import { spacing } from "@material-ui/system";
-
-const NavLink = React.forwardRef((props, ref) => (
-  <RouterNavLink innerRef={ref} {...props} />
-));
 
 const Card = styled(MuiCard)(spacing);
 const Button = styled(MuiButton)(spacing);

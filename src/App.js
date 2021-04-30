@@ -15,6 +15,7 @@ import German from "./locale/de.json";
 import Hebrew from "./locale/il.json";
 import Spanish from "./locale/es.json";
 import Russian from "./locale/ru.json";
+import Auth from "./config/Auth";
 i18next.init({
   interpolation: { escapeValue: false },  // React already does escaping
   lng: 'en',                              // language to use
@@ -29,7 +30,7 @@ i18next.init({
 });
 function App({ theme }) {
   return (
-    <React.Fragment>
+    <Auth>
       <I18nextProvider i18n={i18next}>
         <Helmet
           titleTemplate="%s"
@@ -45,7 +46,7 @@ function App({ theme }) {
           </MuiPickersUtilsProvider>
         </StylesProvider>
       </I18nextProvider>
-    </React.Fragment>
+    </Auth>
   );
 }
 

@@ -33,13 +33,6 @@ const IconButton = styled(MuiIconButton)`
 const StyledGrid = styled(Grid)`
   display : contents;
 `;
-
-const Flag = styled.img`
-  border-radius: 50%;
-  width: 22px;
-  height: 22px;
-`;
-
 const languages = [
   { code: 'US', label: 'United States', lang: 'English', phone: '1' },
   { code: 'IL', label: 'Israel', lang: 'Hebrew', phone: '972' },
