@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { NavLink as RouterNavLink } from "react-router-dom";
+
 import Helmet from 'react-helmet';
 
 import {
@@ -7,6 +9,7 @@ import {
   Grid,
   Link,
   Button as MuiButton,
+  Breadcrumbs as MuiBreadcrumbs,
   Card as MuiCard,
   Divider as MuiDivider,
   Table,
@@ -19,10 +22,15 @@ import {
 
 import { spacing, display } from "@material-ui/system";
 
+const NavLink = React.forwardRef((props, ref) => (
+  <RouterNavLink innerRef={ref} {...props} />
+));
+
 const Card = styled(MuiCard)`
   ${spacing};
+
   box-shadow: none;
-`;
+`
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -30,15 +38,38 @@ const Shadow = styled.div`
   box-shadow: ${props => props.theme.shadows[1]};
 `;
 
+const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
+
 const Button = styled(MuiButton)(spacing);
+
 const Typography = styled(MuiTypography)(display);
 
-function Accounts() {
+function InvoiceDetails() {
   return (
     <React.Fragment>
-      <Helmet title="Account" />
+      <Helmet title="Invoice Details" />
+
+      <Typography variant="h3" gutterBottom display="inline">
+        Invoice #000112
+      </Typography>
+
+      <Breadcrumbs aria-label="Breadcrumb" mt={2}>
+        <Link component={NavLink} exact to="/">
+          Dashboard
+        </Link>
+        <Link component={NavLink} exact to="/">
+          Pages
+        </Link>
+        <Link component={NavLink} exact to="/">
+          Invoices
+        </Link>
+        <Typography>Details</Typography>
+      </Breadcrumbs>
+
+      <Divider my={6} />
+
       <Grid container justify="center">
-        <Grid item xs={12} lg={12}>
+        <Grid item xs={12} lg={10}>
           <Shadow>
             <Card px={6} pt={6}>
               <CardContent>
@@ -181,4 +212,4 @@ function Accounts() {
   );
 }
 
-export default Accounts;
+export default InvoiceDetails;

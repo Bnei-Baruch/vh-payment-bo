@@ -1,31 +1,24 @@
 import React, { useState } from "react";
 import styled, { withTheme } from "styled-components";
 import { connect } from "react-redux";
-import { darken } from "polished";
-
 import {
-  Badge,
   Grid,
   Hidden,
-  InputBase,
   Menu,
   MenuItem,
   AppBar as MuiAppBar,
   IconButton as MuiIconButton,
   Toolbar
 } from "@material-ui/core";
-
+import { useTranslation } from "react-i18next";
 import { Menu as MenuIcon } from "@material-ui/icons";
 
 import {
-  Bell,
-  MessageSquare,
-  Search as SearchIcon,
   Power
 } from "react-feather";
 
 const AppBar = styled(MuiAppBar)`
-  background: ${props => props.theme.header.background};
+  background: #222C3C;
   color: ${props => props.theme.header.color};
   box-shadow: ${props => props.theme.shadows[1]};
 `;
@@ -37,75 +30,50 @@ const IconButton = styled(MuiIconButton)`
   }
 `;
 
-const Indicator = styled(Badge)`
-  .MuiBadge-badge {
-    background: ${props => props.theme.header.indicator.background};
-    color: ${props => props.theme.palette.common.white};
-  }
+const StyledGrid = styled(Grid)`
+  display : contents;
 `;
+const languages = [
+  { code: 'US', label: 'United States', lang: 'English', phone: '1' },
+  { code: 'IL', label: 'Israel', lang: 'Hebrew', phone: '972' },
+  { code: 'ES', label: 'Spain', lang: 'Spanish', phone: '34' },
+  { code: 'RU', label: 'Russian', lang: 'Russian', phone: '7' }
+];
 
-const Search = styled.div`
-  border-radius: 2px;
-  background-color: ${props => props.theme.header.background};
-  display: none;
-  position: relative;
-  width: 100%;
+function countryToFlag(isoCode) {
+  return typeof String.fromCodePoint !== 'undefined'
+    ? isoCode
+      .toUpperCase()
+      .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+    : isoCode;
+}
 
-  &:hover {
-    background-color: ${props => darken(0.05, props.theme.header.background)};
-  }
-
-  ${props => props.theme.breakpoints.up("md")} {
-    display: block;
-  }
-`;
-
-const SearchIconWrapper = styled.div`
-  width: 50px;
-  height: 100%;
-  position: absolute;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    width: 22px;
-    height: 22px;
-  }
-`;
-
-const Input = styled(InputBase)`
-  color: inherit;
-  width: 100%;
-
-  > input {
-    color: ${props => props.theme.header.search.color};
-    padding-top: ${props => props.theme.spacing(2.5)}px;
-    padding-right: ${props => props.theme.spacing(2.5)}px;
-    padding-bottom: ${props => props.theme.spacing(2.5)}px;
-    padding-left: ${props => props.theme.spacing(12)}px;
-    width: 160px;
-  }
-`;
-
-const Flag = styled.img`
-  border-radius: 50%;
-  width: 22px;
-  height: 22px;
-`;
-
+function setDirection(dir) {
+  document.body.style.direction = dir;
+}
 function LanguageMenu() {
-  const [anchorMenu, setAnchorMenu] = useState(null);
-
+  const [anchorMenu, setAnchorMenu] = React.useState(null);
+  const [lang, setLang] = React.useState({
+    "lang" : "English",
+    "code" : "US"
+  });
+  const { i18n } = useTranslation();
   const toggleMenu = event => {
     setAnchorMenu(event.currentTarget);
   };
-
-  const closeMenu = () => {
+  const closeMenu = (lang, code) => {
     setAnchorMenu(null);
+    setLang({
+      "lang" : lang,
+      "code" : code
+    })
+    if (code === "IL") {
+      setDirection('rtl');
+    } else {
+      setDirection('ltr');
+    }
+    i18n.changeLanguage(code.toLowerCase());
   };
-
   return (
     <React.Fragment>
       <IconButton
@@ -113,27 +81,22 @@ function LanguageMenu() {
         aria-haspopup="true"
         onClick={toggleMenu}
         color="inherit"
+        className="lang-label"
       >
-        <Flag src="/static/img/flags/us.png" alt="English" />
+        {countryToFlag(lang.code)}
       </IconButton>
+      <div className="header-lang-text" onClick={toggleMenu}>{lang.lang}</div>
       <Menu
         id="menu-appbar"
         anchorEl={anchorMenu}
         open={Boolean(anchorMenu)}
-        onClose={closeMenu}
+        onClose={(e) => setAnchorMenu(null)}
       >
-        <MenuItem onClick={closeMenu}>
-          English
-        </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          French
-        </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          German
-        </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          Dutch
-        </MenuItem>
+        {languages && languages.map(item => {
+          return <MenuItem onClick={(e) => closeMenu(item.lang, item.code)}>
+            {item.lang}
+          </MenuItem>
+        })}
       </Menu>
     </React.Fragment>
   )
@@ -194,28 +157,12 @@ const Header = ({ onDrawerToggle }) => (
             </Grid>
           </Hidden>
           <Grid item>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <Input placeholder="Search topics" />
-            </Search>
           </Grid>
           <Grid item xs />
-          <Grid item>
-            <IconButton color="inherit">
-              <Indicator badgeContent={3}>
-                <MessageSquare />
-              </Indicator>
-            </IconButton>
-            <IconButton color="inherit">
-              <Indicator badgeContent={7}>
-                <Bell />
-              </Indicator>
-            </IconButton>
+          <StyledGrid item>
             <LanguageMenu />
             <UserMenu />
-          </Grid>
+          </StyledGrid>
         </Grid>
       </Toolbar>
     </AppBar>
