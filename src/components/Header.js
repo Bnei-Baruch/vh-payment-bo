@@ -1,29 +1,27 @@
 import React, { useState } from "react";
-import styled, { withTheme } from "styled-components";
-import { connect } from "react-redux";
-import { darken } from "polished";
-
+import styled, { ThemeProvider, withTheme } from "styled-components";
+import { connect, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import {
-  Badge,
   Grid,
   Hidden,
-  InputBase,
   Menu,
   MenuItem,
   AppBar as MuiAppBar,
   IconButton as MuiIconButton,
-  Toolbar
+  Toolbar,
+  Typography,
+  Button,
+  Fade,
+  Modal,
+  createMuiTheme,
+  Backdrop,
+  makeStyles
 } from "@material-ui/core";
-
-import { Menu as MenuIcon } from "@material-ui/icons";
-
-import {
-  Bell,
-  MessageSquare,
-  Search as SearchIcon,
-  Power
-} from "react-feather";
-
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { ExitToApp, Menu as MenuIcon } from "@material-ui/icons";
+import { style } from '@material-ui/system'
+const theme = createMuiTheme();
 const AppBar = styled(MuiAppBar)`
   background: ${props => props.theme.header.background};
   color: ${props => props.theme.header.color};
@@ -36,76 +34,84 @@ const IconButton = styled(MuiIconButton)`
     height: 22px;
   }
 `;
+const useStyles = makeStyles(theme => ({
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '14.3rem',
+  },
 
-const Indicator = styled(Badge)`
-  .MuiBadge-badge {
-    background: ${props => props.theme.header.indicator.background};
-    color: ${props => props.theme.palette.common.white};
-  }
-`;
+  icon: {
+    margin: '0px 7px',
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: 20,
+    width: 400,
+  },
+  root: {
+    '&:hover': {
+      borderRadius: 0,
+    },
+    borderRadius: 0,
+  },
+  userName: {
+    color: '#464A53',
+    fontFamily: 'Nunito',
+    fontSize: '16px',
+    fontWeight: '600',
+  },
+}))
+function countryToFlag(isoCode) {
+  return typeof String.fromCodePoint !== 'undefined'
+    ? isoCode
+      .toUpperCase()
+      .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+    : isoCode;
+}
 
-const Search = styled.div`
-  border-radius: 2px;
-  background-color: ${props => props.theme.header.background};
-  display: none;
-  position: relative;
-  width: 100%;
+function setDirection(dir) {
+  document.body.style.direction = dir;
+}
 
-  &:hover {
-    background-color: ${props => darken(0.05, props.theme.header.background)};
-  }
+const languages = [
+  { code: 'US', label: 'United States', lang: 'English', phone: '1' },
+  { code: 'IL', label: 'Israel', lang: 'Hebrew', phone: '972' },
+  { code: 'ES', label: 'Spain', lang: 'Spanish', phone: '34' },
+  { code: 'RU', label: 'Russian', lang: 'Russian', phone: '7' }
+]
 
-  ${props => props.theme.breakpoints.up("md")} {
-    display: block;
-  }
-`;
-
-const SearchIconWrapper = styled.div`
-  width: 50px;
-  height: 100%;
-  position: absolute;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    width: 22px;
-    height: 22px;
-  }
-`;
-
-const Input = styled(InputBase)`
-  color: inherit;
-  width: 100%;
-
-  > input {
-    color: ${props => props.theme.header.search.color};
-    padding-top: ${props => props.theme.spacing(2.5)}px;
-    padding-right: ${props => props.theme.spacing(2.5)}px;
-    padding-bottom: ${props => props.theme.spacing(2.5)}px;
-    padding-left: ${props => props.theme.spacing(12)}px;
-    width: 160px;
-  }
-`;
-
-const Flag = styled.img`
-  border-radius: 50%;
-  width: 22px;
-  height: 22px;
-`;
 
 function LanguageMenu() {
   const [anchorMenu, setAnchorMenu] = useState(null);
-
+  const [lang, setLang] = useState({
+    "lang" : "English",
+    "code" : "US"
+  });
+  const { i18n } = useTranslation('common');
   const toggleMenu = event => {
     setAnchorMenu(event.currentTarget);
   };
-
-  const closeMenu = () => {
+  const closeMenu = (lang, code) => {
     setAnchorMenu(null);
+    setLang({
+      "lang" : lang,
+      "code" : code
+    })
+    if (code === "IL") {
+      setDirection('rtl');
+    } else {
+      setDirection('ltr');
+    }
+    i18n.changeLanguage(code.toLowerCase());
   };
-
   return (
     <React.Fragment>
       <IconButton
@@ -113,69 +119,117 @@ function LanguageMenu() {
         aria-haspopup="true"
         onClick={toggleMenu}
         color="inherit"
+        className="lang-label"
       >
-        <Flag src="/static/img/flags/us.png" alt="English" />
+        {countryToFlag(lang.code)}
       </IconButton>
       <Menu
         id="menu-appbar"
         anchorEl={anchorMenu}
         open={Boolean(anchorMenu)}
-        onClose={closeMenu}
+        onClose={(e) => setAnchorMenu(null)}
       >
-        <MenuItem onClick={closeMenu}>
-          English
-        </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          French
-        </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          German
-        </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          Dutch
-        </MenuItem>
+        {languages && languages.map(item => {
+          return <MenuItem onClick={(e) => closeMenu(item.lang, item.code)}>
+            {item.lang}
+          </MenuItem>
+        })}
       </Menu>
     </React.Fragment>
   )
 }
 
-function UserMenu() {
-  const [anchorMenu, setAnchorMenu] = useState(null);
+function UserMenu({ user, ...props }) {
+  const [anchorMenu, setAnchorMenu] = React.useState(null)
+  const [open, setOpen] = React.useState(false)
+  const state = useSelector(state => state.userReducer.keycloak);
+  const classes = useStyles()
+  const { t } = useTranslation('common')
 
-  const toggleMenu = event => {
-    setAnchorMenu(event.currentTarget);
-  };
+  const toggleMenu = event => setAnchorMenu(event.currentTarget)
 
-  const closeMenu = () => {
-    setAnchorMenu(null);
-  };
+  const closeMenu = () => setAnchorMenu(null)
 
   return (
     <React.Fragment>
-      <IconButton
-        aria-owns={Boolean(anchorMenu) ? "menu-appbar" : undefined}
-        aria-haspopup="true"
-        onClick={toggleMenu}
-        color="inherit"
-      >
-        <Power />
-      </IconButton>
-      <Menu
-        id="menu-appbar"
-        anchorEl={anchorMenu}
-        open={Boolean(anchorMenu)}
-        onClose={closeMenu}
-      >
-        <MenuItem onClick={closeMenu}>
-          Profile
-        </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          Sign out
-        </MenuItem>
-      </Menu>
+      <ThemeProvider theme={theme}>
+        <IconButton
+          aria-haspopup="true"
+          aria-owns={anchorMenu ? 'menu-appbar' : undefined}
+          onClick={toggleMenu}
+          color="inherit"
+          className={classes.root}
+          disableRipple={true}>
+          <AccountCircleIcon className={classes.icon} />
+          <Typography component={'span'} variant="subtitle1" className={classes.userName}>
+            {state && state.profile ? state.profile.firstName + ' ' + state.profile.lastName : null}
+          </Typography>
+        </IconButton>
+
+        <Menu
+          id="menu-appbar"
+          anchorEl={anchorMenu}
+          open={Boolean(anchorMenu)}
+          onClose={closeMenu}
+          getContentAnchorEl={null}
+          anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+          transformOrigin={{ horizontal: 'center', vertical: 'top' }}
+          className={classes.menu}>
+          <MenuItem onClick={closeMenu}>
+            <IconButton
+              aria-haspopup="true"
+              className={classes.root}
+              aria-owns={anchorMenu ? 'menu-appbar' : undefined}
+              color="default"
+              disableRipple={true}
+              onClick={() => {
+                closeMenu()
+                setOpen(true)
+              }}>
+              <ExitToApp />{' '}
+              <Typography component={'span'} variant="subtitle1" classes={style.icon}>
+                {t('common.logout')}
+              </Typography>
+            </IconButton>
+          </MenuItem>
+        </Menu>
+
+        <Modal
+          open={open}
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          className={classes.modal}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}>
+          <Fade in={open}>
+            <div className={classes.paper}>
+              <p id="transition-modal-description">{t('common.surelogout')}</p>
+              <div className={classes.buttons}>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setOpen(false)
+                    //Emitter.emit('lOGGED_OUT', true)
+                    props.signout()
+                  }}>
+                  {t('common.yes') + ', ' + t('common.logout')}
+                </Button>
+                <Button variant="contained" onClick={() => setOpen(false)} color="primary">
+                  {t('common.no')}
+                </Button>
+              </div>
+            </div>
+          </Fade>
+        </Modal>
+      </ThemeProvider>
     </React.Fragment>
-  );
+  )
 }
+
+
 
 const Header = ({ onDrawerToggle }) => (
   <React.Fragment>
@@ -194,25 +248,9 @@ const Header = ({ onDrawerToggle }) => (
             </Grid>
           </Hidden>
           <Grid item>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <Input placeholder="Search topics" />
-            </Search>
           </Grid>
           <Grid item xs />
           <Grid item>
-            <IconButton color="inherit">
-              <Indicator badgeContent={3}>
-                <MessageSquare />
-              </Indicator>
-            </IconButton>
-            <IconButton color="inherit">
-              <Indicator badgeContent={7}>
-                <Bell />
-              </Indicator>
-            </IconButton>
             <LanguageMenu />
             <UserMenu />
           </Grid>

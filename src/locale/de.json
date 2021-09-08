@@ -1,0 +1,15 @@
+{
+    "common" : {
+        "loading": "Loading",
+        "error": "Something Went Wrong !",
+        "noAccessRight" : "User does not possess access rights to access the Information",
+        "orders": "Orders",
+        "payments": "Payments",
+        "accounts": "Accounts",
+        "reports": "Reports",
+        "logout" : "Log out",
+        "surelogout" : "Are you sure you want to logout?",
+        "yes" : "Yes",
+        "no" : "No"
+    }
+}

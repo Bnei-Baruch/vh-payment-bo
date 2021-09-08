@@ -8,7 +8,7 @@ export default function reducer(state={ currentTheme: 0 }, actions) {
         ...state,
         currentTheme: actions.payload
       }
-
+  
     default:
       return state
   }

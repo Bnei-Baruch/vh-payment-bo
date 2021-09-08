@@ -1,13 +1,12 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { dashboardLayoutRoutes, authLayoutRoutes } from "./index";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import { dashboardLayoutRoutes } from "./index";
 
 import DashboardLayout from "../layouts/Dashboard";
-import AuthLayout from "../layouts/Auth";
-import Page404 from "../pages/auth/Page404";
+import { useSelector } from "react-redux";
 
-const childRoutes = (Layout, routes) =>
-  routes.map(({ children, path, component: Component }, index) =>
+const childRoutes = (Layout, routes, roles) =>
+  routes.map(({ children, path, component: Component, role }, index) =>
     children ? (
       // Route item with children
       children.map(({ path, component: Component }, index) => (
@@ -22,7 +21,7 @@ const childRoutes = (Layout, routes) =>
           )}
         />
       ))
-    ) : (
+    ) : role === undefined ? (
       // Route item without children
       <Route
         key={index}
@@ -34,23 +33,26 @@ const childRoutes = (Layout, routes) =>
           </Layout>
         )}
       />
-    )
+    ) : role !== undefined && roles.includes(role) ? <Route
+      key={index}
+      path={path}
+      exact
+      render={props => (
+        <Layout>
+          <Component {...props} />
+        </Layout>
+      )}
+    /> : null
   );
 
-const Routes = () => (
-  <Router>
+const Routes = () => {
+  const roles = useSelector(state => state.userReducer.roles);
+  return <Router>
     <Switch>
-      {childRoutes(DashboardLayout, dashboardLayoutRoutes)}
-      {childRoutes(AuthLayout, authLayoutRoutes)}
-      <Route
-        render={() => (
-          <AuthLayout>
-            <Page404 />
-          </AuthLayout>
-        )}
-      />
+      {childRoutes(DashboardLayout, dashboardLayoutRoutes, roles)}
+      <Redirect to="/payment/dashboard" />
     </Switch>
   </Router>
-);
+};
 
 export default Routes;
