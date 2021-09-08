@@ -3,8 +3,6 @@ import styled, { createGlobalStyle } from "styled-components";
 
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Settings from "../components/Settings";
 
 import { spacing } from "@material-ui/system";
 import {
@@ -102,9 +100,7 @@ const Dashboard = ({children, routes, width}) => {
         <MainContent p={isWidthUp("lg", width) ? 10 : 5}>
           {children}
         </MainContent>
-        <Footer />
       </AppContent>
-      <Settings />
     </Root>
   )
 }
