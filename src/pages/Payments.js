@@ -14,19 +14,25 @@ import { useTranslation } from "react-i18next";
 import MUIDataTable from "mui-datatables";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/actions/userActions";
+import { payments } from '../mockdata/payments';
+import moment from 'moment';
 const Divider = styled(MuiDivider)(spacing);
+
 const columns = [
   {
-    name: "date",
+    name: "created_at",
     label: "Date",
     options: {
       filter: false,
-      sort: true,
+      sort: false,
+      customBodyRender: (value,) => (
+        <>{moment(value).format('DD-MM-YYYY')}  </>
+      )
       // display: false,
     }
   },
   {
-    name: "paymentid",
+    name: "id",
     label: "Payment ID",
     options: {
       filter: false,
@@ -35,7 +41,7 @@ const columns = [
     }
   },
   {
-    name: "orderId",
+    name: "ParamX",
     label: "Order ID",
     options: {
       filter: false,
@@ -57,10 +63,9 @@ const columns = [
       filter: true,
       sort: false,
     }
-  }
-  ,
+  },
   {
-    name: "creditCard",
+    name: "CCNumber",
     label: "Credit Card",
     options: {
       filter: true,
@@ -68,7 +73,15 @@ const columns = [
     }
   },
   {
-    name: "chargeType",
+    name: "CCExpDate",
+    label: "Expiry Date",
+    options: {
+      filter: true,
+      sort: false,
+    }
+  },
+  {
+    name: "ProductType",
     label: "Charge Type",
     options: {
       filter: true,
@@ -76,7 +89,7 @@ const columns = [
     }
   },
   {
-    name: "status",
+    name: "PaymentStatus",
     label: "Status",
     options: {
       filter: true,
@@ -100,13 +113,14 @@ const options = {
 };
 
 function EnhancedTable() {
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState(payments);
   const [error, setError] = useState(false);
   useEffect(() => {
   }, []);
   if (error) {
     return <ConnectivityError />
   }
+  console.log(data)
   return <MUIDataTable
     data={data}
     columns={columns}

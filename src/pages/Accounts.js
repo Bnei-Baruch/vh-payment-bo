@@ -14,6 +14,8 @@ import { useTranslation } from "react-i18next";
 import MUIDataTable from "mui-datatables";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/actions/userActions";
+import { accounts } from '../mockdata/account';
+import moment from 'moment';
 const Divider = styled(MuiDivider)(spacing);
 const columns = [
   {
@@ -26,8 +28,8 @@ const columns = [
     }
   },
   {
-    name: "fullName",
-    label: "Full Name",
+    name: "FirstName",
+    label: "First Name",
     options: {
       filter: false,
       sort: false,
@@ -35,7 +37,16 @@ const columns = [
     }
   },
   {
-    name: "email",
+    name: "LastName",
+    label: "Last Name",
+    options: {
+      filter: false,
+      sort: false,
+      // display: false
+    }
+  },
+  {
+    name: "Email",
     label: "Email",
     options: {
       filter: false,
@@ -43,7 +54,7 @@ const columns = [
     }
   },
   {
-    name: "country",
+    name: "Country",
     label: "Country",
     options: {
       filter: true,
@@ -51,8 +62,8 @@ const columns = [
     }
   },
   {
-    name: "languages",
-    label: "Languages",
+    name: "Phone",
+    label: "Phone",
     options: {
       filter: true,
       sort: false,
@@ -60,11 +71,14 @@ const columns = [
   }
   ,
   {
-    name: "firstPurchaseDate",
-    label: "First Purchase Date",
+    name: "created_at",
+    label: "Registered Date",
     options: {
       filter: true,
       sort: false,
+      customBodyRender: (value,) => (
+        <>{moment(value).format('DD-MM-YYYY')}  </>
+      )
     }
   },
   {
@@ -84,7 +98,7 @@ const options = {
 };
 
 function EnhancedTable() {
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState(accounts);
   const [error, setError] = useState(false);
   useEffect(() => {
   }, []);

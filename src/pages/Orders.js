@@ -14,20 +14,26 @@ import { useTranslation } from "react-i18next";
 import MUIDataTable from "mui-datatables";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/actions/userActions";
+import { orders } from '../mockdata/order';
+import moment from 'moment';
 const Divider = styled(MuiDivider)(spacing);
+
 const columns = [
   {
-    name: "date",
+    name: "created_at",
     label: "Date",
     options: {
       filter: false,
       sort: true,
+      customBodyRender: (value,) => (
+        <>{moment(value).format('DD-MM-YYYY')}  </>
+      )
       // display: false,
     }
   },
   {
-    name: "productName",
-    label: "Product Name",
+    name: "FirstName",
+    label: "First Name",
     options: {
       filter: false,
       sort: false,
@@ -35,15 +41,31 @@ const columns = [
     }
   },
   {
-    name: "orderid",
-    label: "Order ID",
+    name: "LastName",
+    label: "Last Name",
     options: {
       filter: false,
       sort: false,
     }
   },
   {
-    name: "ordertype",
+    name: "Email",
+    label: "Email",
+    options: {
+      filter: true,
+      sort: false,
+    }
+  },
+  {
+    name: "ProductType",
+    label: "Product Type",
+    options: {
+      filter: true,
+      sort: false,
+    }
+  },
+  {
+    name: "Type",
     label: "Order Type",
     options: {
       filter: true,
@@ -51,7 +73,7 @@ const columns = [
     }
   },
   {
-    name: "amount",
+    name: "Amount",
     label: "Amount",
     options: {
       filter: true,
@@ -59,7 +81,7 @@ const columns = [
     }
   },
   {
-    name: "currency",
+    name: "Currency",
     label: "Currency",
     options: {
       filter: true,
@@ -67,7 +89,7 @@ const columns = [
     }
   },
   {
-    name: "status",
+    name: "Status",
     label: "Status",
     options: {
       filter: true,
@@ -106,7 +128,7 @@ const options = {
   print: false
 };
 function EnhancedTable() {
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState(orders);
   const [error, setError] = useState(false);
   useEffect(() => {
   }, []);
