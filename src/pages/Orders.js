@@ -16,8 +16,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/actions/userActions";
 import { orders } from '../mockdata/order';
 import moment from 'moment';
+import SideDrawer from "./Drawer";
 const Divider = styled(MuiDivider)(spacing);
-
+const ViewButton = styled.div`
+  border: 1px solid #000;
+  border-radius: 30px;
+  padding: 3px 10px;
+  text-align: center;
+  cursor: pointer;
+`;
 const columns = [
   {
     name: "created_at",
@@ -96,28 +103,31 @@ const columns = [
       sort: false,
     }
   },
-  {
-    name: "lastPayment",
-    label: "Last Payment",
-    options: {
-      filter: true,
-      sort: false,
-    }
-  },
-  {
-    name: "flag",
-    label: "Flag",
-    options: {
-      filter: true,
-      sort: false,
-    }
-  },
+  // {
+  //   name: "lastPayment",
+  //   label: "Last Payment",
+  //   options: {
+  //     filter: true,
+  //     sort: false,
+  //   }
+  // },
+  // {
+  //   name: "flag",
+  //   label: "Flag",
+  //   options: {
+  //     filter: true,
+  //     sort: false,
+  //   }
+  // },
   {
     name: "actions",
     label: "Actions",
     options: {
       filter: true,
       sort: false,
+      customBodyRender: (value) => (
+        <ViewButton>View</ViewButton>
+      )
     }
   }
 ];
@@ -145,6 +155,7 @@ function Orders() {
   const [pageLoaded, setPageLoaded] = useState(false);
   const keycloak = useSelector(state => state.userReducer.keycloak);
   const dispatch = useDispatch();
+  const [openDrawer, setOpenDrawer] = useState(false);
   const { t } = useTranslation('common');
   useEffect(() => {
     if (keycloak && keycloak.isTokenExpired()) {
@@ -177,6 +188,7 @@ function Orders() {
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <EnhancedTable />
+            <SideDrawer open={openDrawer} close={() => setOpenDrawer(false)} data={''} />
           </Grid>
         </Grid>
       </React.Fragment>

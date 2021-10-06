@@ -16,8 +16,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/actions/userActions";
 import { payments } from '../mockdata/payments';
 import moment from 'moment';
+import SideDrawer from "./Drawer";
 const Divider = styled(MuiDivider)(spacing);
-
+const ViewButton = styled.div`
+  border: 1px solid #000;
+  border-radius: 30px;
+  padding: 3px 10px;
+  text-align: center;
+  cursor: pointer;
+`;
 const columns = [
   {
     name: "created_at",
@@ -102,6 +109,9 @@ const columns = [
     options: {
       filter: true,
       sort: false,
+      customBodyRender: (value) => (
+        <ViewButton>View</ViewButton>
+      )
     }
   }
 ];
@@ -129,6 +139,7 @@ function EnhancedTable() {
 }
 function Payments() {
   const [pageLoaded, setPageLoaded] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const keycloak = useSelector(state => state.userReducer.keycloak);
   const dispatch = useDispatch();
   const { t } = useTranslation('common');
@@ -163,6 +174,7 @@ function Payments() {
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <EnhancedTable />
+            <SideDrawer open={openDrawer} close={() => setOpenDrawer(false)} data={''} />
           </Grid>
         </Grid>
       </React.Fragment>

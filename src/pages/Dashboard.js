@@ -6,7 +6,8 @@ import Helmet from 'react-helmet';
 import {
   Grid,
   Divider as MuiDivider,
-  Typography as MuiTypography
+  Typography as MuiTypography,
+  Box
 } from "@material-ui/core";
 
 import { spacing } from "@material-ui/system";
@@ -47,7 +48,77 @@ function Default() {
         </Grid>
 
         <Divider my={6} />
-        WIP
+        <Grid justify="space-between" container spacing={6}>
+          <Grid item md={4}>
+            <Box css={{
+              width: '100%',
+              height: 150,
+              bgcolor: '#fff',
+              '&:hover': {
+                backgroundColor: 'primary.main',
+                opacity: [0.9, 0.8, 0.7],
+              },
+            }}>
+
+            </Box>
+          </Grid>
+          <Grid item md={4}>
+            <Box css={{
+              width: '100%',
+              height: 150,
+              bgcolor: '#fff',
+              '&:hover': {
+                backgroundColor: 'primary.main',
+                opacity: [0.9, 0.8, 0.7],
+              },
+            }}>
+
+            </Box>
+          </Grid>
+          <Grid item md={4}>
+            <Box css={{
+              width: '100%',
+              height: 150,
+              bgcolor: '#fff',
+              '&:hover': {
+                backgroundColor: 'primary.main',
+                opacity: [0.9, 0.8, 0.7],
+              },
+            }}>
+
+            </Box>
+          </Grid>
+        </Grid>
+        <Grid justify="space-between" container spacing={6}>
+          <Grid item md={12}>
+            <Box css={{
+              width: '100%',
+              height: 150,
+              bgcolor: '#fff',
+              '&:hover': {
+                backgroundColor: 'primary.main',
+                opacity: [0.9, 0.8, 0.7],
+              },
+            }}>
+              New Subscription
+            </Box>
+          </Grid>
+        </Grid>
+        <Grid justify="space-between" container spacing={6}>
+          <Grid item md={12}>
+            <Box css={{
+              width: '100%',
+              height: 150,
+              bgcolor: '#fff',
+              '&:hover': {
+                backgroundColor: 'primary.main',
+                opacity: [0.9, 0.8, 0.7],
+              },
+            }}>
+              Transaction History
+            </Box>
+          </Grid>
+        </Grid>
       </React.Fragment >
     )
   } else {
