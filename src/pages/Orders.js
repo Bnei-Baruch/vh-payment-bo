@@ -124,7 +124,12 @@ const options = {
   print: false
 };
 function EnhancedTable() {
-  const [data, setData] = React.useState(orders);
+  const updatedOrder = orders.map(order => {
+    order.FullName = `${order.FirstName} ${order.LastName}`;
+    order.amount = `${order.Amount} ${order.Currency} `
+    return order;
+  })
+  const [data, setData] = React.useState(updatedOrder);
   const [error, setError] = useState(false);
   useEffect(() => {
   }, []);
