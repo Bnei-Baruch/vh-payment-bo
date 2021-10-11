@@ -25,6 +25,18 @@ const ViewButton = styled.div`
   text-align: center;
   cursor: pointer;
 `;
+const SucessfulPayment = styled.div`
+  color: green;
+  font-weight: 800;
+`;
+const PendingPayment = styled.div`
+  color: orange;
+  font-weight: 800;
+`;
+const FailedPayment = styled.div`
+  color: red;
+  font-weight: 800;
+`;
 const columns = [
   {
     name: "created_at",
@@ -32,27 +44,17 @@ const columns = [
     options: {
       filter: false,
       sort: true,
-      customBodyRender: (value,) => (
+      customBodyRender: (value) => (
         <>{moment(value).format('DD-MM-YYYY')}  </>
       )
-      // display: false,
     }
   },
   {
-    name: "FirstName",
-    label: "First Name",
+    name: "FullName",
+    label: "Full Name",
     options: {
       filter: false,
-      sort: false,
-      // display: false
-    }
-  },
-  {
-    name: "LastName",
-    label: "Last Name",
-    options: {
-      filter: false,
-      sort: false,
+      sort: false
     }
   },
   {
@@ -80,16 +82,8 @@ const columns = [
     }
   },
   {
-    name: "Amount",
+    name: "amount",
     label: "Amount",
-    options: {
-      filter: true,
-      sort: false,
-    }
-  },
-  {
-    name: "Currency",
-    label: "Currency",
     options: {
       filter: true,
       sort: false,
@@ -101,31 +95,23 @@ const columns = [
     options: {
       filter: true,
       sort: false,
+      customBodyRender: (value) => {
+        console.log(value)
+        return <>
+          {value === 'paid' && <SucessfulPayment>Paid </SucessfulPayment>}
+          {value === 'pending' && <PendingPayment>Pending </PendingPayment>}
+          {value === 'failed' && <FailedPayment>Failed </FailedPayment>}
+        </>
+      }
     }
   },
-  // {
-  //   name: "lastPayment",
-  //   label: "Last Payment",
-  //   options: {
-  //     filter: true,
-  //     sort: false,
-  //   }
-  // },
-  // {
-  //   name: "flag",
-  //   label: "Flag",
-  //   options: {
-  //     filter: true,
-  //     sort: false,
-  //   }
-  // },
   {
     name: "actions",
     label: "Actions",
     options: {
       filter: true,
       sort: false,
-      customBodyRender: (value) => (
+      customBodyRender: () => (
         <ViewButton>View</ViewButton>
       )
     }
