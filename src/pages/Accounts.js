@@ -27,15 +27,6 @@ const ViewButton = styled.div`
 `;
 const columns = [
   {
-    name: "accountId",
-    label: "Account ID",
-    options: {
-      filter: false,
-      sort: true,
-      // display: false,
-    }
-  },
-  {
     name: "FirstName",
     label: "First Name",
     options: {
@@ -80,12 +71,12 @@ const columns = [
   ,
   {
     name: "created_at",
-    label: "Registered Date",
+    label: "Last Payment date",
     options: {
       filter: true,
       sort: false,
       customBodyRender: (value,) => (
-        <>{moment(value).format('DD-MM-YYYY')}  </>
+        <>{moment(value).format('DD-MM-YYYY HH:MM:SS')}  </>
       )
     }
   },

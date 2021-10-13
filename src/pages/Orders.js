@@ -45,7 +45,7 @@ const columns = [
       filter: false,
       sort: true,
       customBodyRender: (value) => (
-        <>{moment(value).format('DD-MM-YYYY')}  </>
+        <>{moment(value).format('DD-MM-YYYY HH:MM:SS')}  </>
       )
     }
   },
@@ -73,14 +73,14 @@ const columns = [
       sort: false,
     }
   },
-  {
-    name: "Type",
-    label: "Order Type",
-    options: {
-      filter: true,
-      sort: false,
-    }
-  },
+  // {
+  //   name: "Type",
+  //   label: "Order Type",
+  //   options: {
+  //     filter: true,
+  //     sort: false,
+  //   }
+  // },
   {
     name: "amount",
     label: "Amount",

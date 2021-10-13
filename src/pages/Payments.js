@@ -25,6 +25,18 @@ const ViewButton = styled.div`
   text-align: center;
   cursor: pointer;
 `;
+const SucessfulPayment = styled.div`
+  color: green;
+  font-weight: 800;
+`;
+const PendingPayment = styled.div`
+  color: orange;
+  font-weight: 800;
+`;
+const FailedPayment = styled.div`
+  color: red;
+  font-weight: 800;
+`;
 const columns = [
   {
     name: "created_at",
@@ -33,23 +45,14 @@ const columns = [
       filter: false,
       sort: false,
       customBodyRender: (value,) => (
-        <>{moment(value).format('DD-MM-YYYY')}  </>
+        <>{moment(value).format('DD-MM-YYYY HH:MM:SS')}  </>
       )
       // display: false,
     }
   },
   {
-    name: "id",
-    label: "Payment ID",
-    options: {
-      filter: false,
-      sort: false,
-      // display: false
-    }
-  },
-  {
     name: "ParamX",
-    label: "Order ID",
+    label: "ParamX",
     options: {
       filter: false,
       sort: false,
@@ -101,6 +104,14 @@ const columns = [
     options: {
       filter: true,
       sort: false,
+      customBodyRender: (value) => {
+        console.log(value)
+        return <>
+          {value === 'success' && <SucessfulPayment>Success </SucessfulPayment>}
+          {value === 'pending' && <PendingPayment>Pending </PendingPayment>}
+          {value === 'failed' && <FailedPayment>Failed </FailedPayment>}
+        </>
+      }
     }
   },
   {
