@@ -72,10 +72,10 @@ function Dashboard() {
 
         <Divider my={6} />
         <Grid justify="space-between" container spacing={6}>
-          <Grid item md={4}>
+          <Grid item md={6}>
             <Box css={{
               width: '100%',
-              height: 150,
+              height: 200,
               bgcolor: '#fff',
               '&:hover': {
                 backgroundColor: 'primary.main',
@@ -85,23 +85,10 @@ function Dashboard() {
 
             </Box>
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={6}>
             <Box css={{
               width: '100%',
-              height: 150,
-              bgcolor: '#fff',
-              '&:hover': {
-                backgroundColor: 'primary.main',
-                opacity: [0.9, 0.8, 0.7],
-              },
-            }}>
-
-            </Box>
-          </Grid>
-          <Grid item md={4}>
-            <Box css={{
-              width: '100%',
-              height: 150,
+              height: 200,
               bgcolor: '#fff',
               '&:hover': {
                 backgroundColor: 'primary.main',
@@ -138,6 +125,7 @@ function Dashboard() {
                 opacity: [0.9, 0.8, 0.7],
               },
             }}>
+              <OrderTable />
             </Box>
           </Grid>
         </Grid>
