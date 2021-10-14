@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import '../stylesheet/common.css';
-import Helmet from 'react-helmet';
-import {
-  Divider as MuiDivider,
-  Grid,
-  Typography
-} from "@material-ui/core";
+import "../stylesheet/common.css";
+import Helmet from "react-helmet";
+import { Divider as MuiDivider, Grid, Typography } from "@material-ui/core";
 import { spacing } from "@material-ui/system";
 import LoadingScreen from "./LoadingScreen";
 import ConnectivityError from "./ConnectivityError";
@@ -14,8 +10,8 @@ import { useTranslation } from "react-i18next";
 import MUIDataTable from "mui-datatables";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/actions/userActions";
-import { orders } from '../mockdata/order';
-import moment from 'moment';
+import { orders } from "../mockdata/order";
+import moment from "moment";
 import SideDrawer from "./Drawer";
 const Divider = styled(MuiDivider)(spacing);
 const ViewButton = styled.div`
@@ -45,17 +41,17 @@ const columns = [
       filter: false,
       sort: true,
       customBodyRender: (value) => (
-        <>{moment(value).format('DD-MM-YYYY HH:MM:SS')}  </>
-      )
-    }
+        <>{moment(value).format("DD-MM-YYYY HH:MM:SS")} </>
+      ),
+    },
   },
   {
     name: "FullName",
     label: "Full Name",
     options: {
       filter: false,
-      sort: false
-    }
+      sort: false,
+    },
   },
   {
     name: "Email",
@@ -63,7 +59,7 @@ const columns = [
     options: {
       filter: true,
       sort: false,
-    }
+    },
   },
   {
     name: "ProductType",
@@ -71,7 +67,7 @@ const columns = [
     options: {
       filter: true,
       sort: false,
-    }
+    },
   },
   // {
   //   name: "Type",
@@ -87,7 +83,7 @@ const columns = [
     options: {
       filter: true,
       sort: false,
-    }
+    },
   },
   {
     name: "Status",
@@ -96,14 +92,16 @@ const columns = [
       filter: true,
       sort: false,
       customBodyRender: (value) => {
-        console.log(value)
-        return <>
-          {value === 'paid' && <SucessfulPayment>Paid </SucessfulPayment>}
-          {value === 'pending' && <PendingPayment>Pending </PendingPayment>}
-          {value === 'failed' && <FailedPayment>Failed </FailedPayment>}
-        </>
-      }
-    }
+        console.log(value);
+        return (
+          <>
+            {value === "paid" && <SucessfulPayment>Paid </SucessfulPayment>}
+            {value === "pending" && <PendingPayment>Pending </PendingPayment>}
+            {value === "failed" && <FailedPayment>Failed </FailedPayment>}
+          </>
+        );
+      },
+    },
   },
   {
     name: "actions",
@@ -111,66 +109,55 @@ const columns = [
     options: {
       filter: true,
       sort: false,
-      customBodyRender: () => (
-        <ViewButton>View</ViewButton>
-      )
-    }
-  }
+      customBodyRender: () => <ViewButton>View</ViewButton>,
+    },
+  },
 ];
 
 const options = {
-  filterType: 'checkbox',
+  filterType: "checkbox",
   download: false,
-  print: false
+  print: false,
 };
 function EnhancedTable() {
-  const updatedOrder = orders.map(order => {
+  const updatedOrder = orders.map((order) => {
     order.FullName = `${order.FirstName} ${order.LastName}`;
-    order.amount = `${order.Amount} ${order.Currency} `
+    order.amount = `${order.Amount} ${order.Currency} `;
     return order;
-  })
+  });
   const [data, setData] = React.useState(updatedOrder);
   const [error, setError] = useState(false);
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
   if (error) {
-    return <ConnectivityError />
+    return <ConnectivityError />;
   }
-  return <MUIDataTable
-    data={data}
-    columns={columns}
-    options={options}
-  />
+  return <MUIDataTable data={data} columns={columns} options={options} />;
 }
 function Orders() {
   const [pageLoaded, setPageLoaded] = useState(false);
-  const keycloak = useSelector(state => state.userReducer.keycloak);
+  const keycloak = useSelector((state) => state.userReducer.keycloak);
   const dispatch = useDispatch();
   const [openDrawer, setOpenDrawer] = useState(false);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   useEffect(() => {
     if (keycloak && keycloak.isTokenExpired()) {
       //refresh token here and set in store
       keycloak.updateToken(30).success(() => {
         dispatch(setToken(keycloak.token));
         setPageLoaded(true);
-      })
+      });
     } else {
       setPageLoaded(true);
     }
-  }, [])
+  }, [dispatch, keycloak]);
   if (pageLoaded) {
     return (
       <React.Fragment>
-        <Helmet title={t('common.orders')} />
-        <Grid
-          justify="space-between"
-          container
-          spacing={10}
-        >
+        <Helmet title={t("common.orders")} />
+        <Grid justify="space-between" container spacing={10}>
           <Grid item>
             <Typography variant="h3" gutterBottom display="inline">
-              {t('common.orders')}
+              {t("common.orders")}
             </Typography>
           </Grid>
         </Grid>
@@ -179,13 +166,17 @@ function Orders() {
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <EnhancedTable />
-            <SideDrawer open={openDrawer} close={() => setOpenDrawer(false)} data={''} />
+            <SideDrawer
+              open={openDrawer}
+              close={() => setOpenDrawer(false)}
+              data={""}
+            />
           </Grid>
         </Grid>
       </React.Fragment>
-    )
+    );
   } else {
-    return <LoadingScreen />
+    return <LoadingScreen />;
   }
 }
 

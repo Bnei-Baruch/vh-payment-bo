@@ -1,10 +1,10 @@
 import React from "react";
 import async from "../components/Async";
-import ViewQuiltIcon from '@material-ui/icons/ViewQuilt';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
-import PersonIcon from '@material-ui/icons/Person';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
+import ViewQuiltIcon from "@material-ui/icons/ViewQuilt";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
+import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
+import PersonIcon from "@material-ui/icons/Person";
+import EqualizerIcon from "@material-ui/icons/Equalizer";
 // Pages components
 const Dashboard = async(() => import("../pages/Dashboard"));
 const Payments = async(() => import("../pages/Payments"));
@@ -17,7 +17,7 @@ const Reports = async(() => import("../pages/Reports"));
 const dashboardRoute = {
   id: "Dashboard",
   path: "/payment/dashboard",
-  header : 'Events',
+  header: "Events",
   icon: <ViewQuiltIcon />,
   component: Dashboard,
   children: null,
@@ -30,7 +30,7 @@ const ordersRoute = {
   path: "/payment/orders",
   icon: <InsertDriveFileIcon />,
   component: Orders,
-  children: null
+  children: null,
 };
 /**
  * Route for Payments Page with header
@@ -40,8 +40,8 @@ const paymentRoute = {
   path: "/payment/payments",
   icon: <ConfirmationNumberIcon />,
   component: Payments,
-  children: null
-}
+  children: null,
+};
 /**
  * Route for Accounts to user with header
  */
@@ -50,7 +50,7 @@ const accountsRoute = {
   path: "/payment/Accounts",
   icon: <PersonIcon />,
   component: Accounts,
-  children: null
+  children: null,
 };
 /**
  * Route for Reports with header
@@ -60,15 +60,23 @@ const reportsRoutes = {
   path: "/payment/reports",
   icon: <EqualizerIcon />,
   component: Reports,
-  children: null
+  children: null,
 };
 
 // Routes using the Dashboard layout
 export const dashboardLayoutRoutes = [
-  dashboardRoute, ordersRoute, paymentRoute , accountsRoute, reportsRoutes
+  dashboardRoute,
+  ordersRoute,
+  paymentRoute,
+  accountsRoute,
+  reportsRoutes,
 ];
 
 // Routes visible in the sidebar
 export const sidebarRoutes = [
-  dashboardRoute, ordersRoute, paymentRoute, accountsRoute, reportsRoutes
+  dashboardRoute,
+  ordersRoute,
+  paymentRoute,
+  accountsRoute,
+  reportsRoutes,
 ];

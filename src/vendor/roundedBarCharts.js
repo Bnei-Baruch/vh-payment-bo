@@ -1,6 +1,6 @@
 import { Chart as ChartJS } from "react-chartjs-2";
 
-ChartJS.elements.Rectangle.prototype.draw = function() {
+ChartJS.elements.Rectangle.prototype.draw = function () {
   const ctx = this._chart.ctx;
   const vm = this._view;
   let left, right, top, bottom, signX, signY, borderSkipped;
@@ -65,7 +65,7 @@ ChartJS.elements.Rectangle.prototype.draw = function() {
     [left, bottom],
     [left, top],
     [right, top],
-    [right, bottom]
+    [right, bottom],
   ];
 
   // Find first (starting) corner with fallback to 'bottom'

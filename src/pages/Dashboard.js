@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled, { withTheme } from "styled-components";
 
-import Helmet from 'react-helmet';
+import Helmet from "react-helmet";
 
 import {
   Grid,
   Divider as MuiDivider,
   Typography as MuiTypography,
-  Box
+  Box,
 } from "@material-ui/core";
 
 import { spacing } from "@material-ui/system";
@@ -16,7 +16,7 @@ import ConnectivityError from "./ConnectivityError";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/actions/userActions";
 
-import { orders } from '../mockdata/latestorder';
+import { orders } from "../mockdata/latestorder";
 import moment from "moment";
 import MUIDataTable from "mui-datatables";
 const Divider = styled(MuiDivider)(spacing);
@@ -42,7 +42,7 @@ const FailedPayment = styled.div`
 `;
 const Typography = styled(MuiTypography)(spacing);
 function Dashboard() {
-  const keycloak = useSelector(state => state.userReducer.keycloak);
+  const keycloak = useSelector((state) => state.userReducer.keycloak);
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
@@ -51,12 +51,11 @@ function Dashboard() {
       //refresh token here and set in store
       keycloak.updateToken(30).success(() => {
         dispatch(setToken(keycloak.token));
-      })
+      });
     }
-
-  }, [])
+  }, [dispatch, keycloak]);
   if (error) {
-    return <ConnectivityError />
+    return <ConnectivityError />;
   }
   if (data) {
     return (
@@ -73,66 +72,70 @@ function Dashboard() {
         <Divider my={6} />
         <Grid justify="space-between" container spacing={6}>
           <Grid item md={6}>
-            <Box css={{
-              width: '100%',
-              height: 200,
-              bgcolor: '#fff',
-              '&:hover': {
-                backgroundColor: 'primary.main',
-                opacity: [0.9, 0.8, 0.7],
-              },
-            }}>
-
-            </Box>
+            <Box
+              css={{
+                width: "100%",
+                height: 200,
+                bgcolor: "#fff",
+                "&:hover": {
+                  backgroundColor: "primary.main",
+                  opacity: [0.9, 0.8, 0.7],
+                },
+              }}
+            ></Box>
           </Grid>
           <Grid item md={6}>
-            <Box css={{
-              width: '100%',
-              height: 200,
-              bgcolor: '#fff',
-              '&:hover': {
-                backgroundColor: 'primary.main',
-                opacity: [0.9, 0.8, 0.7],
-              },
-            }}>
-
-            </Box>
+            <Box
+              css={{
+                width: "100%",
+                height: 200,
+                bgcolor: "#fff",
+                "&:hover": {
+                  backgroundColor: "primary.main",
+                  opacity: [0.9, 0.8, 0.7],
+                },
+              }}
+            ></Box>
           </Grid>
         </Grid>
         <Grid justify="space-between" container spacing={6}>
           <Grid item md={12}>
-            <Box css={{
-              width: '100%',
-              height: 150,
-              bgcolor: '#fff',
-              '&:hover': {
-                backgroundColor: 'primary.main',
-                opacity: [0.9, 0.8, 0.7],
-              },
-            }}>
+            <Box
+              css={{
+                width: "100%",
+                height: 150,
+                bgcolor: "#fff",
+                "&:hover": {
+                  backgroundColor: "primary.main",
+                  opacity: [0.9, 0.8, 0.7],
+                },
+              }}
+            >
               <OrderTable />
             </Box>
           </Grid>
         </Grid>
         <Grid justify="space-between" container spacing={6}>
           <Grid item md={12}>
-            <Box css={{
-              width: '100%',
-              height: 150,
-              bgcolor: '#fff',
-              '&:hover': {
-                backgroundColor: 'primary.main',
-                opacity: [0.9, 0.8, 0.7],
-              },
-            }}>
+            <Box
+              css={{
+                width: "100%",
+                height: 150,
+                bgcolor: "#fff",
+                "&:hover": {
+                  backgroundColor: "primary.main",
+                  opacity: [0.9, 0.8, 0.7],
+                },
+              }}
+            >
               <OrderTable />
             </Box>
           </Grid>
         </Grid>
-      </React.Fragment >
-    )
+      </React.Fragment>
+    );
   } else {
-    return <LoadingScreen />
+    return <LoadingScreen />;
   }
 }
 const columns = [
@@ -143,17 +146,17 @@ const columns = [
       filter: false,
       sort: true,
       customBodyRender: (value) => (
-        <>{moment(value).format('DD-MM-YYYY HH:MM:SS')}  </>
-      )
-    }
+        <>{moment(value).format("DD-MM-YYYY HH:MM:SS")} </>
+      ),
+    },
   },
   {
     name: "FullName",
     label: "Full Name",
     options: {
       filter: false,
-      sort: false
-    }
+      sort: false,
+    },
   },
   {
     name: "Email",
@@ -161,7 +164,7 @@ const columns = [
     options: {
       filter: true,
       sort: false,
-    }
+    },
   },
   {
     name: "ProductType",
@@ -169,7 +172,7 @@ const columns = [
     options: {
       filter: true,
       sort: false,
-    }
+    },
   },
   // {
   //   name: "Type",
@@ -185,7 +188,7 @@ const columns = [
     options: {
       filter: true,
       sort: false,
-    }
+    },
   },
   {
     name: "Status",
@@ -194,14 +197,16 @@ const columns = [
       filter: true,
       sort: false,
       customBodyRender: (value) => {
-        console.log(value)
-        return <>
-          {value === 'paid' && <SucessfulPayment>Paid </SucessfulPayment>}
-          {value === 'pending' && <PendingPayment>Pending </PendingPayment>}
-          {value === 'failed' && <FailedPayment>Failed </FailedPayment>}
-        </>
-      }
-    }
+        console.log(value);
+        return (
+          <>
+            {value === "paid" && <SucessfulPayment>Paid </SucessfulPayment>}
+            {value === "pending" && <PendingPayment>Pending </PendingPayment>}
+            {value === "failed" && <FailedPayment>Failed </FailedPayment>}
+          </>
+        );
+      },
+    },
   },
   {
     name: "actions",
@@ -209,11 +214,9 @@ const columns = [
     options: {
       filter: true,
       sort: false,
-      customBodyRender: () => (
-        <ViewButton>View</ViewButton>
-      )
-    }
-  }
+      customBodyRender: () => <ViewButton>View</ViewButton>,
+    },
+  },
 ];
 
 const options = {
@@ -221,28 +224,29 @@ const options = {
   download: false,
   print: false,
   pagination: false,
-  responsive: 'scroll'
+  responsive: "scroll",
 };
 function OrderTable() {
-  const updatedOrder = orders.map(order => {
+  const updatedOrder = orders.map((order) => {
     order.FullName = `${order.FirstName} ${order.LastName}`;
-    order.amount = `${order.Amount} ${order.Currency} `
+    order.amount = `${order.Amount} ${order.Currency} `;
     return order;
-  })
-  console.log(updatedOrder)
+  });
+  console.log(updatedOrder);
   const [data, setData] = React.useState(updatedOrder);
   const [error, setError] = useState(false);
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
   if (error) {
-    return <ConnectivityError />
+    return <ConnectivityError />;
   }
-  return <MUIDataTable
-    title={'Latest 50 orders'}
-    data={data}
-    columns={columns}
-    options={options}
-  />
+  return (
+    <MUIDataTable
+      title={"Latest 50 orders"}
+      data={data}
+      columns={columns}
+      options={options}
+    />
+  );
 }
 
 export default withTheme(Dashboard);

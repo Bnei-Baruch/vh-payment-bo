@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 
-import Helmet from 'react-helmet';
+import Helmet from "react-helmet";
 
 import DateFnsUtils from "@date-io/date-fns";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
@@ -21,31 +21,35 @@ import Russian from "./locale/ru.json";
 import axios from "axios";
 import LoadingScreen from "./pages/LoadingScreen";
 import Keycloak from "keycloak-js";
-import keycloakConfig from './config/keycloak-config';
-import { setKeycloakData, setToken, setUserRoles } from "./redux/actions/userActions";
+import keycloakConfig from "./config/keycloak-config";
+import {
+  setKeycloakData,
+  setToken,
+  setUserRoles,
+} from "./redux/actions/userActions";
 var authToken = undefined;
-axios.interceptors.request.use(c => {
+axios.interceptors.request.use((c) => {
   if (authToken) {
     let header = {
-      "Authorization": "Bearer " + authToken,
-      "Accept": "application/json"
+      Authorization: "Bearer " + authToken,
+      Accept: "application/json",
     };
-    c.headers = header
+    c.headers = header;
   }
   return c;
-})
+});
 i18next.init({
-  interpolation: { escapeValue: false },  // React already does escaping
-  lng: 'en',                              // language to use
+  interpolation: { escapeValue: false }, // React already does escaping
+  lng: "en", // language to use
   resources: {
     en: {
       common: English,
     },
     us: {
-      common: English           // 'common' is our custom namespace
+      common: English, // 'common' is our custom namespace
     },
     de: {
-      common: German
+      common: German,
     },
     es: {
       common: Spanish,
@@ -55,7 +59,7 @@ i18next.init({
     },
     ru: {
       common: Russian,
-    }
+    },
   },
 });
 function App({ theme, token }) {
@@ -64,18 +68,19 @@ function App({ theme, token }) {
   const dispatch = useDispatch();
   useEffect(() => {
     const keycloak = Keycloak(keycloakConfig);
-    keycloak.init({ onLoad: 'login-required', checkLoginIframe: false })
-        .then(authenticated => {
-          keycloak.loadUserProfile().then(async function () {
-            dispatch(setToken(keycloak.token));
-            dispatch(setKeycloakData(keycloak));
-            dispatch(setUserRoles(keycloak.realmAccess.roles));
-            if (authenticated) {
-              setAuth(authenticated);
-            }
-          })
-        })
-  }, [])
+    keycloak
+      .init({ onLoad: "login-required", checkLoginIframe: false })
+      .then((authenticated) => {
+        keycloak.loadUserProfile().then(async function () {
+          dispatch(setToken(keycloak.token));
+          dispatch(setKeycloakData(keycloak));
+          dispatch(setUserRoles(keycloak.realmAccess.roles));
+          if (authenticated) {
+            setAuth(authenticated);
+          }
+        });
+      });
+  }, [dispatch]);
   return (
     <React.Fragment>
       <I18nextProvider i18n={i18next}>
@@ -87,7 +92,7 @@ function App({ theme, token }) {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <MuiThemeProvider theme={maTheme[theme.currentTheme]}>
               <ThemeProvider theme={maTheme[theme.currentTheme]}>
-                {auth ?  <Routes /> :  <LoadingScreen/>}
+                {auth ? <Routes /> : <LoadingScreen />}
               </ThemeProvider>
             </MuiThemeProvider>
           </MuiPickersUtilsProvider>
@@ -97,4 +102,7 @@ function App({ theme, token }) {
   );
 }
 
-export default connect(store => ({ theme: store.themeReducer, token: store.userReducer.token }))(App);
+export default connect((store) => ({
+  theme: store.themeReducer,
+  token: store.userReducer.token,
+}))(App);

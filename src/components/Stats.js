@@ -6,7 +6,7 @@ import {
   Card as MuiCard,
   CardContent as MuiCardContent,
   Chip as MuiChip,
-  Typography as MuiTypography
+  Typography as MuiTypography,
 } from "@material-ui/core";
 
 import { spacing } from "@material-ui/system";
@@ -19,7 +19,7 @@ const CardContent = styled(MuiCardContent)`
   position: relative;
 
   &:last-child {
-    padding-bottom: ${props => props.theme.spacing(4)}px;
+    padding-bottom: ${(props) => props.theme.spacing(4)}px;
   }
 `;
 
@@ -30,27 +30,36 @@ const Chip = styled(MuiChip)`
   height: 20px;
   padding: 4px 0;
   font-size: 85%;
-  background-color: ${props => props.color ? props.color : props.theme.palette.secondary.main};
-  color: ${props => props.theme.palette.common.white};
-  margin-bottom: ${props => props.theme.spacing(4)}px;
+  background-color: ${(props) =>
+    props.color ? props.color : props.theme.palette.secondary.main};
+  color: ${(props) => props.theme.palette.common.white};
+  margin-bottom: ${(props) => props.theme.spacing(4)}px;
 
   span {
-    padding-left: ${props => props.theme.spacing(2)}px;
-    padding-right: ${props => props.theme.spacing(2)}px;
+    padding-left: ${(props) => props.theme.spacing(2)}px;
+    padding-right: ${(props) => props.theme.spacing(2)}px;
   }
 `;
 
 const Percentage = styled(MuiTypography)`
-  color: ${props => props.theme.palette.grey[600]};
+  color: ${(props) => props.theme.palette.grey[600]};
 
   span {
-    color: ${props => props.percentagecolor};
+    color: ${(props) => props.percentagecolor};
     padding-right: 10px;
-    font-weight: ${props => props.theme.typography.fontWeightBold};
+    font-weight: ${(props) => props.theme.typography.fontWeightBold};
   }
 `;
 
-function Stats({ title, amount, chip, percentageText, percentagecolor, percentText, tagColor }) {
+function Stats({
+  title,
+  amount,
+  chip,
+  percentageText,
+  percentagecolor,
+  percentText,
+  tagColor,
+}) {
   return (
     <Card mb={3}>
       <CardContent>
