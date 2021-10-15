@@ -10,6 +10,31 @@
     "logout": "Log out",
     "surelogout": "Are you sure you want to logout?",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "date": "Date",
+    "fullName": "Full Name",
+    "email": "Email",
+    "productType": "Product Type",
+    "amount": "Amount",
+    "status": "Status",
+    "paid": "Paid",
+    "pending": "Pending",
+    "failed": "Failed",
+    "view": "View",
+    "connectivityError": "Connectivity Error",
+    "welcome": "Welcome",
+    "actions": "Action"
+  },
+  "accounts": {
+    "accountsDetails": "Account Detail"
+  },
+  "payments": {
+    "paramx": "ParamX",
+    "accountName": "Account Name",
+    "creditCard": "Credit Card",
+    "chargeType": "Charge Type"
+  },
+  "dashboard": {
+    "lastpayment": "Last 50 Payments"
   }
 }
