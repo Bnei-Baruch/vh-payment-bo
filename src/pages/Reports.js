@@ -19,7 +19,7 @@ const Divider = styled(MuiDivider)(spacing);
 
 const Typography = styled(MuiTypography)(spacing);
 function Default() {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
   const keycloak = useSelector((state) => state.userReducer.keycloak);
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);

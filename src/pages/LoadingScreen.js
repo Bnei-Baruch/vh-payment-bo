@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 function LoadingScreen() {
   const classes = useStyles();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
   return (
     <>
       <div className={classes.root}>

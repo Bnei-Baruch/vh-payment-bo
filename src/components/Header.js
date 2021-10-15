@@ -96,7 +96,7 @@ function LanguageMenu() {
     lang: "English",
     code: "US",
   });
-  const { i18n } = useTranslation("common");
+  const { i18n } = useTranslation();
   const toggleMenu = (event) => {
     setAnchorMenu(event.currentTarget);
   };
@@ -148,7 +148,7 @@ function UserMenu({ user, ...props }) {
   const [open, setOpen] = React.useState(false);
   const state = useSelector((state) => state.userReducer.keycloak);
   const classes = useStyles();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
 
   const toggleMenu = (event) => setAnchorMenu(event.currentTarget);
 

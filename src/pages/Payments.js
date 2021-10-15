@@ -146,7 +146,7 @@ function Payments() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const keycloak = useSelector((state) => state.userReducer.keycloak);
   const dispatch = useDispatch();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
   useEffect(() => {
     if (keycloak && keycloak.isTokenExpired()) {
       //refresh token here and set in store

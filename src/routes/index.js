@@ -11,6 +11,7 @@ const Payments = async(() => import("../pages/Payments"));
 const Orders = async(() => import("../pages/Orders"));
 const Accounts = async(() => import("../pages/Accounts"));
 const Reports = async(() => import("../pages/Reports"));
+const AccountDetails = async(() => import("../pages/AccountsDetailView"));
 /**
  * Route for dashboard with header
  */
@@ -47,7 +48,7 @@ const paymentRoute = {
  */
 const accountsRoute = {
   id: "Accounts",
-  path: "/payment/Accounts",
+  path: "/payment/accounts",
   icon: <PersonIcon />,
   component: Accounts,
   children: null,
@@ -63,6 +64,14 @@ const reportsRoutes = {
   children: null,
 };
 
+const accountDetailsRoutes = {
+  id: "Account Detail",
+  path: "/payment/accounts/acountdetails",
+  icon: <EqualizerIcon />,
+  component: AccountDetails,
+  children: null,
+};
+
 // Routes using the Dashboard layout
 export const dashboardLayoutRoutes = [
   dashboardRoute,
@@ -70,6 +79,7 @@ export const dashboardLayoutRoutes = [
   paymentRoute,
   accountsRoute,
   reportsRoutes,
+  accountDetailsRoutes,
 ];
 
 // Routes visible in the sidebar

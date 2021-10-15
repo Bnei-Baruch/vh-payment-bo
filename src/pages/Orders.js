@@ -138,7 +138,7 @@ function Orders() {
   const keycloak = useSelector((state) => state.userReducer.keycloak);
   const dispatch = useDispatch();
   const [openDrawer, setOpenDrawer] = useState(false);
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
   useEffect(() => {
     if (keycloak && keycloak.isTokenExpired()) {
       //refresh token here and set in store

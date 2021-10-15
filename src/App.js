@@ -42,24 +42,12 @@ i18next.init({
   interpolation: { escapeValue: false }, // React already does escaping
   lng: "en", // language to use
   resources: {
-    en: {
-      common: English,
-    },
-    us: {
-      common: English, // 'common' is our custom namespace
-    },
-    de: {
-      common: German,
-    },
-    es: {
-      common: Spanish,
-    },
-    il: {
-      common: Hebrew,
-    },
-    ru: {
-      common: Russian,
-    },
+    en: { translation: English },
+    us: { translation: English }, // 'common' is our custom namespace
+    de: { translation: German },
+    es: { translation: Spanish },
+    il: { translation: Hebrew },
+    ru: { translation: Russian },
   },
 });
 function App({ theme, token }) {

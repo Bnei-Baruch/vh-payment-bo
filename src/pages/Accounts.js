@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import "../stylesheet/common.css";
+import moment from "moment";
+import { useHistory } from "react-router-dom";
 import Helmet from "react-helmet";
+import styled from "styled-components";
 import { Divider as MuiDivider, Grid, Typography } from "@material-ui/core";
 import { spacing } from "@material-ui/system";
 import LoadingScreen from "./LoadingScreen";
@@ -11,8 +12,8 @@ import MUIDataTable from "mui-datatables";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/actions/userActions";
 import { accounts } from "../mockdata/account";
-import moment from "moment";
 import SideDrawer from "./Drawer";
+import "../stylesheet/common.css";
 const Divider = styled(MuiDivider)(spacing);
 const ViewButton = styled.div`
   border: 1px solid #000;
@@ -21,70 +22,6 @@ const ViewButton = styled.div`
   text-align: center;
   cursor: pointer;
 `;
-const columns = [
-  {
-    name: "FirstName",
-    label: "First Name",
-    options: {
-      filter: false,
-      sort: false,
-      // display: false
-    },
-  },
-  {
-    name: "LastName",
-    label: "Last Name",
-    options: {
-      filter: false,
-      sort: false,
-      // display: false
-    },
-  },
-  {
-    name: "Email",
-    label: "Email",
-    options: {
-      filter: false,
-      sort: false,
-    },
-  },
-  {
-    name: "Country",
-    label: "Country",
-    options: {
-      filter: true,
-      sort: false,
-    },
-  },
-  {
-    name: "Phone",
-    label: "Phone",
-    options: {
-      filter: true,
-      sort: false,
-    },
-  },
-  {
-    name: "created_at",
-    label: "Last Payment date",
-    options: {
-      filter: true,
-      sort: false,
-      customBodyRender: (value) => (
-        <>{moment(value).format("DD-MM-YYYY HH:MM:SS")} </>
-      ),
-    },
-  },
-  {
-    name: "actions",
-    label: "Actions",
-    options: {
-      filter: true,
-      sort: false,
-      customBodyRender: (value) => <ViewButton>View</ViewButton>,
-    },
-  },
-];
 
 const options = {
   filterType: "checkbox",
@@ -92,10 +29,85 @@ const options = {
   print: false,
 };
 
-function EnhancedTable() {
+function AccountsTable() {
   const [data, setData] = React.useState(accounts);
   const [error, setError] = useState(false);
   useEffect(() => {}, []);
+  const history = useHistory();
+  const columns = [
+    {
+      name: "FirstName",
+      label: "First Name",
+      options: {
+        filter: false,
+        sort: false,
+        // display: false
+      },
+    },
+    {
+      name: "LastName",
+      label: "Last Name",
+      options: {
+        filter: false,
+        sort: false,
+        // display: false
+      },
+    },
+    {
+      name: "Email",
+      label: "Email",
+      options: {
+        filter: false,
+        sort: false,
+      },
+    },
+    {
+      name: "Country",
+      label: "Country",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "Phone",
+      label: "Phone",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "created_at",
+      label: "Last Payment date",
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: (value) => (
+          <>{moment(value).format("DD-MM-YYYY HH:MM:SS")} </>
+        ),
+      },
+    },
+    {
+      name: "actions",
+      label: "Actions",
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: (value) => (
+          <ViewButton
+            onClick={() =>
+              history.push("/payment/accounts/acountdetails", {
+                customer: value,
+              })
+            }
+          >
+            View
+          </ViewButton>
+        ),
+      },
+    },
+  ];
   if (error) {
     return <ConnectivityError />;
   }
@@ -106,7 +118,7 @@ function Payments() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const keycloak = useSelector((state) => state.userReducer.keycloak);
   const dispatch = useDispatch();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
   useEffect(() => {
     if (keycloak && keycloak.isTokenExpired()) {
       //refresh token here and set in store
@@ -133,7 +145,7 @@ function Payments() {
         <Divider my={6} />
         <Grid container spacing={6}>
           <Grid item xs={12}>
-            <EnhancedTable />
+            <AccountsTable />
             <SideDrawer
               open={openDrawer}
               close={() => setOpenDrawer(false)}
