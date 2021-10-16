@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 function ConnectivityError() {
   const classes = useStyles();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
   return (
     <>
       <Box className={classes.central}>
