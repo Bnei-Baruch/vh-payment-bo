@@ -1,5 +1,17 @@
 import React from "react";
-
-export default function PaymentsDrawer() {
-  return <div></div>;
+import { Drawer } from "@material-ui/core";
+import styled from "styled-components";
+const DrawerContainer = styled.div`
+  min-width: 400px;
+`
+export default function PaymentsDrawer({ open, close }) {
+  return (
+    <div>
+      <Drawer anchor={"right"} open={open} onClose={close}>
+        <DrawerContainer>
+          Payments Drawer
+        </DrawerContainer>
+      </Drawer>
+    </div>
+  );
 }

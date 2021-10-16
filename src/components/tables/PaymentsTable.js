@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import MUIDataTable from "mui-datatables";
 import ConnectivityError from "../../pages/ConnectivityError";
 
-export default function PaymentsTable({ payments, tableHeader }) {
+export default function PaymentsTable({ payments, openDrawer, tableHeader }) {
   const { t } = useTranslation();
   const [data, setData] = useState();
   const [error, setError] = useState(false);
@@ -105,7 +105,7 @@ export default function PaymentsTable({ payments, tableHeader }) {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: () => <ViewButton>{t("common.view")}</ViewButton>,
+        customBodyRender: () => <ViewButton onClick={() => openDrawer()}>{t("common.view")}</ViewButton>,
       },
     },
   ];

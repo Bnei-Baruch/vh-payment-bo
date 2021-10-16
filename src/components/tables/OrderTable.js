@@ -16,7 +16,7 @@ const options = {
   pagination: false,
   responsive: "scroll",
 };
-export default function OrderTable({ orders, tableHeader }) {
+export default function OrderTable({ orders, openDrawer, tableHeader }) {
   const { t } = useTranslation();
   const [data, setData] = useState();
   const [error, setError] = useState(false);
@@ -106,7 +106,7 @@ export default function OrderTable({ orders, tableHeader }) {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: () => <ViewButton>{t("common.view")}</ViewButton>,
+        customBodyRender: () => <ViewButton onClick={() => openDrawer()}>{t("common.view")}</ViewButton>,
       },
     },
   ];

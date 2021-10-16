@@ -25,6 +25,8 @@ import Stats from "../components/Stats";
 import StatsImage from "../asset/img/totalsubscription.svg";
 import FailedPaymentImage from "../asset/img/failedPayments.svg";
 import RevenueImage from "../asset/img/revenue.svg";
+import PaymentsDrawer from '../components/Drawers/PaymentsDrawer';
+import OrdersDrawer from '../components/Drawers/OrdersDrawer';
 
 const Divider = styled(MuiDivider)(spacing);
 const Typography = styled(MuiTypography)(spacing);
@@ -34,6 +36,8 @@ function Dashboard() {
   const keycloak = useSelector((state) => state.userReducer.keycloak);
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
+  const [showOrderDrawer, setShowOrderDrawer] = useState(false);
+  const [showPaymentsDrawer, setShowPaymentsDrawer] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     if (keycloak && keycloak.isTokenExpired()) {
@@ -87,8 +91,10 @@ function Dashboard() {
             <Box css={boxStyle}>
               <OrderTable
                 orders={orders}
+                openDrawer={() => setShowOrderDrawer(true)}
                 tableHeader={t("dashboard.topOrders")}
               />
+              <OrdersDrawer open={showOrderDrawer} close={() => setShowOrderDrawer(false)} />
             </Box>
           </Grid>
         </Grid>
@@ -97,8 +103,10 @@ function Dashboard() {
             <Box css={boxStyle}>
               <PaymentsTable
                 payments={payments}
+                openDrawer={() => setShowPaymentsDrawer(true)}
                 tableHeader={t("dashboard.lastpayment")}
               />
+              <PaymentsDrawer open={showPaymentsDrawer} close={() => setShowPaymentsDrawer(false)} />
             </Box>
           </Grid>
         </Grid>
