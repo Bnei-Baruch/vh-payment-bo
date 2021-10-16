@@ -86,10 +86,14 @@ export default function PaymentsTable({ payments, tableHeader }) {
           return (
             <>
               {value === "success" && (
-                <SucessfulPayment>{t("common.success")}  </SucessfulPayment>
+                <SucessfulPayment>{t("common.success")} </SucessfulPayment>
               )}
-              {value === "pending" && <PendingPayment>{t("common.pending")} </PendingPayment>}
-              {value === "failed" && <FailedPayment>{t("common.failed")} </FailedPayment>}
+              {value === "pending" && (
+                <PendingPayment>{t("common.pending")} </PendingPayment>
+              )}
+              {value === "failed" && (
+                <FailedPayment>{t("common.failed")} </FailedPayment>
+              )}
             </>
           );
         },
