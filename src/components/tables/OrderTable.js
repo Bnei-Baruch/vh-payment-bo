@@ -17,13 +17,17 @@ const options = {
   responsive: "scroll",
 };
 export default function OrderTable({ orders, tableHeader }) {
-  const { t, i18n } = useTranslation("common");
-  console.log(i18n);
+  const { t } = useTranslation();
   const [data, setData] = useState();
   const [error, setError] = useState(false);
   useEffect(() => {
     if (orders) {
-      setData(orders);
+      const updatedOrder = orders.map((order) => {
+        order.FullName = `${order.FirstName} ${order.LastName}`;
+        order.amount = `${order.Amount} ${order.Currency} `;
+        return order;
+      });
+      setData(updatedOrder);
     } else {
       setError(true);
     }

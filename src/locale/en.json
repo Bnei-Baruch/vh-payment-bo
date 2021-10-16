@@ -18,6 +18,7 @@
     "amount": "Amount",
     "status": "Status",
     "paid": "Paid",
+    "success": "Success",
     "pending": "Pending",
     "failed": "Failed",
     "view": "View",
@@ -35,6 +36,11 @@
     "chargeType": "Charge Type"
   },
   "dashboard": {
-    "lastpayment": "Last 50 Payments"
+    "lastpayment": "Last 50 Payments",
+    "totalSubscription": "Latest Subscription (Past 7 days)",
+    "totalPayments": "Latest Payments (Past 7 days)",
+    "revenue": "Revenue",
+    "topOrders": "Top 50 Orders",
+    "topPayments": "Top 50 Payments"
   }
 }

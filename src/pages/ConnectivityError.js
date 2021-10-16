@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     height: "100%",
     display: "grid",
+    padding: '20px'
   },
   container: {
     marginTop: "auto",

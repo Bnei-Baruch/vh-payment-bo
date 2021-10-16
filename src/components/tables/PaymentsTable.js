@@ -78,7 +78,7 @@ export default function PaymentsTable({ payments, tableHeader }) {
     },
     {
       name: "PaymentStatus",
-      label: t("comon.status"),
+      label: t("common.status"),
       options: {
         filter: true,
         sort: false,
@@ -86,10 +86,10 @@ export default function PaymentsTable({ payments, tableHeader }) {
           return (
             <>
               {value === "success" && (
-                <SucessfulPayment>Success </SucessfulPayment>
+                <SucessfulPayment>{t("common.success")}  </SucessfulPayment>
               )}
-              {value === "pending" && <PendingPayment>Pending </PendingPayment>}
-              {value === "failed" && <FailedPayment>Failed </FailedPayment>}
+              {value === "pending" && <PendingPayment>{t("common.pending")} </PendingPayment>}
+              {value === "failed" && <FailedPayment>{t("common.failed")} </FailedPayment>}
             </>
           );
         },
@@ -107,9 +107,11 @@ export default function PaymentsTable({ payments, tableHeader }) {
   ];
 
   const options = {
-    filterType: "checkbox",
+    selectableRows: false,
     download: false,
     print: false,
+    pagination: false,
+    responsive: "scroll",
   };
   if (error) {
     return <ConnectivityError />;
