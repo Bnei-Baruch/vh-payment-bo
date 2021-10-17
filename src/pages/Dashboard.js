@@ -40,6 +40,10 @@ function Dashboard() {
   const [showPaymentsDrawer, setShowPaymentsDrawer] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
+    if (false) {
+      setData([]);
+      setError(false);
+    }
     if (keycloak && keycloak.isTokenExpired()) {
       //refresh token here and set in store
       keycloak.updateToken(30).success(() => {

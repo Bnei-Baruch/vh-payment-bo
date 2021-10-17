@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MUIDataTable from "mui-datatables";
 import AccountsComponent from "./DrawerComponents/AccountsComponent";
-
+import { useTranslation } from "react-i18next";
 const DrawerContainer = styled.div`
   max-width: 35vw;
   min-width: 35vw;
@@ -106,6 +106,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function TabView() {
+  const { t } = useTranslation();
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -144,17 +145,17 @@ function TabView() {
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >
-                  <Typography className={classes.heading}>Payment Information</Typography>
+                  <Typography className={classes.heading}>{t('payments.paymentInformation')}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography>
                     <MUIDataTable
                       columns={
                         [{
-                          label: 'Information',
+                          label: t('orders.information'),
                         },
                         {
-                          label: 'Value',
+                          label: t('payments.value'),
                         }]
                       }
                       data={[
@@ -173,29 +174,29 @@ function TabView() {
                 variant="contained"
                 color="primary"
               >
-                Cancel
+                {t('orders.cancel')}
               </Button>
               <Button
                 variant="contained"
                 color="primary"
               >
-                Refund
+                {t('payments.refund')}
               </Button>
               <Button
                 variant="contained"
                 color="primary"
               >
-                Retry
+                {t('payments.retry')}
               </Button>
             </ActionContainer>
           </Grid>
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        {t('common.notAvailable')}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        {t('common.notAvailable')}
       </TabPanel>
     </div>
   );

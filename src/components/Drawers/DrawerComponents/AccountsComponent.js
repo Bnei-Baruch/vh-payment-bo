@@ -53,7 +53,7 @@ export default function AccountsComponent() {
                             <Grid item xs={6}>
                                 <Grid container>
                                     <IconsContainer item xs={3}>
-                                        <img src={NameImage} />
+                                        <img src={NameImage} alt={'logo'} />
                                     </IconsContainer>
                                     <Grid item xs={9}>
                                         <DetailContainer>
@@ -66,7 +66,7 @@ export default function AccountsComponent() {
                             <Grid item xs={6}>
                                 <Grid container>
                                     <IconsContainer item xs={3}>
-                                        <img src={EmailImage} />
+                                        <img src={EmailImage} alt={'logo'} />
                                     </IconsContainer>
                                     <Grid item xs={9}>
                                         <DetailContainer>
@@ -81,7 +81,7 @@ export default function AccountsComponent() {
                             <Grid item xs={6}>
                                 <Grid container>
                                     <IconsContainer item xs={3}>
-                                        <img src={NumberImage} />
+                                        <img src={NumberImage} alt={'logo'} />
                                     </IconsContainer>
                                     <Grid item xs={9}>
                                         <DetailContainer>
@@ -94,7 +94,7 @@ export default function AccountsComponent() {
                             <Grid item xs={6}>
                                 <Grid container>
                                     <IconsContainer item xs={3}>
-                                        <img src={CountryImage} />
+                                        <img src={CountryImage} alt={'logo'} />
                                     </IconsContainer>
                                     <Grid item xs={9}>
                                         <DetailContainer>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { withTheme } from "styled-components";
-import moment from "moment";
 import Helmet from "react-helmet";
-import MUIDataTable from "mui-datatables";
 import {
   Grid,
   Divider as MuiDivider,
@@ -18,11 +16,7 @@ import ConnectivityError from "./ConnectivityError";
 import LoadingScreen from "./LoadingScreen";
 import { useTranslation } from "react-i18next";
 import {
-  boxStyle,
-  FailedPayment,
-  PendingPayment,
-  SucessfulPayment,
-  ViewButton,
+  boxStyle
 } from "../stylesheet/commonstyles";
 import OrderTable from "../components/tables/OrderTable";
 
@@ -36,6 +30,10 @@ function AccountsDetailView() {
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
+    if (false) {
+      setData([]);
+      setError(false);
+    }
     if (keycloak && keycloak.isTokenExpired()) {
       keycloak.updateToken(30).success(() => {
         dispatch(setToken(keycloak.token));
@@ -107,7 +105,7 @@ function AccountsDetailView() {
         <Grid justify="space-between" container spacing={6}>
           <Grid item md={12}>
             <Box css={boxStyle}>
-              <OrderTable />
+              <OrderTable orders={orders} />
             </Box>
           </Grid>
         </Grid>

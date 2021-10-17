@@ -31,7 +31,7 @@ export default function OrderTable({ orders, openDrawer, tableHeader }) {
     } else {
       setError(true);
     }
-  }, []);
+  }, [orders]);
   const columns = [
     {
       name: "created_at",

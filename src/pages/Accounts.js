@@ -31,8 +31,13 @@ const options = {
 
 function AccountsTable() {
   const [data, setData] = React.useState(accounts);
-  const [error, setError] = useState(false);
-  useEffect(() => {}, []);
+  const [error, payments] = useState(false);
+  useEffect(() => {
+    if (false) {
+      setData(accounts);
+      payments(false);
+    }
+  }, []);
   const history = useHistory();
   const columns = [
     {

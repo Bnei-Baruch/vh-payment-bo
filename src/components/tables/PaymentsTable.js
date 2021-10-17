@@ -22,7 +22,7 @@ export default function PaymentsTable({ payments, openDrawer, tableHeader }) {
     } else {
       setError(true);
     }
-  }, []);
+  }, [payments]);
   const columns = [
     {
       name: "created_at",

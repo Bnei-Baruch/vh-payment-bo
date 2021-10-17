@@ -24,7 +24,8 @@
     "view": "View",
     "connectivityError": "Connectivity Error",
     "welcome": "Welcome",
-    "actions": "Action"
+    "actions": "Action",
+    "notAvailable": "Not Available"
   },
   "accounts": {
     "accountsDetails": "Account Detail"
@@ -33,7 +34,10 @@
     "paramx": "ParamX",
     "accountName": "Account Name",
     "creditCard": "Credit Card",
-    "chargeType": "Charge Type"
+    "chargeType": "Charge Type",
+    "paymentInformation": "Payment Information",
+    "refund": "Refund",
+    "retry": "Retry"
   },
   "dashboard": {
     "lastpayment": "Last 50 Payments",
@@ -47,6 +51,9 @@
     "orderInformation": "Order Information",
     "information": "Information",
     "value": "Value",
-    "paymentInformation": "Payment Information"
+    "paymentInformation": "Payment Information",
+    "pause": "Pause",
+    "modify": "Modify",
+    "cancel": "Cancel"
   }
 }

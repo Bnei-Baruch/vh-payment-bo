@@ -25,6 +25,10 @@ function Default() {
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
+    if (false) {
+      setData([]);
+      setError(true);
+    }
     if (keycloak && keycloak.isTokenExpired()) {
       //refresh token here and set in store
       keycloak.updateToken(30).success((token) => {
