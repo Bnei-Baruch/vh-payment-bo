@@ -15,9 +15,7 @@ import { orders } from "../mockdata/latestorder";
 import ConnectivityError from "./ConnectivityError";
 import LoadingScreen from "./LoadingScreen";
 import { useTranslation } from "react-i18next";
-import {
-  boxStyle
-} from "../stylesheet/commonstyles";
+import { boxStyle } from "../stylesheet/commonstyles";
 import OrderTable from "../components/tables/OrderTable";
 
 const Divider = styled(MuiDivider)(spacing);

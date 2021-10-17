@@ -105,7 +105,11 @@ export default function PaymentsTable({ payments, openDrawer, tableHeader }) {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: () => <ViewButton onClick={() => openDrawer()}>{t("common.view")}</ViewButton>,
+        customBodyRender: () => (
+          <ViewButton onClick={() => openDrawer()}>
+            {t("common.view")}
+          </ViewButton>
+        ),
       },
     },
   ];

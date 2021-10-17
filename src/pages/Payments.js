@@ -45,7 +45,10 @@ function Payments() {
         <Divider my={6} />
         <Grid container spacing={6}>
           <Grid item xs={12}>
-            <PaymentsTable payments={payments} openDrawer={() => setOpenDrawer(true)} />
+            <PaymentsTable
+              payments={payments}
+              openDrawer={() => setOpenDrawer(true)}
+            />
             <PaymentsDrawer
               open={openDrawer}
               close={() => setOpenDrawer(false)}

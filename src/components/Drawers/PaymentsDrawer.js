@@ -1,17 +1,17 @@
 import React from "react";
 import { Button, Drawer, Grid } from "@material-ui/core";
 import styled from "styled-components";
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Box from "@material-ui/core/Box";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MUIDataTable from "mui-datatables";
 import AccountsComponent from "./DrawerComponents/AccountsComponent";
 import { useTranslation } from "react-i18next";
@@ -44,7 +44,6 @@ export default function PaymentsDrawer({ open, close }) {
   );
 }
 
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -74,7 +73,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
@@ -82,27 +81,28 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    '& .MuiAppBar-colorPrimary': {
+    "& .MuiAppBar-colorPrimary": {
       backgroundColor: "#fff !important",
-      color: "#000"
+      color: "#000",
     },
-    '& .Mui-selected': {
-      color: "#1976d2"
+    "& .Mui-selected": {
+      color: "#1976d2",
     },
-    '& .MuiAccordion-rounded': {
-      backgroundColor: "#f3f2f2 !important"
+    "& .MuiAccordion-rounded": {
+      backgroundColor: "#f3f2f2 !important",
     },
-    '& .MuiAccordionDetails-root .MuiTypography-body1': {
-      width: '100%'
+    "& .MuiAccordionDetails-root .MuiTypography-body1": {
+      width: "100%",
     },
-    '& .MuiPaper-root.MUIDataTable-paper-30, .MUIDataTableHeadCell-fixedHeader-75': {
-      backgroundColor: 'transparent !important'
-    }
+    "& .MuiPaper-root.MUIDataTable-paper-30, .MUIDataTableHeadCell-fixedHeader-75":
+      {
+        backgroundColor: "transparent !important",
+      },
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
-  }
+  },
 }));
 
 function TabView() {
@@ -122,7 +122,7 @@ function TabView() {
     responsive: "scroll",
     search: false,
     filter: false,
-    viewColumns: false
+    viewColumns: false,
   };
 
   return (
@@ -145,23 +145,25 @@ function TabView() {
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >
-                  <Typography className={classes.heading}>{t('payments.paymentInformation')}</Typography>
+                  <Typography className={classes.heading}>
+                    {t("payments.paymentInformation")}
+                  </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography>
                     <MUIDataTable
-                      columns={
-                        [{
-                          label: t('orders.information'),
+                      columns={[
+                        {
+                          label: t("orders.information"),
                         },
                         {
-                          label: t('payments.value'),
-                        }]
-                      }
+                          label: t("payments.value"),
+                        },
+                      ]}
                       data={[
-                        ['Created At', '22-04-2020'],
-                        ['Created At', '22-04-2020'],
-                        ['Created At', '22-04-2020'],
+                        ["Created At", "22-04-2020"],
+                        ["Created At", "22-04-2020"],
+                        ["Created At", "22-04-2020"],
                       ]}
                       options={options}
                     />
@@ -170,33 +172,24 @@ function TabView() {
               </Accordion>
             </AccordinContainer>
             <ActionContainer item xs={12}>
-              <Button
-                variant="contained"
-                color="primary"
-              >
-                {t('orders.cancel')}
+              <Button variant="contained" color="primary">
+                {t("orders.cancel")}
               </Button>
-              <Button
-                variant="contained"
-                color="primary"
-              >
-                {t('payments.refund')}
+              <Button variant="contained" color="primary">
+                {t("payments.refund")}
               </Button>
-              <Button
-                variant="contained"
-                color="primary"
-              >
-                {t('payments.retry')}
+              <Button variant="contained" color="primary">
+                {t("payments.retry")}
               </Button>
             </ActionContainer>
           </Grid>
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {t('common.notAvailable')}
+        {t("common.notAvailable")}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {t('common.notAvailable')}
+        {t("common.notAvailable")}
       </TabPanel>
     </div>
   );

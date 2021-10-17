@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import {
   Card as MuiCard,
-  CardContent as MuiCardContent
+  CardContent as MuiCardContent,
 } from "@material-ui/core";
 
 import { spacing } from "@material-ui/system";

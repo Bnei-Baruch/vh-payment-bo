@@ -45,8 +45,14 @@ function Orders() {
         <Divider my={6} />
         <Grid container spacing={6}>
           <Grid item xs={12}>
-            <OrderTable orders={orders} openDrawer={() => setOpenDrawer(true)} />
-            <OrdersDrawer open={openDrawer} close={() => setOpenDrawer(false)} />
+            <OrderTable
+              orders={orders}
+              openDrawer={() => setOpenDrawer(true)}
+            />
+            <OrdersDrawer
+              open={openDrawer}
+              close={() => setOpenDrawer(false)}
+            />
           </Grid>
         </Grid>
       </React.Fragment>

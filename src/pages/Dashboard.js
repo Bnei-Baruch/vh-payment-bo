@@ -25,8 +25,8 @@ import Stats from "../components/Stats";
 import StatsImage from "../asset/img/totalsubscription.svg";
 import FailedPaymentImage from "../asset/img/failedPayments.svg";
 import RevenueImage from "../asset/img/revenue.svg";
-import PaymentsDrawer from '../components/Drawers/PaymentsDrawer';
-import OrdersDrawer from '../components/Drawers/OrdersDrawer';
+import PaymentsDrawer from "../components/Drawers/PaymentsDrawer";
+import OrdersDrawer from "../components/Drawers/OrdersDrawer";
 
 const Divider = styled(MuiDivider)(spacing);
 const Typography = styled(MuiTypography)(spacing);
@@ -98,7 +98,10 @@ function Dashboard() {
                 openDrawer={() => setShowOrderDrawer(true)}
                 tableHeader={t("dashboard.topOrders")}
               />
-              <OrdersDrawer open={showOrderDrawer} close={() => setShowOrderDrawer(false)} />
+              <OrdersDrawer
+                open={showOrderDrawer}
+                close={() => setShowOrderDrawer(false)}
+              />
             </Box>
           </Grid>
         </Grid>
@@ -110,7 +113,10 @@ function Dashboard() {
                 openDrawer={() => setShowPaymentsDrawer(true)}
                 tableHeader={t("dashboard.lastpayment")}
               />
-              <PaymentsDrawer open={showPaymentsDrawer} close={() => setShowPaymentsDrawer(false)} />
+              <PaymentsDrawer
+                open={showPaymentsDrawer}
+                close={() => setShowPaymentsDrawer(false)}
+              />
             </Box>
           </Grid>
         </Grid>
