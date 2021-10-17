@@ -42,5 +42,11 @@
     "revenue": "Revenue",
     "topOrders": "Top 50 Orders",
     "topPayments": "Top 50 Payments"
+  },
+  "orders": {
+    "orderInformation": "Order Information",
+    "information": "Information",
+    "value": "Value",
+    "paymentInformation": "Payment Information"
   }
 }
