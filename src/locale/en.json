@@ -28,7 +28,12 @@
     "notAvailable": "Not Available"
   },
   "accounts": {
-    "accountsDetails": "Account Detail"
+    "accountsDetails": "Account Detail",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "Country": "Country",
+    "Phone": "Phone",
+    "lastPaymentDate": "Last Payment date"
   },
   "payments": {
     "paramx": "ParamX",

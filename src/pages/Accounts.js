@@ -30,6 +30,7 @@ const options = {
 };
 
 function AccountsTable() {
+  const { t } = useTranslation();
   const [data, setData] = React.useState(accounts);
   const [error, payments] = useState(false);
   useEffect(() => {
@@ -42,7 +43,7 @@ function AccountsTable() {
   const columns = [
     {
       name: "FirstName",
-      label: "First Name",
+      label: t('accounts.firstName'),
       options: {
         filter: false,
         sort: false,
@@ -51,7 +52,7 @@ function AccountsTable() {
     },
     {
       name: "LastName",
-      label: "Last Name",
+      label: t('accounts.lastName'),
       options: {
         filter: false,
         sort: false,
@@ -60,7 +61,7 @@ function AccountsTable() {
     },
     {
       name: "Email",
-      label: "Email",
+      label: t('common.email'),
       options: {
         filter: false,
         sort: false,
@@ -68,7 +69,7 @@ function AccountsTable() {
     },
     {
       name: "Country",
-      label: "Country",
+      label: t('accounts.Country'),
       options: {
         filter: true,
         sort: false,
@@ -76,7 +77,7 @@ function AccountsTable() {
     },
     {
       name: "Phone",
-      label: "Phone",
+      label: t('accounts.Phone'),
       options: {
         filter: true,
         sort: false,
@@ -84,7 +85,7 @@ function AccountsTable() {
     },
     {
       name: "created_at",
-      label: "Last Payment date",
+      label: t('accounts.lastPaymentDate'),
       options: {
         filter: true,
         sort: false,
@@ -95,7 +96,7 @@ function AccountsTable() {
     },
     {
       name: "actions",
-      label: "Actions",
+      label: t('common.actions'),
       options: {
         filter: true,
         sort: false,
@@ -107,7 +108,7 @@ function AccountsTable() {
               })
             }
           >
-            View
+            {t('common.view')}
           </ViewButton>
         ),
       },
