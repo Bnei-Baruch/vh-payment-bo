@@ -43,7 +43,7 @@ function AccountsTable() {
   const columns = [
     {
       name: "FirstName",
-      label: t('accounts.firstName'),
+      label: t("accounts.firstName"),
       options: {
         filter: false,
         sort: false,
@@ -52,7 +52,7 @@ function AccountsTable() {
     },
     {
       name: "LastName",
-      label: t('accounts.lastName'),
+      label: t("accounts.lastName"),
       options: {
         filter: false,
         sort: false,
@@ -61,7 +61,7 @@ function AccountsTable() {
     },
     {
       name: "Email",
-      label: t('common.email'),
+      label: t("common.email"),
       options: {
         filter: false,
         sort: false,
@@ -69,7 +69,7 @@ function AccountsTable() {
     },
     {
       name: "Country",
-      label: t('accounts.Country'),
+      label: t("accounts.Country"),
       options: {
         filter: true,
         sort: false,
@@ -77,7 +77,7 @@ function AccountsTable() {
     },
     {
       name: "Phone",
-      label: t('accounts.Phone'),
+      label: t("accounts.Phone"),
       options: {
         filter: true,
         sort: false,
@@ -85,7 +85,7 @@ function AccountsTable() {
     },
     {
       name: "created_at",
-      label: t('accounts.lastPaymentDate'),
+      label: t("accounts.lastPaymentDate"),
       options: {
         filter: true,
         sort: false,
@@ -96,7 +96,7 @@ function AccountsTable() {
     },
     {
       name: "actions",
-      label: t('common.actions'),
+      label: t("common.actions"),
       options: {
         filter: true,
         sort: false,
@@ -108,7 +108,7 @@ function AccountsTable() {
               })
             }
           >
-            {t('common.view')}
+            {t("common.view")}
           </ViewButton>
         ),
       },

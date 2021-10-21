@@ -17,7 +17,7 @@ import LoadingScreen from "./LoadingScreen";
 import { useTranslation } from "react-i18next";
 import { boxStyle } from "../stylesheet/commonstyles";
 import OrderTable from "../components/tables/OrderTable";
-import { AccountsSection } from '../components/Drawers/DrawerComponents/AccountsComponent'
+import { AccountsSection } from "../components/Drawers/DrawerComponents/AccountsComponent";
 import OrdersDrawer from "../components/Drawers/OrdersDrawer";
 import { payments } from "../mockdata/payments";
 import PaymentsDrawer from "../components/Drawers/PaymentsDrawer";
@@ -28,11 +28,11 @@ const Typography = styled(MuiTypography)(spacing);
 
 const DataGrid = styled(Grid)`
   padding: 15px 0px;
-  >div {
-    min-height : auto !important;
-    padding : 15px;
+  > div {
+    min-height: auto !important;
+    padding: 15px;
   }
-  >div>div>div {
+  > div > div > div {
     margin: 15px 0px;
   }
 `;
@@ -62,7 +62,7 @@ function AccountsDetailView() {
   if (data) {
     return (
       <React.Fragment>
-        <Helmet title={t('common.accountsDetails')} />
+        <Helmet title={t("common.accountsDetails")} />
         <Grid justify="space-between" container spacing={6}>
           <Grid item>
             <Typography variant="h3" display="inline">
