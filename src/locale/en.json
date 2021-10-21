@@ -33,7 +33,9 @@
     "lastName": "Last Name",
     "Country": "Country",
     "Phone": "Phone",
-    "lastPaymentDate": "Last Payment date"
+    "lastPaymentDate": "Last Payment date",
+    "userOrder": "Users Orders",
+    "usersPayments": "Users Payments"
   },
   "payments": {
     "paramx": "ParamX",
@@ -42,7 +44,8 @@
     "chargeType": "Charge Type",
     "paymentInformation": "Payment Information",
     "refund": "Refund",
-    "retry": "Retry"
+    "retry": "Retry",
+    "value": "value"
   },
   "dashboard": {
     "lastpayment": "Last 50 Payments",

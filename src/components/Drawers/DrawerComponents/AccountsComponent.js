@@ -52,65 +52,69 @@ export default function AccountsComponent() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <Grid container>
-              <Grid item xs={6}>
-                <Grid container>
-                  <IconsContainer item xs={3}>
-                    <img src={NameImage} alt={"logo"} />
-                  </IconsContainer>
-                  <Grid item xs={9}>
-                    <DetailContainer>
-                      <div>Full Name</div>
-                      <div>Albert</div>
-                    </DetailContainer>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={6}>
-                <Grid container>
-                  <IconsContainer item xs={3}>
-                    <img src={EmailImage} alt={"logo"} />
-                  </IconsContainer>
-                  <Grid item xs={9}>
-                    <DetailContainer>
-                      <div>Email</div>
-                      <div>test@abc.com</div>
-                    </DetailContainer>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={6}>
-                <Grid container>
-                  <IconsContainer item xs={3}>
-                    <img src={NumberImage} alt={"logo"} />
-                  </IconsContainer>
-                  <Grid item xs={9}>
-                    <DetailContainer>
-                      <div>Phone Number</div>
-                      <div>+9999999999</div>
-                    </DetailContainer>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={6}>
-                <Grid container>
-                  <IconsContainer item xs={3}>
-                    <img src={CountryImage} alt={"logo"} />
-                  </IconsContainer>
-                  <Grid item xs={9}>
-                    <DetailContainer>
-                      <div>Country</div>
-                      <div>USA</div>
-                    </DetailContainer>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
+            <AccountsSection />
           </Typography>
         </AccordionDetails>
       </Accordion>
     </AccordinContainer>
   );
+}
+
+export const AccountsSection = () => {
+  return <> <Grid container>
+    <Grid item xs={6}>
+      <Grid container>
+        <IconsContainer item xs={3}>
+          <img src={NameImage} alt={"logo"} />
+        </IconsContainer>
+        <Grid item xs={9}>
+          <DetailContainer>
+            <div>Full Name</div>
+            <div>Albert</div>
+          </DetailContainer>
+        </Grid>
+      </Grid>
+    </Grid>
+    <Grid item xs={6}>
+      <Grid container>
+        <IconsContainer item xs={3}>
+          <img src={EmailImage} alt={"logo"} />
+        </IconsContainer>
+        <Grid item xs={9}>
+          <DetailContainer>
+            <div>Email</div>
+            <div>test@abc.com</div>
+          </DetailContainer>
+        </Grid>
+      </Grid>
+    </Grid>
+  </Grid>
+    <Grid container>
+      <Grid item xs={6}>
+        <Grid container>
+          <IconsContainer item xs={3}>
+            <img src={NumberImage} alt={"logo"} />
+          </IconsContainer>
+          <Grid item xs={9}>
+            <DetailContainer>
+              <div>Phone Number</div>
+              <div>+9999999999</div>
+            </DetailContainer>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item xs={6}>
+        <Grid container>
+          <IconsContainer item xs={3}>
+            <img src={CountryImage} alt={"logo"} />
+          </IconsContainer>
+          <Grid item xs={9}>
+            <DetailContainer>
+              <div>Country</div>
+              <div>USA</div>
+            </DetailContainer>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid> </>
 }

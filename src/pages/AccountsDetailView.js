@@ -17,15 +17,33 @@ import LoadingScreen from "./LoadingScreen";
 import { useTranslation } from "react-i18next";
 import { boxStyle } from "../stylesheet/commonstyles";
 import OrderTable from "../components/tables/OrderTable";
+import { AccountsSection } from '../components/Drawers/DrawerComponents/AccountsComponent'
+import OrdersDrawer from "../components/Drawers/OrdersDrawer";
+import { payments } from "../mockdata/payments";
+import PaymentsDrawer from "../components/Drawers/PaymentsDrawer";
+import PaymentsTable from "../components/tables/PaymentsTable";
 
 const Divider = styled(MuiDivider)(spacing);
 const Typography = styled(MuiTypography)(spacing);
+
+const DataGrid = styled(Grid)`
+  padding: 15px 0px;
+  >div {
+    min-height : auto !important;
+    padding : 15px;
+  }
+  >div>div>div {
+    margin: 15px 0px;
+  }
+`;
 
 function AccountsDetailView() {
   const { t } = useTranslation();
   const keycloak = useSelector((state) => state.userReducer.keycloak);
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
+  const [showOrderDrawer, setShowOrderDrawer] = useState(false);
+  const [showPaymentsDrawer, setShowPaymentsDrawer] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     if (false) {
@@ -44,7 +62,7 @@ function AccountsDetailView() {
   if (data) {
     return (
       <React.Fragment>
-        <Helmet title="Default Dashboard" />
+        <Helmet title={t('common.accountsDetails')} />
         <Grid justify="space-between" container spacing={6}>
           <Grid item>
             <Typography variant="h3" display="inline">
@@ -54,63 +72,38 @@ function AccountsDetailView() {
         </Grid>
 
         <Divider my={6} />
+        <DataGrid>
+          <Box css={boxStyle}>
+            <AccountsSection />
+          </Box>
+        </DataGrid>
         <Grid justify="space-between" container spacing={6}>
-          <Grid item md={6}>
+          <Grid item md={12}>
             <Box css={boxStyle}>
-              <Grid item md={12}>
-                <Grid item md={6}>
-                  First Name
-                </Grid>
-                <Grid item md={6}></Grid>
-              </Grid>
-              <Grid item md={12}>
-                <Grid item md={6}>
-                  Last Name
-                </Grid>
-                <Grid item md={6}></Grid>
-              </Grid>
-              <Grid item md={12}>
-                <Grid item md={6}>
-                  Email
-                </Grid>
-                <Grid item md={6}></Grid>
-              </Grid>
-            </Box>
-          </Grid>
-          <Grid item md={6}>
-            <Box css={boxStyle}>
-              <Grid item md={12}>
-                <Grid item md={6}>
-                  Country
-                </Grid>
-                <Grid item md={6}></Grid>
-              </Grid>
-              <Grid item md={12}>
-                <Grid item md={6}>
-                  Phone
-                </Grid>
-                <Grid item md={6}></Grid>
-              </Grid>
-              <Grid item md={12}>
-                <Grid item md={6}>
-                  Last Payment
-                </Grid>
-                <Grid item md={6}></Grid>
-              </Grid>
+              <OrderTable
+                orders={orders}
+                openDrawer={() => setShowOrderDrawer(true)}
+                tableHeader={t("accounts.userOrder")}
+              />
+              <OrdersDrawer
+                open={showOrderDrawer}
+                close={() => setShowOrderDrawer(false)}
+              />
             </Box>
           </Grid>
         </Grid>
         <Grid justify="space-between" container spacing={6}>
           <Grid item md={12}>
             <Box css={boxStyle}>
-              <OrderTable orders={orders} />
-            </Box>
-          </Grid>
-        </Grid>
-        <Grid justify="space-between" container spacing={6}>
-          <Grid item md={12}>
-            <Box css={boxStyle}>
-              <OrderTable />
+              <PaymentsTable
+                payments={payments}
+                openDrawer={() => setShowPaymentsDrawer(true)}
+                tableHeader={t("accounts.usersPayments")}
+              />
+              <PaymentsDrawer
+                open={showPaymentsDrawer}
+                close={() => setShowPaymentsDrawer(false)}
+              />
             </Box>
           </Grid>
         </Grid>

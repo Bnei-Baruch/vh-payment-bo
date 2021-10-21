@@ -95,10 +95,11 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiAccordionDetails-root .MuiTypography-body1": {
       width: "100%",
     },
-    "& .MuiPaper-root.MUIDataTable-paper-30, .MUIDataTableHeadCell-fixedHeader-75":
-      {
-        backgroundColor: "transparent !important",
-      },
+    "& p.MuiTypography-root>div.MuiPaper-root.MuiPaper-rounded, th":
+    {
+      backgroundColor: "transparent !important",
+      boxShadow: 'none !important'
+    },
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
