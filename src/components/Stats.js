@@ -2,72 +2,51 @@ import React from "react";
 import styled from "styled-components";
 
 import {
-  Box,
   Card as MuiCard,
   CardContent as MuiCardContent,
-  Chip as MuiChip,
-  Typography as MuiTypography
 } from "@material-ui/core";
 
 import { spacing } from "@material-ui/system";
 
 const Card = styled(MuiCard)(spacing);
 
-const Typography = styled(MuiTypography)(spacing);
-
 const CardContent = styled(MuiCardContent)`
   position: relative;
+  display: flex;
 
   &:last-child {
-    padding-bottom: ${props => props.theme.spacing(4)}px;
+    padding-bottom: ${(props) => props.theme.spacing(4)}px;
   }
 `;
 
-const Chip = styled(MuiChip)`
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  height: 20px;
-  padding: 4px 0;
-  font-size: 85%;
-  background-color: ${props => props.color ? props.color : props.theme.palette.secondary.main};
-  color: ${props => props.theme.palette.common.white};
-  margin-bottom: ${props => props.theme.spacing(4)}px;
+const StatsContainer = styled.div`
+  display: grid;
+  align-item: center;
+  padding: 15px;
+  > div {
+    margin: auto 0;
+  }
 
-  span {
-    padding-left: ${props => props.theme.spacing(2)}px;
-    padding-right: ${props => props.theme.spacing(2)}px;
+  > div:first-child {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  > div:last-child {
+    color: #171832;
+    opacity: 0.6;
   }
 `;
 
-const Percentage = styled(MuiTypography)`
-  color: ${props => props.theme.palette.grey[600]};
-
-  span {
-    color: ${props => props.percentagecolor};
-    padding-right: 10px;
-    font-weight: ${props => props.theme.typography.fontWeightBold};
-  }
-`;
-
-function Stats({ title, amount, chip, percentageText, percentagecolor, percentText, tagColor }) {
+function Stats({ title, amount, image }) {
   return (
     <Card mb={3}>
       <CardContent>
-        <Typography variant="h6" mb={4}>
-          {title}
-        </Typography>
-        <Typography variant="h3" mb={3}>
-          <Box fontWeight="fontWeightRegular">{amount}</Box>
-        </Typography>
-        <Percentage
-          variant="subtitle1"
-          mb={4}
-          percentagecolor={percentagecolor}
-        >
-          <span>{percentageText}</span> {percentText}
-        </Percentage>
-        <Chip color={tagColor} label={chip} />
+        <img src={image} alt="stats" />
+        <StatsContainer>
+          <div>{amount}</div>
+          <div>{title}</div>
+        </StatsContainer>
       </CardContent>
     </Card>
   );

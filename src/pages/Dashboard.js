@@ -1,38 +1,58 @@
 import React, { useEffect, useState } from "react";
 import styled, { withTheme } from "styled-components";
-
-import Helmet from 'react-helmet';
+import Helmet from "react-helmet";
 
 import {
   Grid,
   Divider as MuiDivider,
-  Typography as MuiTypography
+  Typography as MuiTypography,
+  Box,
 } from "@material-ui/core";
 
 import { spacing } from "@material-ui/system";
-import LoadingScreen from "./LoadingScreen";
-import ConnectivityError from "./ConnectivityError";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/actions/userActions";
-const Divider = styled(MuiDivider)(spacing);
 
+import LoadingScreen from "./LoadingScreen";
+import ConnectivityError from "./ConnectivityError";
+import { orders } from "../mockdata/latestorder";
+import { payments } from "../mockdata/payments";
+import OrderTable from "../components/tables/OrderTable";
+import { boxStyle } from "../stylesheet/commonstyles";
+import PaymentsTable from "../components/tables/PaymentsTable";
+import { useTranslation } from "react-i18next";
+import Stats from "../components/Stats";
+import StatsImage from "../asset/img/totalsubscription.svg";
+import FailedPaymentImage from "../asset/img/failedPayments.svg";
+import RevenueImage from "../asset/img/revenue.svg";
+import PaymentsDrawer from "../components/Drawers/PaymentsDrawer";
+import OrdersDrawer from "../components/Drawers/OrdersDrawer";
+
+const Divider = styled(MuiDivider)(spacing);
 const Typography = styled(MuiTypography)(spacing);
-function Default() {
-  const keycloak = useSelector(state => state.userReducer.keycloak);
+
+function Dashboard() {
+  const { t } = useTranslation();
+  const keycloak = useSelector((state) => state.userReducer.keycloak);
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
+  const [showOrderDrawer, setShowOrderDrawer] = useState(false);
+  const [showPaymentsDrawer, setShowPaymentsDrawer] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
+    if (false) {
+      setData([]);
+      setError(false);
+    }
     if (keycloak && keycloak.isTokenExpired()) {
       //refresh token here and set in store
-      keycloak.updateToken(30).success((token) => {
+      keycloak.updateToken(30).success(() => {
         dispatch(setToken(keycloak.token));
-      })
+      });
     }
-
-  }, [])
+  }, [dispatch, keycloak]);
   if (error) {
-    return <ConnectivityError />
+    return <ConnectivityError />;
   }
   if (data) {
     return (
@@ -41,18 +61,70 @@ function Default() {
         <Grid justify="space-between" container spacing={6}>
           <Grid item>
             <Typography variant="h3" display="inline">
-              Welcome
+              {t("common.welcome")}
             </Typography>
           </Grid>
         </Grid>
 
         <Divider my={6} />
-        WIP
-      </React.Fragment >
-    )
+        <Grid justify="space-between" container spacing={6}>
+          <Grid item md={4} css={boxStyle}>
+            <Stats
+              image={StatsImage}
+              title={t("dashboard.totalSubscription")}
+              amount="2.532"
+            />
+          </Grid>
+          <Grid item md={4}>
+            <Stats
+              image={FailedPaymentImage}
+              title={t("dashboard.totalPayments")}
+              amount="2.532"
+            />
+          </Grid>
+          <Grid item md={4}>
+            <Stats
+              image={RevenueImage}
+              title={t("dashboard.revenue")}
+              amount="2.532"
+            />
+          </Grid>
+        </Grid>
+        <Grid justify="space-between" container spacing={6}>
+          <Grid item md={12}>
+            <Box css={boxStyle}>
+              <OrderTable
+                orders={orders}
+                openDrawer={() => setShowOrderDrawer(true)}
+                tableHeader={t("dashboard.topOrders")}
+              />
+              <OrdersDrawer
+                open={showOrderDrawer}
+                close={() => setShowOrderDrawer(false)}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+        <Grid justify="space-between" container spacing={6}>
+          <Grid item md={12}>
+            <Box css={boxStyle}>
+              <PaymentsTable
+                payments={payments}
+                openDrawer={() => setShowPaymentsDrawer(true)}
+                tableHeader={t("dashboard.lastpayment")}
+              />
+              <PaymentsDrawer
+                open={showPaymentsDrawer}
+                close={() => setShowPaymentsDrawer(false)}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+      </React.Fragment>
+    );
   } else {
-    return <LoadingScreen />
+    return <LoadingScreen />;
   }
 }
 
-export default withTheme(Default);
+export default withTheme(Dashboard);

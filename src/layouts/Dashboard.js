@@ -9,7 +9,7 @@ import {
   Hidden,
   CssBaseline,
   Paper as MuiPaper,
-  withWidth
+  withWidth,
 } from "@material-ui/core";
 
 import { isWidthUp } from "@material-ui/core/withWidth";
@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background: ${props => props.theme.body.background};
+    background: ${(props) => props.theme.body.background};
   }
 
   .MuiCardHeader-action .MuiIconButton-root {
@@ -40,7 +40,7 @@ const Root = styled.div`
 `;
 
 const Drawer = styled.div`
-  ${props => props.theme.breakpoints.up("md")} {
+  ${(props) => props.theme.breakpoints.up("md")} {
     width: ${drawerWidth}px;
     flex-shrink: 0;
   }
@@ -56,7 +56,7 @@ const Paper = styled(MuiPaper)(spacing);
 
 const MainContent = styled(Paper)`
   flex: 1;
-  background: ${props => props.theme.body.background};
+  background: ${(props) => props.theme.body.background};
 
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     flex: none;
@@ -67,7 +67,7 @@ const MainContent = styled(Paper)`
   }
 `;
 
-const Dashboard = ({children, routes, width}) => {
+const Dashboard = ({ children, routes, width }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -102,7 +102,7 @@ const Dashboard = ({children, routes, width}) => {
         </MainContent>
       </AppContent>
     </Root>
-  )
-}
+  );
+};
 
 export default withWidth()(Dashboard);

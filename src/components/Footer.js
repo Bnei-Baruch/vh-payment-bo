@@ -6,21 +6,21 @@ import {
   Hidden,
   List,
   ListItemText,
-  ListItem as MuiListItem
+  ListItem as MuiListItem,
 } from "@material-ui/core";
 
 const Wrapper = styled.div`
-  padding: ${props => props.theme.spacing(1) / 4}px
-    ${props => props.theme.spacing(4)}px;
-  background: ${props => props.theme.palette.common.white};
+  padding: ${(props) => props.theme.spacing(1) / 4}px
+    ${(props) => props.theme.spacing(4)}px;
+  background: ${(props) => props.theme.palette.common.white};
   position: relative;
 `;
 
 const ListItem = styled(MuiListItem)`
   display: inline-block;
   width: auto;
-  padding-left: ${props => props.theme.spacing(2)}px;
-  padding-right: ${props => props.theme.spacing(2)}px;
+  padding-left: ${(props) => props.theme.spacing(2)}px;
+  padding-right: ${(props) => props.theme.spacing(2)}px;
 
   &,
   &:hover,
@@ -54,7 +54,9 @@ function Footer() {
         <Grid container item xs={12} md={6} justify="flex-end">
           <List>
             <ListItem>
-              <ListItemText primary={`© ${new Date().getFullYear()} - Material App`} />
+              <ListItemText
+                primary={`© ${new Date().getFullYear()} - Material App`}
+              />
             </ListItem>
           </List>
         </Grid>

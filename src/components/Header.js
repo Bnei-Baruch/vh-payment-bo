@@ -16,16 +16,16 @@ import {
   Modal,
   createMuiTheme,
   Backdrop,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { ExitToApp, Menu as MenuIcon } from "@material-ui/icons";
-import { style } from '@material-ui/system'
+import { style } from "@material-ui/system";
 const theme = createMuiTheme();
 const AppBar = styled(MuiAppBar)`
-  background: ${props => props.theme.header.background};
-  color: ${props => props.theme.header.color};
-  box-shadow: ${props => props.theme.shadows[1]};
+  background: ${(props) => props.theme.header.background};
+  color: ${(props) => props.theme.header.color};
+  box-shadow: ${(props) => props.theme.shadows[1]};
 `;
 
 const IconButton = styled(MuiIconButton)`
@@ -34,21 +34,21 @@ const IconButton = styled(MuiIconButton)`
     height: 22px;
   }
 `;
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   buttons: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '14.3rem',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "14.3rem",
   },
 
   icon: {
-    margin: '0px 7px',
+    margin: "0px 7px",
   },
   modal: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
@@ -57,23 +57,25 @@ const useStyles = makeStyles(theme => ({
     width: 400,
   },
   root: {
-    '&:hover': {
+    "&:hover": {
       borderRadius: 0,
     },
     borderRadius: 0,
   },
   userName: {
-    color: '#464A53',
-    fontFamily: 'Nunito',
-    fontSize: '16px',
-    fontWeight: '600',
+    color: "#464A53",
+    fontFamily: "Nunito",
+    fontSize: "16px",
+    fontWeight: "600",
   },
-}))
+}));
 function countryToFlag(isoCode) {
-  return typeof String.fromCodePoint !== 'undefined'
+  return typeof String.fromCodePoint !== "undefined"
     ? isoCode
-      .toUpperCase()
-      .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+        .toUpperCase()
+        .replace(/./g, (char) =>
+          String.fromCodePoint(char.charCodeAt(0) + 127397)
+        )
     : isoCode;
 }
 
@@ -82,33 +84,32 @@ function setDirection(dir) {
 }
 
 const languages = [
-  { code: 'US', label: 'United States', lang: 'English', phone: '1' },
-  { code: 'IL', label: 'Israel', lang: 'Hebrew', phone: '972' },
-  { code: 'ES', label: 'Spain', lang: 'Spanish', phone: '34' },
-  { code: 'RU', label: 'Russian', lang: 'Russian', phone: '7' }
-]
-
+  { code: "US", label: "United States", lang: "English", phone: "1" },
+  { code: "IL", label: "Israel", lang: "Hebrew", phone: "972" },
+  { code: "ES", label: "Spain", lang: "Spanish", phone: "34" },
+  { code: "RU", label: "Russian", lang: "Russian", phone: "7" },
+];
 
 function LanguageMenu() {
   const [anchorMenu, setAnchorMenu] = useState(null);
   const [lang, setLang] = useState({
-    "lang" : "English",
-    "code" : "US"
+    lang: "English",
+    code: "US",
   });
-  const { i18n } = useTranslation('common');
-  const toggleMenu = event => {
+  const { i18n } = useTranslation();
+  const toggleMenu = (event) => {
     setAnchorMenu(event.currentTarget);
   };
   const closeMenu = (lang, code) => {
     setAnchorMenu(null);
     setLang({
-      "lang" : lang,
-      "code" : code
-    })
+      lang: lang,
+      code: code,
+    });
     if (code === "IL") {
-      setDirection('rtl');
+      setDirection("rtl");
     } else {
-      setDirection('ltr');
+      setDirection("ltr");
     }
     i18n.changeLanguage(code.toLowerCase());
   };
@@ -129,40 +130,50 @@ function LanguageMenu() {
         open={Boolean(anchorMenu)}
         onClose={(e) => setAnchorMenu(null)}
       >
-        {languages && languages.map(item => {
-          return <MenuItem onClick={(e) => closeMenu(item.lang, item.code)}>
-            {item.lang}
-          </MenuItem>
-        })}
+        {languages &&
+          languages.map((item) => {
+            return (
+              <MenuItem onClick={(e) => closeMenu(item.lang, item.code)}>
+                {item.lang}
+              </MenuItem>
+            );
+          })}
       </Menu>
     </React.Fragment>
-  )
+  );
 }
 
 function UserMenu({ user, ...props }) {
-  const [anchorMenu, setAnchorMenu] = React.useState(null)
-  const [open, setOpen] = React.useState(false)
-  const state = useSelector(state => state.userReducer.keycloak);
-  const classes = useStyles()
-  const { t } = useTranslation('common')
+  const [anchorMenu, setAnchorMenu] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  const state = useSelector((state) => state.userReducer.keycloak);
+  const classes = useStyles();
+  const { t } = useTranslation();
 
-  const toggleMenu = event => setAnchorMenu(event.currentTarget)
+  const toggleMenu = (event) => setAnchorMenu(event.currentTarget);
 
-  const closeMenu = () => setAnchorMenu(null)
+  const closeMenu = () => setAnchorMenu(null);
 
   return (
     <React.Fragment>
       <ThemeProvider theme={theme}>
         <IconButton
           aria-haspopup="true"
-          aria-owns={anchorMenu ? 'menu-appbar' : undefined}
+          aria-owns={anchorMenu ? "menu-appbar" : undefined}
           onClick={toggleMenu}
           color="inherit"
           className={classes.root}
-          disableRipple={true}>
+          disableRipple={true}
+        >
           <AccountCircleIcon className={classes.icon} />
-          <Typography component={'span'} variant="subtitle1" className={classes.userName}>
-            {state && state.profile ? state.profile.firstName + ' ' + state.profile.lastName : null}
+          <Typography
+            component={"span"}
+            variant="subtitle1"
+            className={classes.userName}
+          >
+            {state && state.profile
+              ? state.profile.firstName + " " + state.profile.lastName
+              : null}
           </Typography>
         </IconButton>
 
@@ -172,23 +183,29 @@ function UserMenu({ user, ...props }) {
           open={Boolean(anchorMenu)}
           onClose={closeMenu}
           getContentAnchorEl={null}
-          anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-          transformOrigin={{ horizontal: 'center', vertical: 'top' }}
-          className={classes.menu}>
+          anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+          transformOrigin={{ horizontal: "center", vertical: "top" }}
+          className={classes.menu}
+        >
           <MenuItem onClick={closeMenu}>
             <IconButton
               aria-haspopup="true"
               className={classes.root}
-              aria-owns={anchorMenu ? 'menu-appbar' : undefined}
+              aria-owns={anchorMenu ? "menu-appbar" : undefined}
               color="default"
               disableRipple={true}
               onClick={() => {
-                closeMenu()
-                setOpen(true)
-              }}>
-              <ExitToApp />{' '}
-              <Typography component={'span'} variant="subtitle1" classes={style.icon}>
-                {t('common.logout')}
+                closeMenu();
+                setOpen(true);
+              }}
+            >
+              <ExitToApp />{" "}
+              <Typography
+                component={"span"}
+                variant="subtitle1"
+                classes={style.icon}
+              >
+                {t("common.logout")}
               </Typography>
             </IconButton>
           </MenuItem>
@@ -203,22 +220,28 @@ function UserMenu({ user, ...props }) {
           BackdropComponent={Backdrop}
           BackdropProps={{
             timeout: 500,
-          }}>
+          }}
+        >
           <Fade in={open}>
             <div className={classes.paper}>
-              <p id="transition-modal-description">{t('common.surelogout')}</p>
+              <p id="transition-modal-description">{t("common.surelogout")}</p>
               <div className={classes.buttons}>
                 <Button
                   variant="contained"
                   onClick={() => {
-                    setOpen(false)
+                    setOpen(false);
                     //Emitter.emit('lOGGED_OUT', true)
-                    props.signout()
-                  }}>
-                  {t('common.yes') + ', ' + t('common.logout')}
+                    props.signout();
+                  }}
+                >
+                  {t("common.yes") + ", " + t("common.logout")}
                 </Button>
-                <Button variant="contained" onClick={() => setOpen(false)} color="primary">
-                  {t('common.no')}
+                <Button
+                  variant="contained"
+                  onClick={() => setOpen(false)}
+                  color="primary"
+                >
+                  {t("common.no")}
                 </Button>
               </div>
             </div>
@@ -226,10 +249,8 @@ function UserMenu({ user, ...props }) {
         </Modal>
       </ThemeProvider>
     </React.Fragment>
-  )
+  );
 }
-
-
 
 const Header = ({ onDrawerToggle }) => (
   <React.Fragment>
@@ -247,8 +268,7 @@ const Header = ({ onDrawerToggle }) => (
               </IconButton>
             </Grid>
           </Hidden>
-          <Grid item>
-          </Grid>
+          <Grid item></Grid>
           <Grid item xs />
           <Grid item>
             <LanguageMenu />

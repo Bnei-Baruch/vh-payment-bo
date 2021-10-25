@@ -1,15 +1,67 @@
 {
-    "common" : {
-        "loading": "Loading",
-        "error": "Something Went Wrong !",
-        "noAccessRight" : "User does not possess access rights to access the Information",
-        "orders": "Orders",
-        "payments": "Payments",
-        "accounts": "Accounts",
-        "reports": "Reports",
-        "logout" : "Log out",
-        "surelogout" : "Are you sure you want to logout?",
-        "yes" : "Yes",
-        "no" : "No"
-    }
+  "common": {
+    "loading": "Loading",
+    "error": "Something Went Wrong !",
+    "noAccessRight": "User does not possess access rights to access the Information",
+    "orders": "Orders",
+    "payments": "Payments",
+    "accounts": "Accounts",
+    "reports": "Reports",
+    "logout": "Log out",
+    "surelogout": "Are you sure you want to logout?",
+    "yes": "Yes",
+    "no": "No",
+    "date": "Date",
+    "fullName": "Full Name",
+    "email": "Email",
+    "productType": "Product Type",
+    "amount": "Amount",
+    "status": "Status",
+    "paid": "Paid",
+    "success": "Success",
+    "pending": "Pending",
+    "failed": "Failed",
+    "view": "View",
+    "connectivityError": "Connectivity Error",
+    "welcome": "Welcome",
+    "actions": "Action",
+    "notAvailable": "Not Available"
+  },
+  "accounts": {
+    "accountsDetails": "Account Detail",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "Country": "Country",
+    "Phone": "Phone",
+    "lastPaymentDate": "Last Payment date",
+    "userOrder": "Users Orders",
+    "usersPayments": "Users Payments"
+  },
+  "payments": {
+    "paramx": "ParamX",
+    "accountName": "Account Name",
+    "creditCard": "Credit Card",
+    "chargeType": "Charge Type",
+    "paymentInformation": "Payment Information",
+    "refund": "Refund",
+    "retry": "Retry",
+    "value": "value"
+  },
+  "dashboard": {
+    "lastpayment": "Last 50 Payments",
+    "totalSubscription": "Latest Subscription (Past 7 days)",
+    "totalPayments": "Latest Payments (Past 7 days)",
+    "revenue": "Revenue",
+    "topOrders": "Top 50 Orders",
+    "topPayments": "Top 50 Payments"
+  },
+  "orders": {
+    "orderInformation": "Order Information",
+    "information": "Information",
+    "value": "Value",
+    "paymentInformation": "Payment Information",
+    "pause": "Pause",
+    "modify": "Modify",
+    "cancel": "Cancel"
+  }
 }

@@ -7,7 +7,7 @@ import breakpoints from "./breakpoints";
 import props from "./props";
 import shadows from "./shadows";
 
-const theme = variant => {
+const theme = (variant) => {
   return createMuiTheme(
     {
       spacing: 4,
@@ -19,12 +19,12 @@ const theme = variant => {
       body: variant.body,
       header: variant.header,
       palette: variant.palette,
-      sidebar: variant.sidebar
+      sidebar: variant.sidebar,
     },
     variant.name
   );
 };
 
-const themes = variants.map(variant => theme(variant));
+const themes = variants.map((variant) => theme(variant));
 
 export default themes;
