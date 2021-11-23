@@ -1,0 +1,15 @@
+version: '2.2'
+services:
+  vh-paymemt-bo:
+    container_name: 'vh-paymemt-bo'
+    image: '${IMAGE_NAME}'
+    cpus: '0.1'
+    mem_limit: 50M
+    ports:
+      - 8087:80
+    environment:
+      REACT_APP_STAGING: '${REACT_APP_STAGING}'
+networks:
+  default:
+    external:
+      name: vh

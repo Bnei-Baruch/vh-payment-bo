@@ -1,0 +1,66 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  STAGING_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  STAGING_LATEST_IMAGE: $CI_REGISTRY_IMAGE:staging
+  PROD_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+  PROD_LATEST_IMAGE: $CI_REGISTRY_IMAGE:latest
+  STAGING_URL: 'http://$STAGING_DOMAIN/admin/payments'
+  PRODUCTION_URL: 'https://$PRODUCTION_DOMAIN/admin/payments'
+build_staging:
+  image: docker:latest
+  stage: build
+  tags:
+    - dockerbuild
+  services:
+    - docker:19.03.12-dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker build --cache-from $STAGING_LATEST_IMAGE --build-arg PUBLIC_URL=$STAGING_URL -t $STAGING_IMAGE .
+    - docker tag $STAGING_IMAGE $STAGING_LATEST_IMAGE
+    - docker push $STAGING_IMAGE
+    - docker push $STAGING_LATEST_IMAGE
+  only:
+    - master
+
+deploy_staging:
+  variables:
+    REACT_APP_STAGING: 'true'
+  image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.2.0
+  stage: deploy
+  tags:
+    - staging
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - IMAGE_NAME=$STAGING_IMAGE docker-compose up -d
+  only:
+    - master
+
+build_production:
+  image: docker:latest
+  stage: build
+  tags:
+    - dockerbuild
+  services:
+    - docker:19.03.12-dind
+  script:
+    - env
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker build --build-arg PUBLIC_URL=$PRODUCTION_URL --build-arg IS_STAGING_BUILD=false -t $PROD_IMAGE .
+    - docker push $PROD_IMAGE
+  only:
+    - tags
+
+deploy_production:
+  image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.2.0
+  stage: deploy
+  tags:
+    - production
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - IMAGE_NAME=$PROD_IMAGE docker-compose up -d
+  only:
+    - tags
+  when: manual
