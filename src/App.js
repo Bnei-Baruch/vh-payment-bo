@@ -21,7 +21,6 @@ import Russian from "./locale/ru.json";
 import axios from "axios";
 import LoadingScreen from "./pages/LoadingScreen";
 import Keycloak from "keycloak-js";
-import keycloakConfig from "./config/keycloak-config";
 import {
   setKeycloakData,
   setToken,
@@ -55,7 +54,7 @@ function App({ theme, token }) {
   const [auth, setAuth] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
-    const keycloak = Keycloak(keycloakConfig);
+    const keycloak = Keycloak(window.APP_CONFIG.KEYCLOAK_CONFIG);
     keycloak
       .init({ onLoad: "login-required", checkLoginIframe: false })
       .then((authenticated) => {
