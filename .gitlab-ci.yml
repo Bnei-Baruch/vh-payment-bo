@@ -28,7 +28,7 @@ build_staging:
 deploy_staging:
   variables:
     REACT_APP_STAGING: 'true'
-  image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.2.0
+  image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.5.0
   stage: deploy
   tags:
     - staging
@@ -58,7 +58,7 @@ build_production:
     - tags
 
 deploy_production:
-  image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.2.0
+  image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.5.0
   stage: deploy
   tags:
     - production
