@@ -92,7 +92,7 @@ function Dashboard() {
         </Grid>
         <Grid justify="space-between" container spacing={6}>
           <Grid item md={12}>
-            <Box css={boxStyle}>
+            <Box sx={boxStyle}>
               <OrderTable
                 orders={orders}
                 openDrawer={() => setShowOrderDrawer(true)}
@@ -107,7 +107,7 @@ function Dashboard() {
         </Grid>
         <Grid justify="space-between" container spacing={6}>
           <Grid item md={12}>
-            <Box css={boxStyle}>
+            <Box sx={boxStyle}>
               <PaymentsTable
                 payments={payments}
                 openDrawer={() => setShowPaymentsDrawer(true)}

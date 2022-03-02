@@ -131,9 +131,9 @@ function LanguageMenu() {
         onClose={(e) => setAnchorMenu(null)}
       >
         {languages &&
-          languages.map((item) => {
+          languages.map((item, index) => {
             return (
-              <MenuItem onClick={(e) => closeMenu(item.lang, item.code)}>
+              <MenuItem key={index} onClick={(e) => closeMenu(item.lang, item.code)}>
                 {item.lang}
               </MenuItem>
             );

@@ -13,8 +13,7 @@ const options = {
   selectableRows: false,
   download: false,
   print: false,
-  pagination: false,
-  responsive: "scroll",
+  pagination: false
 };
 export default function OrderTable({ orders, openDrawer, tableHeader }) {
   const { t } = useTranslation();

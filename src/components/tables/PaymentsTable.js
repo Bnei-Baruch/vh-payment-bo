@@ -119,7 +119,6 @@ export default function PaymentsTable({ payments, openDrawer, tableHeader }) {
     download: false,
     print: false,
     pagination: false,
-    responsive: "scroll",
   };
   if (error) {
     return <ConnectivityError />;

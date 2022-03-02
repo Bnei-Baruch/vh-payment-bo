@@ -120,7 +120,6 @@ function TabView() {
     download: false,
     print: false,
     pagination: false,
-    responsive: "scroll",
     search: false,
     filter: false,
     viewColumns: false,

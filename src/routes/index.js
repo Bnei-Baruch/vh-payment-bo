@@ -2,91 +2,71 @@ import React from "react";
 import async from "../components/Async";
 import ViewQuiltIcon from "@material-ui/icons/ViewQuilt";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
-import PersonIcon from "@material-ui/icons/Person";
-import EqualizerIcon from "@material-ui/icons/Equalizer";
 // Pages components
 const Dashboard = async(() => import("../pages/Dashboard"));
-const Payments = async(() => import("../pages/Payments"));
-const Orders = async(() => import("../pages/Orders"));
-const Accounts = async(() => import("../pages/Accounts"));
-const Reports = async(() => import("../pages/Reports"));
-const AccountDetails = async(() => import("../pages/AccountsDetailView"));
 /**
  * Route for dashboard with header
  */
-const dashboardRoute = {
-  id: "Dashboard",
-  path: "/payment/dashboard",
+const analyticsRoute = {
+  id: "Analytics",
+  path: "/payment/analytics",
   header: "Events",
   icon: <ViewQuiltIcon />,
-  component: Dashboard,
-  children: null,
+  children: [{
+    id: "Customers",
+    path: "/payment/analytics/customers",
+    header: "Events",
+    icon: <ViewQuiltIcon />,
+    component: Dashboard,
+  }, 
+  {
+    id: "Orders",
+    path: "/payment/analytics/orders",
+    header: "Events",
+    icon: <ViewQuiltIcon />,
+    component: Dashboard,
+  }
+],
 };
 /**
  * Route for Orders page with header
  */
-const ordersRoute = {
-  id: "Orders",
+const customerRoute = {
+  id: "Customer",
   path: "/payment/orders",
   icon: <InsertDriveFileIcon />,
-  component: Orders,
-  children: null,
-};
-/**
- * Route for Payments Page with header
- */
-const paymentRoute = {
-  id: "Payments",
-  path: "/payment/payments",
-  icon: <ConfirmationNumberIcon />,
-  component: Payments,
-  children: null,
-};
-/**
- * Route for Accounts to user with header
- */
-const accountsRoute = {
-  id: "Accounts",
-  path: "/payment/accounts",
-  icon: <PersonIcon />,
-  component: Accounts,
-  children: null,
-};
-/**
- * Route for Reports with header
- */
-const reportsRoutes = {
-  id: "Reports",
-  path: "/payment/reports",
-  icon: <EqualizerIcon />,
-  component: Reports,
-  children: null,
-};
-
-const accountDetailsRoutes = {
-  id: "Account Detail",
-  path: "/payment/accounts/acountdetails",
-  icon: <EqualizerIcon />,
-  component: AccountDetails,
-  children: null,
+  children:  [{
+    id: "Actiivty",
+    path: "/payment/customer/activity",
+    header: "Events",
+    icon: <ViewQuiltIcon />,
+    component: Dashboard,
+  }, 
+  {
+    id: "Search",
+    path: "/payment/customer/search",
+    header: "Events",
+    icon: <ViewQuiltIcon />,
+    component: Dashboard,
+  },
+  {
+    id: "Create",
+    path: "/payment/customer/create",
+    header: "Events",
+    icon: <ViewQuiltIcon />,
+    component: Dashboard,
+  }
+],
 };
 
 // Routes using the Dashboard layout
 export const dashboardLayoutRoutes = [
-  dashboardRoute,
-  ordersRoute,
-  paymentRoute,
-  accountsRoute,
-  reportsRoutes,
-  accountDetailsRoutes,
+  analyticsRoute,
+  customerRoute,
 ];
 
 // Routes visible in the sidebar
 export const sidebarRoutes = [
-  dashboardRoute,
-  ordersRoute,
-  paymentRoute,
-  accountsRoute,
-  reportsRoutes,
+  analyticsRoute,
+  customerRoute,
 ];
