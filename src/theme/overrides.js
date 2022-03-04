@@ -34,12 +34,12 @@ const overrides = {
   },
   MuiPickersClock: {
     container: {
-      margin: `32px 0 4px`,
+      margin: "32px 0 4px",
     },
   },
   MuiPickersClockNumber: {
     clockNumber: {
-      left: `calc(50% - 16px)`,
+      left: "calc(50% - 16px)",
       width: "32px",
       height: "32px",
     },

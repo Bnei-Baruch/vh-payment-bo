@@ -1,33 +1,39 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { rgba } from "polished";
-
+import { darken, rgba } from "polished";
+import { useTranslation } from "react-i18next";
 import { NavLink as RouterNavLink, withRouter } from "react-router-dom";
-import { darken } from "polished";
+import LogoImage from "../asset/logo/logo.svg";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "../vendor/perfect-scrollbar.css";
-import AppLogo from "../asset/img/logo.svg";
+
+import { spacing } from "@material-ui/system";
 
 import {
+  Avatar,
+  Box as MuiBox,
   Chip,
   Collapse,
   Drawer as MuiDrawer,
-  Grid,
   List as MuiList,
   ListItem,
   ListItemText,
-  Typography,
 } from "@material-ui/core";
 
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
+
 import { sidebarRoutes as routes } from "../routes/index";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { PAYMENTS_ROOT } from "../routes/dashboardRoutes";
 
 const NavLink = React.forwardRef((props, ref) => (
   <RouterNavLink innerRef={ref} {...props} />
 ));
 
+const Box = styled(MuiBox)(spacing);
+const Logo = styled(Avatar)`
+  height: auto !important;
+  width: auto !important;
+`;
 const Drawer = styled(MuiDrawer)`
   border-right: 0;
 
@@ -35,7 +41,12 @@ const Drawer = styled(MuiDrawer)`
     border-right: 0;
   }
 `;
-
+const ExternalLink = styled.a`
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+`;
 const Scrollbar = styled(PerfectScrollbar)`
   background-color: ${(props) => props.theme.sidebar.background};
   border-right: 1px solid rgba(0, 0, 0, 0.12);
@@ -67,6 +78,10 @@ const Brand = styled(ListItem)`
 
   &:hover {
     background-color: ${(props) => props.theme.sidebar.header.background};
+  }
+
+  a {
+    padding: 0;
   }
 `;
 
@@ -101,6 +116,7 @@ const Category = styled(ListItem)`
 
 const CategoryText = styled(ListItemText)`
   margin: 0;
+
   span {
     color: ${(props) => props.theme.sidebar.color};
     font-size: ${(props) => props.theme.typography.body1.fontSize}px;
@@ -117,55 +133,9 @@ const CategoryIconMore = styled(ExpandMore)`
   color: ${(props) => rgba(props.theme.sidebar.color, 0.5)};
 `;
 
-const LinkBadge = styled(Chip)`
-  font-size: 11px;
-  font-weight: ${(props) => props.theme.typography.fontWeightBold};
-  height: 20px;
-  position: absolute;
-  right: 12px;
-  top: 8px;
-  background: ${(props) => props.theme.sidebar.badge.background};
-
-  span.MuiChip-label,
-  span.MuiChip-label:hover {
-    cursor: pointer;
-    color: ${(props) => props.theme.sidebar.badge.color};
-    padding-left: ${(props) => props.theme.spacing(2)}px;
-    padding-right: ${(props) => props.theme.spacing(2)}px;
-  }
-`;
-
-const CategoryBadge = styled(LinkBadge)`
-  top: 12px;
-`;
-
-const SidebarSection = styled(Typography)`
-  color: ${(props) => props.theme.sidebar.color};
-  padding: ${(props) => props.theme.spacing(4)}px
-    ${(props) => props.theme.spacing(6)}px
-    ${(props) => props.theme.spacing(1)}px;
-  opacity: 0.9;
-  display: block;
-`;
-
-const SidebarFooter = styled.div`
-  background-color: ${(props) =>
-    props.theme.sidebar.footer.background} !important;
-  padding: ${(props) => props.theme.spacing(2.75)}px
-    ${(props) => props.theme.spacing(4)}px;
-  border-right: 1px solid rgba(0, 0, 0, 0.12);
-`;
-const LogoTitle = styled.div`
-  margin-left: 10px;
-`;
-const LogoHeading = styled.span`
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const LogoSubHeading = styled.span`
-  font-size: 14px;
-  color: #33bbbd;
+const Subtitle = styled.div`
+  color: #4aa5ff;
+  font-size: 12px;
 `;
 
 const Link = styled(ListItem)`
@@ -203,7 +173,29 @@ const LinkText = styled(ListItemText)`
   margin-bottom: 0;
 `;
 
-function SidebarCategory({
+const LinkBadge = styled(Chip)`
+  font-size: 11px;
+  font-weight: ${(props) => props.theme.typography.fontWeightBold};
+  height: 20px;
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  background: ${(props) => props.theme.sidebar.badge.background};
+
+  span.MuiChip-label,
+  span.MuiChip-label:hover {
+    cursor: pointer;
+    color: ${(props) => props.theme.sidebar.badge.color};
+    padding-left: ${(props) => props.theme.spacing(2)}px;
+    padding-right: ${(props) => props.theme.spacing(2)}px;
+  }
+`;
+
+const CategoryBadge = styled(LinkBadge)`
+  top: 12px;
+`;
+
+const SidebarCategory = ({
   name,
   icon,
   classes,
@@ -211,22 +203,20 @@ function SidebarCategory({
   isCollapsable,
   badge,
   ...rest
-}) {
-  return (
-    <Category {...rest}>
-      {icon}
-      <CategoryText>{name}</CategoryText>
-      {isCollapsable ? (
-        isOpen ? (
-          <CategoryIconMore />
-        ) : (
-          <CategoryIconLess />
-        )
-      ) : null}
-      {badge ? <CategoryBadge label={badge} /> : ""}
-    </Category>
-  );
-}
+}) => (
+  <Category {...rest}>
+    {icon}
+    <CategoryText>{name}</CategoryText>
+    {isCollapsable ? (
+      isOpen ? (
+        <CategoryIconMore />
+      ) : (
+        <CategoryIconLess />
+      )
+    ) : null}
+    {badge ? <CategoryBadge label={badge} /> : ""}
+  </Category>
+);
 
 const SidebarLink = ({ name, to, badge }) => (
   <Link button dense component={NavLink} exact to={to} activeClassName="active">
@@ -235,9 +225,9 @@ const SidebarLink = ({ name, to, badge }) => (
   </Link>
 );
 
-function Sidebar({ classes, staticContext, location, ...rest }) {
-  const roles = useSelector((state) => state.userReducer.roles);
+const Sidebar = ({ classes, staticContext, location, ...rest }) => {
   const { t } = useTranslation();
+
   const initOpenRoutes = () => {
     /* Open collapse element that matches current url */
     const pathName = location.pathname;
@@ -254,7 +244,9 @@ function Sidebar({ classes, staticContext, location, ...rest }) {
 
     return _routes;
   };
+
   const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
+
   const toggle = (index) => {
     // Collapse all elements
     Object.keys(openRoutes).forEach(
@@ -269,27 +261,29 @@ function Sidebar({ classes, staticContext, location, ...rest }) {
       [index]: !openRoutes[index],
     }));
   };
+
   return (
     <Drawer variant="permanent" {...rest}>
       <Brand>
-        <img src={AppLogo} alt="logo" height="100%" />
-        <LogoTitle>
-          <LogoHeading>BNEI BARUCH</LogoHeading>
-          <br />
-          <LogoSubHeading>PAYMENTS</LogoSubHeading>
-        </LogoTitle>
+        <Link button component={NavLink} exact to={PAYMENTS_ROOT}>
+          <Logo alt="Logo" src={LogoImage} />
+          <Box ml={1}>
+            <b>BNEI BARUCH</b>
+            <Subtitle>VIRTUAL HOME</Subtitle>
+          </Box>
+        </Link>
       </Brand>
       <Scrollbar>
         <List disablePadding>
           <Items>
-            {routes.map((category, index) =>
-              category.role === undefined ? (
-                category.children ? (
+            {routes.map((category, index) => (
+              <React.Fragment key={index}>
+                {category.children ? (
                   <React.Fragment key={index}>
                     <SidebarCategory
                       isOpen={!openRoutes[index]}
                       isCollapsable
-                      name={category.id}
+                      name={t(`${category.id}.name`)}
                       icon={category.icon}
                       button
                       onClick={() => toggle(index)}
@@ -303,7 +297,7 @@ function Sidebar({ classes, staticContext, location, ...rest }) {
                       {category.children.map((route, index) => (
                         <SidebarLink
                           key={index}
-                          name={route.id}
+                          name={t(`${route.id}.name`)}
                           to={route.path}
                           icon={route.icon}
                           badge={route.badge}
@@ -311,53 +305,34 @@ function Sidebar({ classes, staticContext, location, ...rest }) {
                       ))}
                     </Collapse>
                   </React.Fragment>
+                ) : category.isExternalLink ? (
+                  <ExternalLink href={category.path} target="_blank">
+                    <Category>
+                      {category.icon}
+                      <CategoryText>
+                        {t(`${category.id}.name`)}
+                      </CategoryText>
+                    </Category>
+                  </ExternalLink>
                 ) : (
-                  <React.Fragment key={index}>
-                    {category.header ? (
-                      <SidebarSection>{category.header}</SidebarSection>
-                    ) : null}
-                    <SidebarCategory
-                      isCollapsable={false}
-                      name={category.id}
-                      to={category.path}
-                      activeClassName="active"
-                      component={NavLink}
-                      icon={category.icon}
-                      exact
-                      badge={category.badge}
-                    />
-                  </React.Fragment>
-                )
-              ) : category.role !== undefined &&
-                roles.includes(category.role) ? (
-                <>
-                  {category.header ? (
-                    <SidebarSection>{category.header}</SidebarSection>
-                  ) : null}
                   <SidebarCategory
                     isCollapsable={false}
-                    name={category.id}
+                    name={t(`${category.id}.name`)}
                     to={category.path}
                     activeClassName="active"
                     component={NavLink}
                     icon={category.icon}
                     exact
                     badge={category.badge}
-                  />{" "}
-                </>
-              ) : null
-            )}
+                  />
+                )}
+              </React.Fragment>
+            ))}
           </Items>
         </List>
       </Scrollbar>
-      <SidebarFooter>
-        <Grid container spacing={2}>
-          <Grid item></Grid>
-          <Grid item></Grid>
-        </Grid>
-      </SidebarFooter>
     </Drawer>
   );
-}
+};
 
 export default withRouter(Sidebar);

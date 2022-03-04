@@ -1,33 +1,44 @@
-# Material App Pro - React Admin & Dashboard Template
+# Virtual Home User Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- events
+- galaxy
+- feed
+- study material
+- account management
+- profile management
 
-## Prerequisites
+## Events
 
-You'll need to have Node 12.0.0 or up. We recommend upgrading to the LTS version of NodeJS available at [https://nodejs.org/](https://nodejs.org/). You can also use [nvm](https://github.com/creationix/nvm#installation) (macOS/Linux) or [nvm-windows](https://github.com/coreybutler/nvm-windows#node-version-manager-nvm-for-windows) to switch Node versions between different projects.
+### Getting calendar events
 
-## Quick Start
+We are getting calendar events using google calendar. You can find more
+info [here](https://developers.google.com/calendar/v3/reference/events/list). 
 
-### `npm start`
+The events schedule will automatically refresh when:
 
-Runs the app in the development mode.
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- there is a live event – the schedule will be refreshed when the event ends
+- there is no live event and later the same day there will be an event – once the event starts the schedule will be refreshed
+- there are no more events for the day – the schedule will refresh on the next day, at midnight
 
-The page will reload if you make edits.
-You will also see any lint errors in the console.
+### Getting participants
 
-### `npm run build`
+The API to get participants during live event is https://gxydb.kli.one/galaxy/metrics  
 
-Builds the app for production to the `build` folder.
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# How to build
+---
+- Clone the master repository : ```git clone <url>```
 
-## Learn More
+- Create a branch - potentially with name if the issue / feature - like BUGFIX12345 ```git checkout -b BUGFIX/12345```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Once we have tested it locally, push it to the remote repository
+		git push origin BUGIX/12345
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Create a merge request to master from UI, which will get deployed in staging.
+
+- Once we are happy with all the changes in staging and we want to move to production.
+
+- Create a tag in gitlab - which will deploy the same in production.
+  
+---

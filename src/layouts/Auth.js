@@ -24,14 +24,12 @@ const Root = styled.div`
   min-height: 100%;
 `;
 
-function Auth({ children }) {
-  return (
-    <Root>
-      <CssBaseline />
-      <GlobalStyle />
-      {children}
-    </Root>
-  );
-}
+const Auth = ({ children }) => (
+  <Root>
+    <CssBaseline />
+    <GlobalStyle />
+    {children}
+  </Root>
+);
 
 export default Auth;

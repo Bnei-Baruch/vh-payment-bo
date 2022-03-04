@@ -8,60 +8,70 @@ import {
 import { dashboardLayoutRoutes } from "./index";
 
 import DashboardLayout from "../layouts/Dashboard";
-import { useSelector } from "react-redux";
+import Page404 from "../pages/auth/Page404";
+import DashboardHeader from "../pages/dashboard/Home/DashboardHeader";
+import Auth from "../config/Auth";
 
-const childRoutes = (Layout, routes, roles) =>
-  routes.map(({ children, path, component: Component, role }, index) =>
-    children ? (
-      // Route item with children
-      children.map(({ path, component: Component }, index) => (
+const childRoutes = (Layout, routes) =>
+  routes.map(
+    (
+      { children, path, id, breadcrumbs, enableHeader, component: Component },
+      index
+    ) =>
+      children ? (
+        // Route item with children
+        children.map(
+          (
+            { path, id, enableHeader, breadcrumbs, component: Component },
+            index
+          ) => (
+            <Route
+              key={index}
+              path={path}
+              exact
+              render={(props) => (
+                <Layout>
+                  {enableHeader && (
+                    <DashboardHeader name={id} breadcrumbs={breadcrumbs} />
+                  )}
+                  <Component {...props} />
+                </Layout>
+              )}
+            />
+          )
+        )
+      ) : (
+        // Route item without children
         <Route
           key={index}
           path={path}
           exact
           render={(props) => (
             <Layout>
+              {enableHeader && (
+                <DashboardHeader name={id} breadcrumbs={breadcrumbs} />
+              )}
               <Component {...props} />
             </Layout>
           )}
         />
-      ))
-    ) : role === undefined ? (
-      // Route item without children
-      <Route
-        key={index}
-        path={path}
-        exact
-        render={(props) => (
-          <Layout>
-            <Component {...props} />
-          </Layout>
-        )}
-      />
-    ) : role !== undefined && roles.includes(role) ? (
-      <Route
-        key={index}
-        path={path}
-        exact
-        render={(props) => (
-          <Layout>
-            <Component {...props} />
-          </Layout>
-        )}
-      />
-    ) : null
+      )
   );
 
-const Routes = () => {
-  const roles = useSelector((state) => state.userReducer.roles);
-  return (
-    <Router>
-      <Switch>
-        {childRoutes(DashboardLayout, dashboardLayoutRoutes, roles)}
-        <Redirect to="/payment/dashboard" />
-      </Switch>
-    </Router>
-  );
-};
+const Routes = () => (
+  <Router>
+    <Switch>
+      {childRoutes(DashboardLayout, dashboardLayoutRoutes)}
+      <Redirect to="/payments/analytics/customer" />
+      <Route
+        render={() => (
+          <Auth>
+            <Page404 />
+          </Auth>
+        )}
+      />
+    </Switch>
+  </Router>
+);
 
 export default Routes;

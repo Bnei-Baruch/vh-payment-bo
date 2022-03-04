@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 
-import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
-
 import { spacing } from "@material-ui/system";
 import {
   Hidden,
@@ -11,8 +8,9 @@ import {
   Paper as MuiPaper,
   withWidth,
 } from "@material-ui/core";
-
 import { isWidthUp } from "@material-ui/core/withWidth";
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 
 const drawerWidth = 260;
 
@@ -50,13 +48,15 @@ const AppContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const Paper = styled(MuiPaper)(spacing);
 
 const MainContent = styled(Paper)`
   flex: 1;
-  background: ${(props) => props.theme.body.background};
+  background: #f2f2f2 !important;
+  background-color: #f2f2f2 !important;
 
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     flex: none;

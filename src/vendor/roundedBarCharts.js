@@ -1,18 +1,24 @@
 import { Chart as ChartJS } from "react-chartjs-2";
 
 ChartJS.elements.Rectangle.prototype.draw = function () {
-  const ctx = this._chart.ctx;
+  const { ctx } = this._chart;
   const vm = this._view;
-  let left, right, top, bottom, signX, signY, borderSkipped;
-  let borderWidth = vm.borderWidth;
+  let left;
+  let right;
+  let top;
+  let bottom;
+  let signX;
+  let signY;
+  let borderSkipped;
+  let { borderWidth } = vm;
 
   // If radius is less than 0 or is large enough to cause drawing errors a max
   // radius is imposed. If cornerRadius is not defined set it to 0.
-  let cornerRadius = this._chart.config.options.cornerRadius;
+  let { cornerRadius } = this._chart.config.options;
   if (cornerRadius < 0) {
     cornerRadius = 0;
   }
-  if (typeof cornerRadius == "undefined") {
+  if (typeof cornerRadius === "undefined") {
     cornerRadius = 0;
   }
 

@@ -1,0 +1,27 @@
+{
+  "translation": {
+    "Analytics": {
+      "name": "Analytics"
+    },
+    "Customers": {
+      "name": "Customers"
+    },
+    "Orders": {
+      "name": "Orders"
+    },
+    "Create": {
+      "name": "Create"
+    },
+    "Search": {
+      "name": "Search"
+    },
+    "Activity": {
+      "name": "Activity"
+    },
+    "Common": {
+      "Profile": {
+        "name": "Profile"
+      }
+    } 
+  }
+}

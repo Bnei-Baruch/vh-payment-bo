@@ -7,15 +7,15 @@ import breakpoints from "./breakpoints";
 import props from "./props";
 import shadows from "./shadows";
 
-const theme = (variant) => {
-  return createMuiTheme(
+const theme = (variant) =>
+  createMuiTheme(
     {
       spacing: 4,
-      breakpoints: breakpoints,
-      overrides: overrides,
-      props: props,
-      typography: typography,
-      shadows: shadows,
+      breakpoints,
+      overrides,
+      props,
+      typography,
+      shadows,
       body: variant.body,
       header: variant.header,
       palette: variant.palette,
@@ -23,7 +23,6 @@ const theme = (variant) => {
     },
     variant.name
   );
-};
 
 const themes = variants.map((variant) => theme(variant));
 
