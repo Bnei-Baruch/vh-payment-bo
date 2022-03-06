@@ -27,16 +27,9 @@ const Header = ({ name, breadcrumbs }) => {
 
   return (
     <div>
-      <Typography variant="h3">{t(`Dashboard.${name}.title`)}</Typography>
+      <Typography variant="h3">{t(`${name}.name`)}</Typography>
       {breadcrumbs.length ? (
         <Breadcrumbs aria-label="breadcrumb" className={classes.breadcrumbs}>
-          <Link
-            color="inherit"
-            href={PAYMENTS_ROOT}
-            onClick={(event) => handleClick(event, PAYMENTS_ROOT)}
-          >
-            {t("Dashboard.Dashboard.name")}
-          </Link>
           {breadcrumbs.map((item) => (
             <Link
               key={item.name}
@@ -45,7 +38,7 @@ const Header = ({ name, breadcrumbs }) => {
               onClick={(event) => handleClick(event, item.path)}
               aria-current="page"
             >
-              {t(`Dashboard.${item.name}.name`)}
+              {t(`${item.name}.name`)}
             </Link>
           ))}
         </Breadcrumbs>

@@ -99,6 +99,8 @@ function BarChart({ theme }) {
         <ChartWrapper>
           <Bar data={data} options={options} />
         </ChartWrapper>
+        <br />
+        <a>View full Reports</a>
       </CardContent>
     </Card>
   );

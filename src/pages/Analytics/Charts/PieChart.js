@@ -56,6 +56,8 @@ function PieChart({ theme }) {
         <ChartWrapper>
           <Pie data={data} options={options} />
         </ChartWrapper>
+        <br />
+        <a>View full Reports</a>
       </CardContent>
     </Card>
   );
