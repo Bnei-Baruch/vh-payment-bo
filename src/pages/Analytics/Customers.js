@@ -1,10 +1,21 @@
-import { FormControl, Grid, InputLabel, makeStyles, MenuItem, Select, Typography } from "@material-ui/core";
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+  Select,
+  Typography,
+} from "@material-ui/core";
 import React from "react";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import PieChart from "./Charts/PieChart";
+import LineChart from "./Charts/LineChart";
+import BarChart from "./Charts/BarChart";
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -13,13 +24,16 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  whiteBackground: {
+    backgroundColor: "#fff",
+  },
 }));
 export default function Customers() {
   const classes = useStyles();
   const [selectedDate, setSelectedDate] = React.useState(
     new Date("2014-08-18T21:11:54")
   );
-  const [age, setAge] = React.useState('');
+  const [age, setAge] = React.useState("");
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -83,6 +97,47 @@ export default function Customers() {
             </FormControl>
           </Grid>
         </MuiPickersUtilsProvider>
+      </Grid>
+      <Grid container item xs={12} spacing={6}>
+        <Grid item xs={12} md={3}>
+          <Grid className={classes.whiteBackground}>Stats 1</Grid>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Grid className={classes.whiteBackground}>Stats 1</Grid>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Grid className={classes.whiteBackground}>Stats 1</Grid>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Grid className={classes.whiteBackground}>Stats 1</Grid>
+        </Grid>
+      </Grid>
+
+      <Grid container item xs={12} spacing={6}>
+        <Grid item xs={12} md={6}>
+          <PieChart />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <PieChart />
+        </Grid>
+      </Grid>
+
+      <Grid container item xs={12} spacing={6}>
+        <Grid item xs={12} md={6}>
+          <PieChart />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <PieChart />
+        </Grid>
+      </Grid>
+
+      <Grid container item xs={12} spacing={6}>
+        <Grid item xs={12} md={6}>
+          <BarChart />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <PieChart />
+        </Grid>
       </Grid>
     </Grid>
   );

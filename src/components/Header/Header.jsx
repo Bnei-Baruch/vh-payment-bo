@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { Breadcrumbs, Link, Typography } from "@material-ui/core";
-import { PAYMENTS_ROOT } from "../../../../routes/dashboardRoutes";
+import { PAYMENTS_ROOT } from "../../routes/dashboardRoutes";
 
 const useStyles = makeStyles((theme) => ({
   breadcrumbs: {
@@ -54,7 +54,7 @@ const Header = ({ name, breadcrumbs }) => {
   );
 };
 
-DashboardHeader.propTypes = {
+Header.propTypes = {
   name: PropTypes.string.isRequired,
   breadcrumbs: PropTypes.arrayOf(
     PropTypes.shape({

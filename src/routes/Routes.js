@@ -9,7 +9,7 @@ import { dashboardLayoutRoutes } from "./index";
 
 import DashboardLayout from "../layouts/Dashboard";
 import Page404 from "../pages/auth/Page404";
-import DashboardHeader from "../pages/dashboard/Home/DashboardHeader";
+import DashboardHeader from "../components/Header/Header";
 import Auth from "../config/Auth";
 
 const childRoutes = (Layout, routes) =>
