@@ -13,10 +13,44 @@
       "name": "Create"
     },
     "Search": {
-      "name": "Search"
+      "name": "Search",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "language": "Language",
+      "country": "Country",
+      "action": "Action"
     },
     "Activity": {
-      "name": "Activity"
+      "name": "Activity",
+      "dateTime": "Date-Time",
+      "userName": "Name",
+      "email": "Email",
+      "productType": "Product Type",
+      "type": "Type",
+      "amount": "Amount",
+      "currency": "Currency",
+      "status": "Status",
+      "paymentMethod": "Payment Method",
+      "paramX": "Param X",
+      "orderId": "Order ID",
+      "accountId": "Account ID",
+      "paymentMethodDetails": "Payment Method Details"
+    },
+    "CreatePayment": {
+      "name": "Create Payment"
+    },
+    "CreateOrder": {
+      "name": "Create Order"
+    },
+    "CreateAccount": {
+      "name": "Create Account"
+    },
+    "CreateSpecial": {
+      "name": "Create Special"
+    },
+    "CreatePaymentMethod": {
+      "name": "Create Payment Methodn"
     },
     "Common": {
       "Profile": {
