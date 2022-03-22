@@ -1,26 +1,29 @@
-import * as types from "../constants";
+import { createReducer } from "redux-act";
+import {
+  setLoggedInUser,
+  setFirstName,
+  setLastName,
+  setKeycloakData,
+} from "../actions/userActions";
 
-export default function reducer(state = {}, actions) {
-  switch (actions.type) {
-    case types.SET_TOKEN:
-      return {
-        ...state,
-        token: actions.payload,
-      };
+const initialState = {
+  info: {},
+};
 
-    case types.SET_KEYCLOAK_DATA:
-      return {
-        ...state,
-        keycloak: actions.payload,
-      };
-
-    case types.SET_USER_ROLE:
-      return {
-        ...state,
-        roles: actions.payload,
-      };
-
-    default:
-      return state;
-  }
-}
+export default createReducer(
+  {
+    [setLoggedInUser]: (state, action) => {
+      return { ...state, info: action.user };
+    },
+    [setFirstName]: (state, action) => {
+      return { ...state, info: action.user };
+    },
+    [setLastName]: (state, action) => {
+      return { ...state, info: action.user };
+    },
+    [setKeycloakData]: (state, action) => {
+      return { ...state, keycloak: action.keycloak };
+    },
+  },
+  initialState
+);

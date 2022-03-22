@@ -1,93 +1,87 @@
-import React, { useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
-
+import React from "react";
+import { connect } from "react-redux";
+import store from "./redux/store/index";
 import Helmet from "react-helmet";
 
 import DateFnsUtils from "@date-io/date-fns";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { StylesProvider } from "@material-ui/styles";
+import { StylesProvider, jssPreset } from "@material-ui/styles";
 import { ThemeProvider } from "styled-components";
+import rtl from "jss-rtl";
+import { create } from "jss";
 
 import maTheme from "./theme";
 import Routes from "./routes/Routes";
-import { I18nextProvider } from "react-i18next";
-import i18next from "i18next";
-import English from "./locale/en.json";
-import German from "./locale/de.json";
-import Hebrew from "./locale/il.json";
-import Spanish from "./locale/es.json";
-import Russian from "./locale/ru.json";
+import Auth from "./config/Auth";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
-import LoadingScreen from "./pages/LoadingScreen";
-import Keycloak from "keycloak-js";
-import {
-  setKeycloakData,
-  setToken,
-  setUserRoles,
-} from "./redux/actions/userActions";
-var authToken = undefined;
-axios.interceptors.request.use((c) => {
-  if (authToken) {
+
+const jss = create({
+  plugins: [...jssPreset().plugins, rtl()],
+  insertionPoint: "jss-insertion-point",
+});
+
+/**
+ * Axios interceptor for token updation
+ * and appending token in api's
+ */
+axios.interceptors.request.use(async (c) => {
+  if (c && c.url && c.url.includes("heartbeat")) {
+    return c;
+  }
+  const state = store.getState();
+  if (
+    state.userReducer.keycloak &&
+    state.userReducer.keycloak.isTokenExpired()
+  ) {
+    await state.userReducer.keycloak.updateToken(30).success();
+  }
+  //fetch token and pass here
+  if (state.userReducer.keycloak.token) {
     let header = {
-      Authorization: "Bearer " + authToken,
+      Authorization: "Bearer " + state.userReducer.keycloak.token,
       Accept: "application/json",
     };
     c.headers = header;
   }
   return c;
 });
-i18next.init({
-  interpolation: { escapeValue: false }, // React already does escaping
-  lng: "en", // language to use
-  resources: {
-    en: { translation: English },
-    us: { translation: English }, // 'common' is our custom namespace
-    de: { translation: German },
-    es: { translation: Spanish },
-    il: { translation: Hebrew },
-    ru: { translation: Russian },
-  },
-});
-function App({ theme, token }) {
-  authToken = token;
-  const [auth, setAuth] = useState(false);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const keycloak = Keycloak(window.APP_CONFIG.KEYCLOAK_CONFIG);
-    keycloak
-      .init({ onLoad: "login-required", checkLoginIframe: false })
-      .then((authenticated) => {
-        keycloak.loadUserProfile().then(async function () {
-          dispatch(setToken(keycloak.token));
-          dispatch(setKeycloakData(keycloak));
-          dispatch(setUserRoles(keycloak.realmAccess.roles));
-          if (authenticated) {
-            setAuth(authenticated);
-          }
-        });
-      });
-  }, [dispatch]);
+
+const App = ({ theme }) => {
+  const { i18n } = useTranslation();
+
+  // Set direction on body
+  document.body.setAttribute("dir", i18n.dir(i18n.language));
+
   return (
-    <React.Fragment>
-      <I18nextProvider i18n={i18next}>
-        <Helmet
-          titleTemplate="VH Payments Application | %s"
-          defaultTitle="VH Payments Management"
-        />
-        <StylesProvider injectFirst>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <MuiThemeProvider theme={maTheme[theme.currentTheme]}>
-              <ThemeProvider theme={maTheme[theme.currentTheme]}>
-                {auth ? <Routes /> : <LoadingScreen />}
-              </ThemeProvider>
-            </MuiThemeProvider>
-          </MuiPickersUtilsProvider>
-        </StylesProvider>
-      </I18nextProvider>
-    </React.Fragment>
+    <Auth>
+      <Helmet
+        titleTemplate="%s | Our Virtual Home"
+        defaultTitle="Our Virtual Home"
+      />
+      <StylesProvider jss={jss}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <MuiThemeProvider
+            theme={{
+              ...maTheme[theme.currentTheme],
+              direction: i18n.dir(i18n.language),
+            }}
+          >
+            <ThemeProvider
+              theme={{
+                ...maTheme[theme.currentTheme],
+                direction: i18n.dir(i18n.language),
+              }}
+            >
+              <Routes />
+            </ThemeProvider>
+          </MuiThemeProvider>
+        </MuiPickersUtilsProvider>
+      </StylesProvider>
+    </Auth>
   );
-}
+};
 
 export default connect((store) => ({
   theme: store.themeReducer,

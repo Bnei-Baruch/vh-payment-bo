@@ -1,92 +1,255 @@
 import React from "react";
+import PollIcon from "@material-ui/icons/Poll";
 import async from "../components/Async";
-import ViewQuiltIcon from "@material-ui/icons/ViewQuilt";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
-import PersonIcon from "@material-ui/icons/Person";
-import EqualizerIcon from "@material-ui/icons/Equalizer";
-// Pages components
-const Dashboard = async(() => import("../pages/Dashboard"));
-const Payments = async(() => import("../pages/Payments"));
-const Orders = async(() => import("../pages/Orders"));
-const Accounts = async(() => import("../pages/Accounts"));
-const Reports = async(() => import("../pages/Reports"));
-const AccountDetails = async(() => import("../pages/AccountsDetailView"));
-/**
- * Route for dashboard with header
- */
-const dashboardRoute = {
-  id: "Dashboard",
-  path: "/payment/dashboard",
-  header: "Events",
-  icon: <ViewQuiltIcon />,
-  component: Dashboard,
-  children: null,
-};
-/**
- * Route for Orders page with header
- */
-const ordersRoute = {
-  id: "Orders",
-  path: "/payment/orders",
-  icon: <InsertDriveFileIcon />,
-  component: Orders,
-  children: null,
-};
-/**
- * Route for Payments Page with header
- */
-const paymentRoute = {
-  id: "Payments",
-  path: "/payment/payments",
-  icon: <ConfirmationNumberIcon />,
-  component: Payments,
-  children: null,
-};
-/**
- * Route for Accounts to user with header
- */
-const accountsRoute = {
-  id: "Accounts",
-  path: "/payment/accounts",
-  icon: <PersonIcon />,
-  component: Accounts,
-  children: null,
-};
-/**
- * Route for Reports with header
- */
-const reportsRoutes = {
-  id: "Reports",
-  path: "/payment/reports",
-  icon: <EqualizerIcon />,
-  component: Reports,
-  children: null,
-};
+import { DASHBOARD_ROUTES } from "./dashboardRoutes";
+import PeopleIcon from "@material-ui/icons/People";
+const CustomerAnalytics = async(() => import("../pages/Analytics/Customers"));
+const CustomerOrders = async(() => import("../pages/Analytics/Orders"));
+const CustomerActivity = async(() => import("../pages/Customers/Activity"));
+const CustomerCreate = async(() => import("../pages/Customers/CreateCustomer"));
+const CustomerSearch = async(() => import("../pages/Customers/Search"));
+const CustomerCreateAccount = async(() =>
+  import("../pages/Customers/Create/AddAccount")
+);
+const CustomerCreatePaymentMethod = async(() =>
+  import("../pages/Customers/Create/AddNewPaymentMethod")
+);
+const CustomerCreateNewSpecial = async(() =>
+  import("../pages/Customers/Create/AddNewSpecial")
+);
+const CustomerCreateAddOrder = async(() =>
+  import("../pages/Customers/Create/AddOrder")
+);
+const CustomerCreateAddPayment = async(() =>
+  import("../pages/Customers/Create/AddPayment")
+);
 
-const accountDetailsRoutes = {
-  id: "Account Detail",
-  path: "/payment/accounts/acountdetails",
-  icon: <EqualizerIcon />,
-  component: AccountDetails,
-  children: null,
-};
+const sideRoutes = [
+  {
+    path: DASHBOARD_ROUTES.Analytics,
+    id: "Analytics",
+    icon: <PollIcon />,
+    enableHeader: true,
+    breadcrumbs: [{ name: "Analytics", path: DASHBOARD_ROUTES.Analytics }],
+    children: [
+      {
+        path: DASHBOARD_ROUTES.CustomerAnalytics,
+        id: "Customers",
+        icon: <PollIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Analytics", path: DASHBOARD_ROUTES.Analytics },
+          { name: "Customers", path: DASHBOARD_ROUTES.CustomerAnalytics },
+        ],
+        component: CustomerAnalytics,
+      },
+      {
+        path: DASHBOARD_ROUTES.OrderAnalytics,
+        id: "Orders",
+        icon: <PollIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Analytics", path: DASHBOARD_ROUTES.Analytics },
+          { name: "Orders", path: DASHBOARD_ROUTES.OrderAnalytics },
+        ],
+        component: CustomerOrders,
+      },
+    ],
+  },
+  {
+    path: DASHBOARD_ROUTES.Customers,
+    id: "Customers",
+    icon: <PeopleIcon />,
+    enableHeader: true,
+    breadcrumbs: [{ name: "Customers", path: DASHBOARD_ROUTES.Customers }],
+    children: [
+      {
+        path: DASHBOARD_ROUTES.CustomerActivity,
+        id: "Activity",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Activity", path: DASHBOARD_ROUTES.CustomerActivity },
+        ],
+        component: CustomerActivity,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerSearch,
+        id: "Search",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Search", path: DASHBOARD_ROUTES.CustomerSearch },
+        ],
+        component: CustomerSearch,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerCreate,
+        id: "Create",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Create", path: DASHBOARD_ROUTES.CustomerCreate },
+        ],
+        component: CustomerCreate,
+      },
+    ],
+  },
+];
+
+const dashboardRoutes = [
+  {
+    path: DASHBOARD_ROUTES.Analytics,
+    id: "Analytics",
+    icon: <PollIcon />,
+    enableHeader: true,
+    breadcrumbs: [{ name: "Analytics", path: DASHBOARD_ROUTES.Analytics }],
+    children: [
+      {
+        path: DASHBOARD_ROUTES.CustomerAnalytics,
+        id: "Customers",
+        icon: <PollIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Analytics", path: DASHBOARD_ROUTES.Analytics },
+          { name: "Customers", path: DASHBOARD_ROUTES.CustomerAnalytics },
+        ],
+        component: CustomerAnalytics,
+      },
+      {
+        path: DASHBOARD_ROUTES.OrderAnalytics,
+        id: "Orders",
+        icon: <PollIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Analytics", path: DASHBOARD_ROUTES.Analytics },
+          { name: "Orders", path: DASHBOARD_ROUTES.OrderAnalytics },
+        ],
+        component: CustomerOrders,
+      },
+    ],
+  },
+  {
+    path: DASHBOARD_ROUTES.Customers,
+    id: "Customers",
+    icon: <PeopleIcon />,
+    enableHeader: true,
+    breadcrumbs: [{ name: "Customers", path: DASHBOARD_ROUTES.Customers }],
+    children: [
+      {
+        path: DASHBOARD_ROUTES.CustomerActivity,
+        id: "Activity",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Activity", path: DASHBOARD_ROUTES.CustomerActivity },
+        ],
+        component: CustomerActivity,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerSearch,
+        id: "Search",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Search", path: DASHBOARD_ROUTES.CustomerSearch },
+        ],
+        component: CustomerSearch,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerCreate,
+        id: "Create",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Create", path: DASHBOARD_ROUTES.CustomerCreate },
+        ],
+        component: CustomerCreate,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerCreateAccount,
+        id: "CreateAccount",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Create", path: DASHBOARD_ROUTES.CustomerCreate },
+          {
+            name: "CreateAccount",
+            path: DASHBOARD_ROUTES.CustomerCreateAccount,
+          },
+        ],
+        component: CustomerCreateAccount,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerCreateOrder,
+        id: "CreateOrder",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Create", path: DASHBOARD_ROUTES.CustomerCreate },
+          { name: "CreateOrder", path: DASHBOARD_ROUTES.CustomerCreateOrder },
+        ],
+        component: CustomerCreateAddOrder,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerCreatePayment,
+        id: "CreatePayment",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Create", path: DASHBOARD_ROUTES.CustomerCreate },
+          {
+            name: "CreatePayment",
+            path: DASHBOARD_ROUTES.CustomerCreatePayment,
+          },
+        ],
+        component: CustomerCreateAddPayment,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerCreateSpecial,
+        id: "CreateSpecial",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Create", path: DASHBOARD_ROUTES.CustomerCreate },
+          {
+            name: "CreateSpecial",
+            path: DASHBOARD_ROUTES.CustomerCreateSpecial,
+          },
+        ],
+        component: CustomerCreateNewSpecial,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerCreatePaymentMethod,
+        id: "CreatePaymentMethod",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Create", path: DASHBOARD_ROUTES.CustomerCreate },
+          {
+            name: "CreatePaymentMethod",
+            path: DASHBOARD_ROUTES.CustomerCreatePaymentMethod,
+          },
+        ],
+        component: CustomerCreatePaymentMethod,
+      },
+    ],
+  },
+];
 
 // Routes using the Dashboard layout
-export const dashboardLayoutRoutes = [
-  dashboardRoute,
-  ordersRoute,
-  paymentRoute,
-  accountsRoute,
-  reportsRoutes,
-  accountDetailsRoutes,
-];
+export const dashboardLayoutRoutes = [...dashboardRoutes];
 
 // Routes visible in the sidebar
-export const sidebarRoutes = [
-  dashboardRoute,
-  ordersRoute,
-  paymentRoute,
-  accountsRoute,
-  reportsRoutes,
-];
+export const sidebarRoutes = [...sideRoutes];

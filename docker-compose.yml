@@ -1,17 +1,14 @@
 version: '2.2'
 services:
-  vh-paymemt-bo:
-    container_name: 'vh-paymemt-bo'
-    image: '${IMAGE_NAME}'
+  vh-dash:
+    image: "${IMAGE_NAME}"
     cpus: '0.1'
     mem_limit: 50M
     ports:
-      - 8087:80
-    environment:
-      REACT_APP_STAGING: '${REACT_APP_STAGING}'
+      - 8080:80
     volumes:
       - /opt/$CI_PROJECT_PATH/public/config/:/usr/share/nginx/html/config/
 networks:
-  default:
-    external:
-      name: vh
+    default:
+        external:
+            name: vh
