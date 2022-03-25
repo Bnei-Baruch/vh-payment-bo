@@ -26,10 +26,10 @@ build_staging:
     - docker push $STAGING_LATEST_IMAGE
   only:
     - master
-    - staging
-    - dynamic
 
 deploy_staging:
+  variables:
+    REACT_APP_STAGING: 'true'
   #image: tmaier/docker-compose:latest
   image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.5.0
   stage: deploy
@@ -44,8 +44,6 @@ deploy_staging:
     - IMAGE_NAME=$STAGING_IMAGE docker-compose up -d
   only:
     - master
-    - staging
-    - dynamic
 
 
 build_production:
