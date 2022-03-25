@@ -1,14 +1,15 @@
 version: '2.2'
 services:
-  vh-dash:
+  vh-payment-bo:
+    container_name: 'vh-payment-bo'
     image: "${IMAGE_NAME}"
     cpus: '0.1'
     mem_limit: 50M
     ports:
-      - 8080:80
+      - 8087:80
     volumes:
       - /opt/$CI_PROJECT_PATH/public/config/:/usr/share/nginx/html/config/
 networks:
-    default:
-        external:
-            name: vh
+  default:
+      external:
+        name: vh
