@@ -1,4 +1,4 @@
-export const PAYMENTS_ROOT = "/payments";
+export const PAYMENTS_ROOT = "/admin/payments";
 export const ROOT = "/";
 
 export const DASHBOARD_ROUTES = {
