@@ -4,8 +4,8 @@ include:
     file: 'front-std.yaml'
 
 variables:
-  BUILD_FOR_URL: '/admin/events'
-  
+  BUILD_FOR_URL: '/admin/payments'
+
 # stages:
 #   - build
 #   - deploy
