@@ -1,81 +1,89 @@
-stages:
-  - build
-  - deploy
+include:
+  - project: 'vh/ci_templates'
+    ref: 'master'
+    file: 'front-std.yaml'
 
 variables:
-  STAGING_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-  STAGING_LATEST_IMAGE: $CI_REGISTRY_IMAGE:staging
-  PROD_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
-  PROD_LATEST_IMAGE: $CI_REGISTRY_IMAGE:latest
-  STAGING_URL: "/admin/payments/"
-  PRODUCTION_URL: "/admin/payments/"
+  BUILD_FOR_URL: '/admin/events'
+  
+# stages:
+#   - build
+#   - deploy
 
-build_staging:
-  image: docker:latest
-  stage: build
-  tags:
-    - dockerbuild
-  services:
-    - docker:19.03.12-dind
-  script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - docker pull $STAGING_LATEST_IMAGE
-    - docker build --cache-from $STAGING_LATEST_IMAGE --build-arg REACT_APP_COMMIT_SHA=$CI_COMMIT_SHORT_SHA --build-arg PUBLIC_URL=$STAGING_URL -t $STAGING_IMAGE .
-    - docker tag $STAGING_IMAGE $STAGING_LATEST_IMAGE
-    - docker push $STAGING_IMAGE
-    - docker push $STAGING_LATEST_IMAGE
-  only:
-    - master
+# variables:
+#   STAGING_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+#   STAGING_LATEST_IMAGE: $CI_REGISTRY_IMAGE:staging
+#   PROD_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+#   PROD_LATEST_IMAGE: $CI_REGISTRY_IMAGE:latest
+#   STAGING_URL: "/admin/payments/"
+#   PRODUCTION_URL: "/admin/payments/"
 
-deploy_staging:
-  variables:
-    REACT_APP_STAGING: 'true'
-  #image: tmaier/docker-compose:latest
-  image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.5.0
-  stage: deploy
-  tags:
-    - staging
-  script:
-    - mkdir -p /opt/$CI_PROJECT_PATH || true
-    - env
-    - for variable in "${!DYN_STAGING@}"; do echo "${variable#DYN_STAGING_}"="${!variable}"; export "${variable#DYN_STAGING_}"="${!variable}"; done;
-    - gomplate --input-dir=config-templates --output-map="/opt/$CI_PROJECT_PATH/public/config/{{ .in | strings.ReplaceAll \".js\" \"-${CI_COMMIT_SHORT_SHA}.js\" }}"
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - IMAGE_NAME=$STAGING_IMAGE docker-compose up -d
-  only:
-    - master
+# build_staging:
+#   image: docker:latest
+#   stage: build
+#   tags:
+#     - dockerbuild
+#   services:
+#     - docker:19.03.12-dind
+#   script:
+#     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+#     - docker pull $STAGING_LATEST_IMAGE
+#     - docker build --cache-from $STAGING_LATEST_IMAGE --build-arg REACT_APP_COMMIT_SHA=$CI_COMMIT_SHORT_SHA --build-arg PUBLIC_URL=$STAGING_URL -t $STAGING_IMAGE .
+#     - docker tag $STAGING_IMAGE $STAGING_LATEST_IMAGE
+#     - docker push $STAGING_IMAGE
+#     - docker push $STAGING_LATEST_IMAGE
+#   only:
+#     - master
+
+# deploy_staging:
+#   variables:
+#     REACT_APP_STAGING: 'true'
+#   #image: tmaier/docker-compose:latest
+#   image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.5.0
+#   stage: deploy
+#   tags:
+#     - staging
+#   script:
+#     - mkdir -p /opt/$CI_PROJECT_PATH || true
+#     - env
+#     - for variable in "${!DYN_STAGING@}"; do echo "${variable#DYN_STAGING_}"="${!variable}"; export "${variable#DYN_STAGING_}"="${!variable}"; done;
+#     - gomplate --input-dir=config-templates --output-map="/opt/$CI_PROJECT_PATH/public/config/{{ .in | strings.ReplaceAll \".js\" \"-${CI_COMMIT_SHORT_SHA}.js\" }}"
+#     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+#     - IMAGE_NAME=$STAGING_IMAGE docker-compose up -d
+#   only:
+#     - master
 
 
-build_production:
-  image: docker:latest
-  stage: build
-  tags:
-    - dockerbuild
-  services:
-    - docker:19.03.12-dind
-  script:
-    - env
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - docker build --build-arg IS_STAGING_BUILD=false --build-arg REACT_APP_COMMIT_SHA=$CI_COMMIT_SHORT_SHA --build-arg PUBLIC_URL=$PRODUCTION_URL -t $PROD_IMAGE .
-    - docker tag $PROD_IMAGE $PROD_LATEST_IMAGE
-    - docker push $PROD_IMAGE
-    - docker push $PROD_LATEST_IMAGE
-  only:
-    - tags
+# build_production:
+#   image: docker:latest
+#   stage: build
+#   tags:
+#     - dockerbuild
+#   services:
+#     - docker:19.03.12-dind
+#   script:
+#     - env
+#     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+#     - docker build --build-arg IS_STAGING_BUILD=false --build-arg REACT_APP_COMMIT_SHA=$CI_COMMIT_SHORT_SHA --build-arg PUBLIC_URL=$PRODUCTION_URL -t $PROD_IMAGE .
+#     - docker tag $PROD_IMAGE $PROD_LATEST_IMAGE
+#     - docker push $PROD_IMAGE
+#     - docker push $PROD_LATEST_IMAGE
+#   only:
+#     - tags
 
-deploy_production:
-  #image: tmaier/docker-compose:latest
-  image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.5.0
-  stage: deploy
-  tags:
-    - production
-  script:
-    - mkdir -p /opt/$CI_PROJECT_PATH || true
-    - env
-    - for variable in "${!DYN_PROD@}"; do echo "${variable#DYN_PROD_}"="${!variable}"; export "${variable#DYN_PROD_}"="${!variable}"; done;
-    - gomplate --input-dir=config-templates --output-map="/opt/$CI_PROJECT_PATH/public/config/{{ .in | strings.ReplaceAll \".js\" \"-${CI_COMMIT_SHORT_SHA}.js\" }}"
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - IMAGE_NAME=$PROD_IMAGE docker-compose up -d
-  only:
-    - tags
-  when: manual
+# deploy_production:
+#   #image: tmaier/docker-compose:latest
+#   image: gitlab.bbdev.team:5050/vh/buildutils/buildutil:0.5.0
+#   stage: deploy
+#   tags:
+#     - production
+#   script:
+#     - mkdir -p /opt/$CI_PROJECT_PATH || true
+#     - env
+#     - for variable in "${!DYN_PROD@}"; do echo "${variable#DYN_PROD_}"="${!variable}"; export "${variable#DYN_PROD_}"="${!variable}"; done;
+#     - gomplate --input-dir=config-templates --output-map="/opt/$CI_PROJECT_PATH/public/config/{{ .in | strings.ReplaceAll \".js\" \"-${CI_COMMIT_SHORT_SHA}.js\" }}"
+#     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+#     - IMAGE_NAME=$PROD_IMAGE docker-compose up -d
+#   only:
+#     - tags
+#   when: manual
