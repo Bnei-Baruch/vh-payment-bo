@@ -3,8 +3,6 @@ import i18next from "i18next";
 import {
   FETCH_PROFILE_SUCCESS,
   FETCH_PROFILE_FAILED,
-  TOGGLE_PROFILE_WINDOW,
-  UPDATE_PROFILE_SUCCESS,
   UPDATE_PROFILE_FAILED,
 } from "../constants";
 
@@ -16,61 +14,12 @@ const apiProfile = (method, url, data, token) => {
   });
 };
 
-export const updateProfile = (data) => {
-  return (dispatch, getState) => {
-    const { subject, token } = getState().userReducer.info.keycloak;
-    const { isProfileExist } = getState().profileReducer;
-    const patchURL = `${window.APP_CONFIG.PROFILE_URL}/${subject}`;
-
-    const sendProfile = (method, url, data) => {
-      return axios[method](url, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    };
-
-    isProfileExist
-      ? sendProfile("patch", patchURL, data)
-          .then((res) => {
-            dispatch({
-              type: UPDATE_PROFILE_SUCCESS,
-              payload: i18next.t("Dashboard.Profile.profileUpdated"),
-            });
-            dispatch(fetchProfile());
-            console.log("Success patch response:", res);
-          })
-          .catch((error) => {
-            dispatch({
-              type: UPDATE_PROFILE_FAILED,
-              payload: i18next.t("Global.requestError"),
-            });
-            console.error("Failed patch response:", error);
-          })
-          .finally(() =>
-            dispatch({ type: TOGGLE_PROFILE_WINDOW, payload: true })
-          )
-      : sendProfile("post", window.APP_CONFIG.PROFILE_URL, data)
-          .then((res) => {
-            dispatch(fetchProfile());
-            console.log("Success post response:", res);
-          })
-          .catch((error) => {
-            dispatch({
-              type: UPDATE_PROFILE_SUCCESS,
-              payload: i18next.t("Global.requestError"),
-            });
-            console.error("Failed post response:", error);
-          });
-  };
-};
-
 export const fetchProfile = () => {
   return (dispatch, getState) => {
     const { subject, token, profile } = getState().userReducer.info.keycloak;
 
     return axios
-      .get(`${window.APP_CONFIG.PROFILE_URL}/${subject}`, {
+      .get(`${window.APP_CONFIG.VH_API_BASE_URL}/profile/v1/profile/${subject}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -86,7 +35,7 @@ export const fetchProfile = () => {
               primary_email: profile.email,
             };
 
-            apiProfile("post", window.APP_CONFIG.PROFILE_URL, data, token)
+            apiProfile("post", window.APP_CONFIG.VH_API_BASE_URL + '/profile/v1/profile', data, token)
               .then((res) => {
                 dispatch(fetchProfile());
                 console.log("Success post response:", res);

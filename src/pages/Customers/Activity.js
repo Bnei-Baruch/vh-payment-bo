@@ -1,35 +1,65 @@
 import { Grid } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import React from 'react'
+import moment from "moment";
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import getCustomerActivity from '../../services/activity.service';
 const StyledGrid = styled(Grid)`
   background-color: #fff;
 `;
-const options = {
-  selectableRows: false,
-  download: false,
-  print: false,
-  pagination: false,
-  responsive: "scroll",
-  search: false,
-  filter: false,
-  viewColumns: false,
-};
 export default function Activity() {
   const { t } = useTranslation();
+  const [page, setPage] = React.useState(0);
+  const [totalCount, setTotalCount] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const options = {
+    selectableRows: false,
+    download: false,
+    print: false,
+    search: false,
+    filter: false,
+    viewColumns: false,
+    count: 200,
+    rowsPerPageOptions: [10, 25, 50, 100],
+    rowsPerPage: rowsPerPage,
+    serverSide: true,
+    pagination: true,
+    onTableChange: (action, tableState) => {
+      if (action === 'changeRowsPerPage') {
+        getCustomerActivity(tableState.rowsPerPage, tableState.rowsPerPage * page);
+        setRowsPerPage(tableState.rowsPerPage);
+      }
+      if (action === "changePage") {
+        getCustomerActivity(rowsPerPage, tableState.page * rowsPerPage);
+        setPage(tableState.page);
+      }
+    }
+  };
   const columns = [
     {
-      name: "dateTime",
+      name: "created_at",
       label: t("Activity.dateTime"),
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value) => (
+          <>{moment(value).format("DD-MM-YYYY HH:MM:SS")} </>
+        )
+      },
+
+    },
+    {
+      name: "first_name",
+      label: t("Activity.firstName"),
       options: {
         filter: false,
         sort: false,
       },
     },
     {
-      name: "name",
-      label: t("Activity.userName"),
+      name: "last_name",
+      label: t("Activity.lastName"),
       options: {
         filter: false,
         sort: false,
@@ -44,7 +74,7 @@ export default function Activity() {
       },
     },
     {
-      name: "productType",
+      name: "product_type",
       label: t("Activity.productType"),
       options: {
         filter: false,
@@ -76,7 +106,7 @@ export default function Activity() {
       },
     },
     {
-      name: "status",
+      name: "payment_status",
       label: t("Activity.status"),
       options: {
         filter: false,
@@ -92,48 +122,26 @@ export default function Activity() {
       },
     },
     {
-      name: "paramX",
+      name: "additional_details_param_x",
       label: t("Activity.paramX"),
-      options: {
-        filter: false,
-        sort: false,
-      },
-    },
-    {
-      name: "orderId",
-      label: t("Activity.orderId"),
-      options: {
-        filter: false,
-        sort: false,
-      },
-    },
-    {
-      name: "accountId",
-      label: t("Activity.accountId"),
-      options: {
-        filter: false,
-        sort: false,
-      },
-    },
-    {
-      name: "paymentMethodDetails",
-      label: t("Activity.paymentMethodDetails"),
       options: {
         filter: false,
         sort: false,
       },
     }
   ];
+
+  const [customerActivity, setCustomerActivity] = React.useState([]);
+
+  React.useEffect(() => {
+    getCustomerActivity(10, 0).then(res => setCustomerActivity(res.data) && setTotalCount(res.totalCount));
+  }, [])
   return (
-    <Grid container spacing={6}>
-      <StyledGrid item xs={12}>
-        <MUIDataTable
-          title={"Search Special Result"}
-          data={[]}
-          columns={columns}
-          options={options}
-        />
-      </StyledGrid>
-    </Grid>
+    <MUIDataTable
+      title={"Activity"}
+      data={customerActivity}
+      columns={columns}
+      options={options}
+    />
   )
 }
