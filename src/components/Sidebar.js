@@ -241,7 +241,6 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
 
       _routes = { ..._routes, [index]: isActive || isOpen || isHome };
     });
-
     return _routes;
   };
 
@@ -294,9 +293,9 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
                       timeout="auto"
                       unmountOnExit
                     >
-                      {category.children.map((route, index) => (
+                      {category.children.map((route, childindex) => (
                         <SidebarLink
-                          key={index}
+                          key={childindex}
                           name={t(`${route.id}.name`)}
                           to={route.path}
                           icon={route.icon}
