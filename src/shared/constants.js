@@ -2,13 +2,6 @@ export const ARVUT_URL = "https://arvut.kli.one";
 export const PAYMENT_URL = "https://kli.one/pay/order/1";
 export const QUESTION_URL = "https://qst.kli.one";
 
-//export const PROFILE_URL = 'http://localhost:7471/v1/profile';
-export const PROFILE_URL =
-  window.APP_CONFIG.KEYCLOAK_URL + "/profile/v1/profile";
-// process.env.REACT_APP_STAGING === 'true' ?
-// 'https://api.eurokab.info/profile/v1/profile' :
-// 'https://api.kli.one/profile/v1/profile';
-
 export const GOOGLE_CALENDAR_API_KEY =
   process.env.REACT_APP_GOOGLE_CALENDAR_API_KEY;
 export const GOOGLE_CALENDAR_HE = process.env.REACT_APP_GOOGLE_CALENDAR_ID_HE;
