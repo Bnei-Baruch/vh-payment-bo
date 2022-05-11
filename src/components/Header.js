@@ -26,7 +26,7 @@ import { CHAT_AND_NOTIFICATION_ICONS, SEARCH_BAR } from "../shared/constants";
 import { setLoggedInUser } from "../redux/actions/userActions";
 import ModalWindow from "./ModalWindow";
 import { DASHBOARD_ROUTES } from "../routes/dashboardRoutes";
-
+import LanguageIcon from '@material-ui/icons/Language';
 const AppBar = styled(MuiAppBar)`
   background: ${(props) => props.theme.header.background};
   color: ${(props) => props.theme.header.color};
@@ -45,6 +45,13 @@ const FlagButton = styled(MuiIconButton)`
   svg {
     width: 22px;
     height: 22px;
+  }
+  span {
+    color: #747474;
+    font-size: 14px;
+  }
+  :hover {
+    background-color: transparent !important;
   }
   @media (max-width: 600px) {
     padding: 10px !important;
@@ -155,11 +162,8 @@ function LanguageMenu() {
         onClick={toggleMenu}
         color="inherit"
       >
-        {/* Don't replace with emoji as it's not supported in Windows */}
-        <Flag
-          src={`${window.APP_CONFIG.BASE_STATIC_PATH}/img/flags/${i18next.language}.png`}
-          alt={i18next.language}
-        />
+        <LanguageIcon /> &nbsp;
+        {i18next.language}
       </FlagButton>
       <Menu
         id="menu-appbar"
