@@ -26,6 +26,14 @@
       "createdAt": "Created At",
       "status": "Status"
     },
+    "UserDetails": {
+      "name": "User Details",
+      "user": "User",
+      "payment": "Payment",
+      "cancelMembership": "Cancel Membership",
+      "mergeFromOtherAccount": "Merge From Other Account",
+      "offlinePayment": "Offline Payment"
+    },
     "Activity": {
       "name": "Activity",
       "dateTime": "Date-Time",
@@ -42,7 +50,8 @@
       "accountId": "Account ID",
       "paymentMethodDetails": "Payment Method Details",
       "firstName": "First Name",
-      "lastName": "Last Name"
+      "lastName": "Last Name",
+      "noRecords": "Sorry, no matching records found"
     },
     "CreatePayment": {
       "name": "Create Payment"

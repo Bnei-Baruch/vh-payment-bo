@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { searchCustomers } from "../../../redux/actions/customersActions";
+import { DASHBOARD_ROUTES } from "../../../routes/dashboardRoutes";
 
 export const useData = () => {
+  const { push } = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [searchQuery, serSearchQuery] = useState("");
@@ -23,6 +27,17 @@ export const useData = () => {
     filter: false,
     viewColumns: false,
     sort: false,
+    onRowClick: (rowData) =>
+      push(DASHBOARD_ROUTES.CustomerDetails, { userId: rowData[2] }),
+    textLabels: {
+      body: {
+        noMatch: loading ? (
+          <CircularProgress size={20} color="inherit" />
+        ) : (
+          t("Activity.noRecords")
+        ),
+      },
+    },
   };
 
   const columns = [

@@ -10,6 +10,9 @@ const CustomerActivity = async(() =>
 );
 const CustomerCreate = async(() => import("../pages/Customers/CreateCustomer"));
 const CustomerSearch = async(() => import("../pages/Customers/Search/Search"));
+const CustomerDetails = async(() =>
+  import("../pages/Customers/UserDetails/UserDetails")
+);
 const CustomerCreateAccount = async(() =>
   import("../pages/Customers/Create/AddAccount")
 );
@@ -162,6 +165,18 @@ const dashboardRoutes = [
           { name: "Search", path: DASHBOARD_ROUTES.CustomerSearch },
         ],
         component: CustomerSearch,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerDetails,
+        id: "UserDetails",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Search", path: DASHBOARD_ROUTES.CustomerSearch },
+          { name: "UserDetails", path: DASHBOARD_ROUTES.CustomerDetails },
+        ],
+        component: CustomerDetails,
       },
       {
         path: DASHBOARD_ROUTES.CustomerCreate,

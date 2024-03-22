@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button, Grid, TextField, CircularProgress } from "@material-ui/core";
+import { Button, Grid, TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import MUIDataTable from "mui-datatables";
 import styled from "styled-components";
@@ -45,18 +45,14 @@ export default function Search() {
             style={{ height: "100%" }}
             onClick={onPressSearch}
           >
-            {loading ? (
-              <CircularProgress size={20} color="info" />
-            ) : (
-              t("Search.name")
-            )}
+            {t("Search.name")}
           </Button>
         </span>
       </Grid>
       <StyledGrid item xs={12}>
         <MUIDataTable
           title={"Search Result"}
-          data={searchResult}
+          data={loading ? [] : searchResult}
           columns={columns}
           options={options}
         />

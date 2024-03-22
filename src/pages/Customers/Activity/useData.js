@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+
 import { fetchActivity } from "../../../redux/actions/customersActions";
 
 export const useData = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { activity } = useSelector((state) => state.customersReducer);
+  const { activity, loading } = useSelector((state) => state.customersReducer);
   const rowsPerPageOptions = [10, 25, 50, 100];
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
@@ -25,6 +27,15 @@ export const useData = () => {
     selectableRows: "none",
     count: activity.totalCount,
     sort: false,
+    textLabels: {
+      body: {
+        noMatch: loading ? (
+          <CircularProgress size={20} color="inherit" />
+        ) : (
+          t("Activity.noRecords")
+        ),
+      },
+    },
     onTableChange: (action, tableState) => {
       switch (action) {
         case "changePage":
@@ -100,5 +111,5 @@ export const useData = () => {
     dispatch(fetchActivity(rowsPerPage, 0));
   }, [dispatch, rowsPerPage]);
 
-  return { options, columns, customerActivity: activity.list };
+  return { options, loading, columns, customerActivity: activity.list };
 };

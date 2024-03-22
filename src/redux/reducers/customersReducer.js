@@ -1,6 +1,10 @@
 import {
   FETCH_ACTIVITY_FAILED,
   FETCH_ACTIVITY_SUCCESS,
+  GET_ORDERS_FAILED,
+  GET_ORDERS_SUCCESS,
+  GET_PAYMENTS_FAILED,
+  GET_PAYMENTS_SUCCESS,
   SEARCH_CUSTOMERS_FAILED,
   SEARCH_CUSTOMERS_SUCCESS,
   SET_CUSTOMERS_LOADING,
@@ -13,6 +17,8 @@ const INITIAL_STATE = {
     list: [],
     totalCount: 0,
   },
+  orders: [],
+  payments: [],
 };
 
 export default function reducer(state = INITIAL_STATE, actions) {
@@ -45,6 +51,30 @@ export default function reducer(state = INITIAL_STATE, actions) {
       return {
         ...state,
         activity: INITIAL_STATE.activity,
+      };
+
+    case GET_ORDERS_SUCCESS:
+      return {
+        ...state,
+        orders: actions.payload,
+      };
+
+    case GET_ORDERS_FAILED:
+      return {
+        ...state,
+        orders: INITIAL_STATE.orders,
+      };
+
+    case GET_PAYMENTS_SUCCESS:
+      return {
+        ...state,
+        payments: actions.payload,
+      };
+
+    case GET_PAYMENTS_FAILED:
+      return {
+        ...state,
+        payments: INITIAL_STATE.payments,
       };
 
     default:
