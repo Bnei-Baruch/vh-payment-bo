@@ -1,16 +1,18 @@
 import React from "react";
+
 import {
   BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
 } from "react-router-dom";
-import { dashboardLayoutRoutes } from "./index";
 
+import { dashboardLayoutRoutes } from "./index";
 import DashboardLayout from "../layouts/Dashboard";
 import Page404 from "../pages/auth/Page404";
 import DashboardHeader from "../components/Header/Header";
 import Auth from "../config/Auth";
+import { PAYMENTS_ROOT } from "./dashboardRoutes";
 
 const childRoutes = (Layout, routes) =>
   routes.map(
@@ -62,7 +64,7 @@ const Routes = () => (
   <Router>
     <Switch>
       {childRoutes(DashboardLayout, dashboardLayoutRoutes)}
-      <Redirect to="/admin/payments/analytics/customer" />
+      <Redirect to={`${PAYMENTS_ROOT}/customers/activity`} />
       <Route
         render={() => (
           <Auth>

@@ -19,7 +19,12 @@
       "email": "Email",
       "language": "Language",
       "country": "Country",
-      "action": "Action"
+      "action": "Action",
+      "userId": "User ID",
+      "studyStartYear": "Study Start Year",
+      "city": "City",
+      "createdAt": "Created At",
+      "status": "Status"
     },
     "Activity": {
       "name": "Activity",
@@ -35,7 +40,9 @@
       "paramX": "Param X",
       "orderId": "Order ID",
       "accountId": "Account ID",
-      "paymentMethodDetails": "Payment Method Details"
+      "paymentMethodDetails": "Payment Method Details",
+      "firstName": "First Name",
+      "lastName": "Last Name"
     },
     "CreatePayment": {
       "name": "Create Payment"
