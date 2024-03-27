@@ -1,11 +1,12 @@
 import React from "react";
 
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Button, Grid, TextField, Select, MenuItem } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import MUIDataTable from "mui-datatables";
 import styled from "styled-components";
 
 import { useData } from "./useData";
+import "./styles.css";
 
 const StyledGrid = styled(Grid)`
   margin: 25px 0px !important;
@@ -18,7 +19,9 @@ export default function Search() {
     options,
     columns,
     loading,
+    queryType,
     searchQuery,
+    serQueryType,
     searchResult,
     onPressSearch,
     serSearchQuery,
@@ -27,27 +30,32 @@ export default function Search() {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <span>
-          <TextField
-            id="outlined-basic"
-            label="Search"
-            placeholder="abc@example.com"
-            variant="outlined"
-            value={searchQuery}
-            onChange={(e) => serSearchQuery(e.target.value)}
-            style={{ minWidth: "350px", marginRight: "10px" }}
-          />
-        </span>
-        <span>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ height: "100%" }}
-            onClick={onPressSearch}
-          >
-            {t("Search.name")}
-          </Button>
-        </span>
+        <TextField
+          id="outlined-basic"
+          label="Search"
+          placeholder="abc@example.com"
+          variant="outlined"
+          value={searchQuery}
+          className="s-text-field"
+          onChange={(e) => serSearchQuery(e.target.value)}
+        />
+        <Select
+          value={queryType}
+          className="query-type-selector"
+          onChange={(e) => serQueryType(e.target.value)}
+        >
+          <MenuItem value="email">Mail</MenuItem>
+          <MenuItem value="name">Name</MenuItem>
+          <MenuItem value="paramX">Param X</MenuItem>
+        </Select>
+        <Button
+          variant="contained"
+          color="primary"
+          className="s-search-btn"
+          onClick={onPressSearch}
+        >
+          {t("Search.name")}
+        </Button>
       </Grid>
       <StyledGrid item xs={12}>
         <MUIDataTable

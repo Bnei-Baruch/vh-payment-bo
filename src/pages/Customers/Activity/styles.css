@@ -1,0 +1,3 @@
+.MuiTable-root tbody tr:hover {
+    cursor: pointer;
+}

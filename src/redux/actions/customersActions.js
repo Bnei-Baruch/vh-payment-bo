@@ -11,15 +11,25 @@ import {
   SET_CUSTOMERS_LOADING,
 } from "../constants";
 
-export const searchCustomers = (email) => {
+export const searchCustomers = (query, type) => {
   return (dispatch) => {
     dispatch({ type: SET_CUSTOMERS_LOADING, payload: true });
+
+    const url =
+      type === "paramX"
+        ? `/pay/payments/payment/${query}`
+        : `/profile/v1/profiles?${type}=${query}`;
+
     axios({
-      url: `/profile/v1/profiles?skip=0&limit=20&email=${email}`,
+      url,
       method: "get",
     })
       .then((resp) =>
-        dispatch({ type: SEARCH_CUSTOMERS_SUCCESS, payload: resp })
+        dispatch(
+          type === "paramX"
+            ? searchCustomers(resp?.Email, "email")
+            : { type: SEARCH_CUSTOMERS_SUCCESS, payload: resp ?? [] }
+        )
       )
       .catch((e) => {
         console.log("SEARCH_CUSTOMERS_FAILED", e);

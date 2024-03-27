@@ -2,6 +2,18 @@
     width: calc(100% - 260px);
 }
 
+.ud-back-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.ud-back-btn span {
+    font-size: 19px;
+    font-weight: 600;
+    color: #1B2430;
+}
+
 .ud-label-wrapper {
     margin: 40px 0 20px;
     display: flex;
@@ -39,6 +51,10 @@
 
 .ud-table th {
     display: none;
+}
+
+.MuiTable-root tbody tr:hover {
+    cursor: pointer;
 }
 
 .ud-button-group {

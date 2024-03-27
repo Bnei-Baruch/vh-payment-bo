@@ -1,6 +1,7 @@
 import React from "react";
 
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import MergeTypeIcon from "@material-ui/icons/MergeType";
 import CancelIcon from "@material-ui/icons/Cancel";
 import { useTranslation } from "react-i18next";
@@ -13,6 +14,7 @@ import "./styles.css";
 export default function UserDetails() {
   const { t } = useTranslation();
   const {
+    goBack,
     orders,
     loading,
     options,
@@ -25,6 +27,10 @@ export default function UserDetails() {
 
   return (
     <>
+      <div className="ud-back-btn" onClick={goBack}>
+        <ArrowBackIosIcon />
+        <span>{t("UserDetails.backToSearch")}</span>
+      </div>
       <div className="ud-label-wrapper">
         <div className="ud-label">{t("Orders.name")}</div>
         <div className="ud-label-mark" />

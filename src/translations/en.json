@@ -32,7 +32,8 @@
       "payment": "Payment",
       "cancelMembership": "Cancel Membership",
       "mergeFromOtherAccount": "Merge From Other Account",
-      "offlinePayment": "Offline Payment"
+      "offlinePayment": "Offline Payment",
+      "backToSearch": "Back to search"
     },
     "Activity": {
       "name": "Activity",

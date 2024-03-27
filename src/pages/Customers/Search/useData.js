@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 
 import moment from "moment";
@@ -14,6 +15,7 @@ export const useData = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [searchQuery, serSearchQuery] = useState("");
+  const [queryType, serQueryType] = useState("email");
   const { loading, searchResult } = useSelector(
     (state) => state.customersReducer
   );
@@ -92,18 +94,26 @@ export const useData = () => {
   ];
 
   useEffect(() => {
-    dispatch(searchCustomers(""));
+    dispatch(searchCustomers("", queryType));
   }, [dispatch]);
 
   const onPressSearch = () => {
-    dispatch(searchCustomers(searchQuery));
+    dispatch(searchCustomers(searchQuery, queryType));
   };
+
+  useEffect(() => {
+    if (searchQuery.length > 0) {
+      dispatch(searchCustomers(searchQuery, queryType));
+    }
+  }, [queryType]);
 
   return {
     options,
     columns,
     loading,
+    queryType,
     searchQuery,
+    serQueryType,
     searchResult,
     onPressSearch,
     serSearchQuery,
