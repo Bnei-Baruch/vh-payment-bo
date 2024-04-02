@@ -1,4 +1,5 @@
 import axios from "../../services/axios";
+import { ApiCustomers } from "../api/customersApi";
 import {
   FETCH_ACTIVITY_FAILED,
   FETCH_ACTIVITY_SUCCESS,
@@ -12,30 +13,25 @@ import {
 } from "../constants";
 
 export const searchCustomers = (query, type) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({ type: SET_CUSTOMERS_LOADING, payload: true });
+    try {
+      const result =
+        type === "paramX"
+          ? await ApiCustomers.searchByParamX(query)
+          : await ApiCustomers.searchByEmailOrName(type, query);
 
-    const url =
-      type === "paramX"
-        ? `/pay/payments/payment/${query}`
-        : `/profile/v1/profiles?${type}=${query}`;
-
-    axios({
-      url,
-      method: "get",
-    })
-      .then((resp) =>
-        dispatch(
-          type === "paramX"
-            ? searchCustomers(resp?.Email, "email")
-            : { type: SEARCH_CUSTOMERS_SUCCESS, payload: resp ?? [] }
-        )
-      )
-      .catch((e) => {
-        console.log("SEARCH_CUSTOMERS_FAILED", e);
-        dispatch({ type: SEARCH_CUSTOMERS_FAILED });
-      })
-      .finally(() => dispatch({ type: SET_CUSTOMERS_LOADING, payload: false }));
+      dispatch(
+        type === "paramX"
+          ? searchCustomers(result?.Email, "email")
+          : { type: SEARCH_CUSTOMERS_SUCCESS, payload: result ?? [] }
+      );
+    } catch (e) {
+      console.log("SEARCH_CUSTOMERS_FAILED", e);
+      dispatch({ type: SEARCH_CUSTOMERS_FAILED });
+    } finally {
+      dispatch({ type: SET_CUSTOMERS_LOADING, payload: false });
+    }
   };
 };
 

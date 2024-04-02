@@ -21,10 +21,10 @@ export default function Search() {
     loading,
     queryType,
     searchQuery,
-    serQueryType,
+    setQueryType,
     searchResult,
     onPressSearch,
-    serSearchQuery,
+    setSearchQuery,
   } = useData();
 
   return (
@@ -37,12 +37,12 @@ export default function Search() {
           variant="outlined"
           value={searchQuery}
           className="s-text-field"
-          onChange={(e) => serSearchQuery(e.target.value)}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <Select
           value={queryType}
           className="query-type-selector"
-          onChange={(e) => serQueryType(e.target.value)}
+          onChange={(e) => setQueryType(e.target.value)}
         >
           <MenuItem value="email">Mail</MenuItem>
           <MenuItem value="name">Name</MenuItem>

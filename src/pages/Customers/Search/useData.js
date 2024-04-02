@@ -14,8 +14,8 @@ export const useData = () => {
   const { push } = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [searchQuery, serSearchQuery] = useState("");
-  const [queryType, serQueryType] = useState("email");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [queryType, setQueryType] = useState("email");
   const { loading, searchResult } = useSelector(
     (state) => state.customersReducer
   );
@@ -113,9 +113,9 @@ export const useData = () => {
     loading,
     queryType,
     searchQuery,
-    serQueryType,
+    setQueryType,
     searchResult,
     onPressSearch,
-    serSearchQuery,
+    setSearchQuery,
   };
 };
