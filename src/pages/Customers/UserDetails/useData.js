@@ -80,6 +80,7 @@ export const useData = () => {
         ? Object.keys(userData).map((key) => ({
             key,
             value:
+              //Temporary decision to visually populate the 'status' column with the deprecated V1 membership_type values until V2 membership data is retrieved from the backend.
               key === "status" ? userData[key].membership_type : userData[key],
           }))
         : [],
