@@ -36,67 +36,63 @@ export const searchCustomers = (query, type) => {
 };
 
 export const fetchActivity = (limit, counter) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({ type: SET_CUSTOMERS_LOADING, payload: true });
-    axios({
-      url: `/pay/payments/activities?limit=${limit}&skip=${counter}`,
-      method: "get",
-    })
-      .then((resp) =>
-        dispatch({
-          type: FETCH_ACTIVITY_SUCCESS,
-          payload: {
-            list: resp.data,
-            totalCount: resp.totalCount,
-          },
-        })
-      )
-      .catch((e) => {
-        console.log("FETCH_ACTIVITY_FAILED", e);
-        dispatch({ type: FETCH_ACTIVITY_FAILED });
-      })
-      .finally(() => dispatch({ type: SET_CUSTOMERS_LOADING, payload: false }));
+
+    try {
+      const activity = await ApiCustomers.getActivity(limit, counter);
+
+      dispatch({
+        type: FETCH_ACTIVITY_SUCCESS,
+        payload: {
+          list: activity.data,
+          totalCount: activity.totalCount,
+        },
+      });
+    } catch (e) {
+      console.log("FETCH_ACTIVITY_FAILED", e);
+      dispatch({ type: FETCH_ACTIVITY_FAILED });
+    } finally {
+      dispatch({ type: SET_CUSTOMERS_LOADING, payload: false });
+    }
   };
 };
 
 export const getCustomerOrders = (email) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({ type: SET_CUSTOMERS_LOADING, payload: true });
-    axios({
-      url: `/pay/v2/orders?email=${email}&limit=200`,
-      method: "get",
-    })
-      .then((resp) =>
-        dispatch({
-          type: GET_ORDERS_SUCCESS,
-          payload: resp.data,
-        })
-      )
-      .catch((e) => {
-        console.log("GET_ORDERS_FAILED", e);
-        dispatch({ type: GET_ORDERS_FAILED });
-      })
-      .finally(() => dispatch({ type: SET_CUSTOMERS_LOADING, payload: false }));
+
+    try {
+      const orders = await ApiCustomers.getOrders(email);
+
+      dispatch({
+        type: GET_ORDERS_SUCCESS,
+        payload: orders.data,
+      });
+    } catch (e) {
+      console.log("GET_ORDERS_FAILED", e);
+      dispatch({ type: GET_ORDERS_FAILED });
+    } finally {
+      dispatch({ type: SET_CUSTOMERS_LOADING, payload: false });
+    }
   };
 };
 
 export const getCustomerPayments = (email) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({ type: SET_CUSTOMERS_LOADING, payload: true });
-    axios({
-      url: `pay/payments/all/${email}`,
-      method: "get",
-    })
-      .then((resp) =>
-        dispatch({
-          type: GET_PAYMENTS_SUCCESS,
-          payload: resp.data,
-        })
-      )
-      .catch((e) => {
-        console.log("GET_PAYMENTS_FAILED", e);
-        dispatch({ type: GET_PAYMENTS_FAILED });
-      })
-      .finally(() => dispatch({ type: SET_CUSTOMERS_LOADING, payload: false }));
+
+    try {
+      const payments = await ApiCustomers.getPayments(email);
+      dispatch({
+        type: GET_PAYMENTS_SUCCESS,
+        payload: payments.data,
+      });
+    } catch (e) {
+      console.log("GET_PAYMENTS_FAILED", e);
+      dispatch({ type: GET_PAYMENTS_FAILED });
+    } finally {
+      dispatch({ type: SET_CUSTOMERS_LOADING, payload: false });
+    }
   };
 };
