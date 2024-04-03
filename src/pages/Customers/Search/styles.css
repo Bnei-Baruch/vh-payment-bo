@@ -1,0 +1,25 @@
+.s-text-field .MuiInputBase-root {
+    min-width: 350px;
+    border-radius: 4px 0 0 4px;
+}
+
+.query-type-selector {
+    min-width: 100px;
+    height: calc(100% - 0.5px);
+    padding: 10px;
+    border: 1px solid #0000003b;
+    border-left-width: 0;
+}
+
+.s-search-btn {
+    height: 100%;
+    border-radius: 0 4px 4px 0;
+}
+
+.query-type-selector::before {
+    border-bottom-width: 0;
+}
+
+.MuiTable-root tbody tr:hover {
+    cursor: pointer;
+}

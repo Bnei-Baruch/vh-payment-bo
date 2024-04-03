@@ -19,7 +19,21 @@
       "email": "Email",
       "language": "Language",
       "country": "Country",
-      "action": "Action"
+      "action": "Action",
+      "userId": "User ID",
+      "studyStartYear": "Study Start Year",
+      "city": "City",
+      "createdAt": "Created At",
+      "status": "Status"
+    },
+    "UserDetails": {
+      "name": "User Details",
+      "user": "User",
+      "payment": "Payment",
+      "cancelMembership": "Cancel Membership",
+      "mergeFromOtherAccount": "Merge From Other Account",
+      "offlinePayment": "Offline Payment",
+      "backToSearch": "Back To Search"
     },
     "Activity": {
       "name": "Activity",
@@ -35,7 +49,10 @@
       "paramX": "Param X",
       "orderId": "Order ID",
       "accountId": "Account ID",
-      "paymentMethodDetails": "Payment Method Details"
+      "paymentMethodDetails": "Payment Method Details",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "noRecords": "Sorry, no matching records found"
     },
     "CreatePayment": {
       "name": "Create Payment"

@@ -95,7 +95,7 @@ const Dashboard = ({ children, routes, width }) => {
           />
         </Hidden>
       </Drawer>
-      <AppContent>
+      <AppContent className="content-wrapper">
         <Header onDrawerToggle={handleDrawerToggle} />
         <MainContent p={isWidthUp("lg", width) ? 10 : 5}>
           {children}
