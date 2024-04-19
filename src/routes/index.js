@@ -3,6 +3,8 @@ import PollIcon from "@material-ui/icons/Poll";
 import async from "../components/Async";
 import { DASHBOARD_ROUTES } from "./dashboardRoutes";
 import PeopleIcon from "@material-ui/icons/People";
+import InsertDriveFileOutlinedIcon from "@material-ui/icons/InsertDriveFileOutlined";
+
 const CustomerAnalytics = async(() => import("../pages/Analytics/Customers"));
 const CustomerOrders = async(() => import("../pages/Analytics/Orders"));
 const CustomerActivity = async(() =>
@@ -27,6 +29,10 @@ const CustomerCreateAddOrder = async(() =>
 );
 const CustomerCreateAddPayment = async(() =>
   import("../pages/Customers/Create/AddPayment")
+);
+const Events = async(() => import("../pages/HelpHaver/Events/Events"));
+const Membership = async(() =>
+  import("../pages/HelpHaver/Membership/Membership")
 );
 
 const sideRoutes = [
@@ -100,6 +106,25 @@ const sideRoutes = [
       //     { name: "Create", path: DASHBOARD_ROUTES.CustomerCreate },
       //   ],
       //   component: CustomerCreate,
+      // },
+    ],
+  },
+  {
+    path: DASHBOARD_ROUTES.HelpHaver,
+    id: "HelpHaver",
+    icon: <InsertDriveFileOutlinedIcon />,
+    enableHeader: true,
+    breadcrumbs: [{ name: "HelpHaver", path: DASHBOARD_ROUTES.HelpHaver }],
+    children: [
+      {
+        path: DASHBOARD_ROUTES.HelpHaverMembership,
+        id: "Membership",
+        component: Membership,
+      },
+      // {
+      //   path: DASHBOARD_ROUTES.HelpHaverEvents,
+      //   id: "Events",
+      //   component: Events,
       // },
     ],
   },
@@ -260,6 +285,24 @@ const dashboardRoutes = [
           },
         ],
         component: CustomerCreatePaymentMethod,
+      },
+    ],
+  },
+  {
+    path: DASHBOARD_ROUTES.HelpHaver,
+    id: "HelpHaver",
+    enableHeader: true,
+    breadcrumbs: [{ name: "HelpHaver", path: DASHBOARD_ROUTES.HelpHaver }],
+    children: [
+      {
+        path: DASHBOARD_ROUTES.HelpHaverMembership,
+        id: "Membership",
+        component: Membership,
+      },
+      {
+        path: DASHBOARD_ROUTES.HelpHaverEvents,
+        id: "Events",
+        component: Events,
       },
     ],
   },

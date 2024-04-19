@@ -12,6 +12,7 @@ import rtl from "jss-rtl";
 import { create } from "jss";
 
 import maTheme from "./theme";
+import "./theme/colors.css";
 import Routes from "./routes/Routes";
 import Auth from "./config/Auth";
 import { useTranslation } from "react-i18next";

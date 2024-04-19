@@ -5,6 +5,7 @@ import {
   GET_ORDERS_SUCCESS,
   GET_PAYMENTS_FAILED,
   GET_PAYMENTS_SUCCESS,
+  SAVE_MERGE_DETAILS,
   SEARCH_CUSTOMERS_FAILED,
   SEARCH_CUSTOMERS_SUCCESS,
   SET_CUSTOMERS_LOADING,
@@ -19,6 +20,10 @@ const INITIAL_STATE = {
   },
   orders: [],
   payments: [],
+  merge: {
+    loading: false,
+    fromAccount: null,
+  },
 };
 
 export default function reducer(state = INITIAL_STATE, actions) {
@@ -75,6 +80,15 @@ export default function reducer(state = INITIAL_STATE, actions) {
       return {
         ...state,
         payments: INITIAL_STATE.payments,
+      };
+
+    case SAVE_MERGE_DETAILS:
+      return {
+        ...state,
+        merge: {
+          ...INITIAL_STATE.merge,
+          ...actions.payload,
+        },
       };
 
     default:

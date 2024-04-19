@@ -1,4 +1,3 @@
-import axios from "../../services/axios";
 import { ApiCustomers } from "../api/customersApi";
 import {
   FETCH_ACTIVITY_FAILED,
@@ -7,6 +6,7 @@ import {
   GET_ORDERS_SUCCESS,
   GET_PAYMENTS_FAILED,
   GET_PAYMENTS_SUCCESS,
+  SAVE_MERGE_DETAILS,
   SEARCH_CUSTOMERS_FAILED,
   SEARCH_CUSTOMERS_SUCCESS,
   SET_CUSTOMERS_LOADING,
@@ -93,6 +93,54 @@ export const getCustomerPayments = (email) => {
       dispatch({ type: GET_PAYMENTS_FAILED });
     } finally {
       dispatch({ type: SET_CUSTOMERS_LOADING, payload: false });
+    }
+  };
+};
+
+export const cancelMembership = (id, callback) => {
+  return async (dispatch) => {
+    dispatch({ type: SET_CUSTOMERS_LOADING, payload: true });
+
+    try {
+      await ApiCustomers.cancelMembership(id);
+
+      callback();
+    } catch (e) {
+      console.log("Cancel Membership failed", e);
+    } finally {
+      dispatch({ type: SET_CUSTOMERS_LOADING, payload: false });
+    }
+  };
+};
+
+export const getAccountForMerge = (keycloak_id) => {
+  return async (dispatch) => {
+    dispatch({ type: SAVE_MERGE_DETAILS, payload: { loading: true } });
+    try {
+      const fromAccount = await ApiCustomers.getCustomerDetails(keycloak_id);
+
+      dispatch({
+        type: SAVE_MERGE_DETAILS,
+        payload: { fromAccount, loading: false },
+      });
+    } catch (e) {
+      console.log("Failed to get account for merge", e);
+      dispatch({
+        type: SAVE_MERGE_DETAILS,
+        payload: { fromAccount: null, loading: false },
+      });
+    }
+  };
+};
+
+export const offlinePayment = (payload, callback) => {
+  return async () => {
+    try {
+      await ApiCustomers.offlinePayment(payload);
+
+      callback();
+    } catch (e) {
+      console.log("Offline payment failed", e);
     }
   };
 };
