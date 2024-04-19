@@ -1,4 +1,5 @@
 export const PAYMENTS_ROOT = "/admin/payments";
+export const HELP_HAVER_ROOT = "/admin/helphaver";
 export const ROOT = "/";
 
 export const DASHBOARD_ROUTES = {
@@ -15,4 +16,7 @@ export const DASHBOARD_ROUTES = {
   CustomerCreateSpecial: `${PAYMENTS_ROOT}/customers/create/special`,
   CustomerCreateOrder: `${PAYMENTS_ROOT}/customers/create/order`,
   CustomerCreatePayment: `${PAYMENTS_ROOT}/customers/create/payment`,
+  HelpHaver: `${HELP_HAVER_ROOT}`,
+  HelpHaverMembership: `${HELP_HAVER_ROOT}/membership`,
+  HelpHaverEvents: `${HELP_HAVER_ROOT}/events`,
 };

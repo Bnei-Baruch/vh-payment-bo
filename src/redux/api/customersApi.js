@@ -31,4 +31,24 @@ export const ApiCustomers = new (class Api {
       method: "get",
     });
   }
+  cancelMembership(keycloak_id) {
+    return axios({
+      url: `profile/v1/membership/cancellation`,
+      method: "post",
+      data: { keycloak_id },
+    });
+  }
+  getCustomerDetails(keycloak_id) {
+    return axios({
+      url: `/profile/v1/profile/${keycloak_id}`,
+      method: "get",
+    });
+  }
+  offlinePayment(data) {
+    return axios({
+      url: `/order/v2/order/offline`,
+      method: "post",
+      data,
+    });
+  }
 })();

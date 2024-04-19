@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { searchCustomers } from "../../../redux/actions/customersActions";
 import { DASHBOARD_ROUTES } from "../../../routes/dashboardRoutes";
+import { defaultTableOptions } from "../../../constants/table";
 
 export const useData = () => {
   const { push } = useHistory();
@@ -21,14 +22,7 @@ export const useData = () => {
   );
 
   const options = {
-    selectableRows: "none",
-    download: false,
-    print: false,
-    pagination: false,
-    search: false,
-    filter: false,
-    viewColumns: false,
-    sort: false,
+    ...defaultTableOptions,
     onRowClick: (rowData) =>
       push(DASHBOARD_ROUTES.CustomerDetails, { userId: rowData[2] }),
     textLabels: {
@@ -36,7 +30,7 @@ export const useData = () => {
         noMatch: loading ? (
           <CircularProgress size={20} color="inherit" />
         ) : (
-          t("Activity.noRecords")
+          t("Search.sorryNoMatching")
         ),
       },
     },
@@ -85,10 +79,21 @@ export const useData = () => {
       },
     },
     {
-      name: "status",
+      name: "membership_active",
       label: t("Search.status"),
       options: {
-        customBodyRender: (value) => <>{value.membership_type}</>,
+        customBodyRender: (value) => (
+          <>
+            {value ? (
+              <div className="status-cell">
+                <div>✅</div>
+                {t("Search.active")}
+              </div>
+            ) : (
+              t("Search.notActive")
+            )}
+          </>
+        ),
       },
     },
   ];

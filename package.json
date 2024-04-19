@@ -25,6 +25,7 @@
     "@fullcalendar/daygrid": "4.4.2",
     "@fullcalendar/interaction": "4.4.2",
     "@fullcalendar/react": "4.4.2",
+    "@hookform/resolvers": "^3.3.4",
     "@material-ui/core": "4.11.0",
     "@material-ui/docs": "4.0.0-beta.3",
     "@material-ui/icons": "4.9.1",
@@ -57,6 +58,7 @@
     "react-feather": "2.0.8",
     "react-helmet": "5.2.1",
     "react-hls-player": "^3.0.7",
+    "react-hook-form": "^7.51.3",
     "react-i18next": "^11.8.5",
     "react-jvectormap": "0.0.16",
     "react-perfect-scrollbar": "1.5.8",
@@ -68,6 +70,7 @@
     "redux": "4.0.5",
     "redux-act": "^1.8.0",
     "redux-thunk": "^2.3.0",
-    "styled-components": "5.1.1"
+    "styled-components": "5.1.1",
+    "yup": "^1.4.0"
   }
 }

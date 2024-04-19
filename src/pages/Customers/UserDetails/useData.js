@@ -6,22 +6,40 @@ import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useHistory } from "react-router-dom";
 
+import { useModal } from "../../../hooks";
 import {
+  cancelMembership,
   getCustomerOrders,
   getCustomerPayments,
 } from "../../../redux/actions/customersActions";
+import { defaultTableOptions } from "../../../constants/table";
 
 export const useData = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { goBack } = useHistory();
   const { state } = useLocation();
+  const confirmationModal = useModal();
+  const mergeAccountsModal = useModal();
+  const offlinePaymentModal = useModal();
+  const membershipInfo = [
+    { key: "membership_active", label: t("Search.status") },
+    { key: "membership_type", label: t("Activity.type") },
+  ];
   const { orders, payments, loading, searchResult } = useSelector(
     (state) => state.customersReducer
   );
   const userData = useMemo(
     () => searchResult.find(({ user_id }) => user_id === state?.userId),
     [searchResult, state?.userId]
+  );
+
+  const userName = useMemo(
+    () =>
+      `${userData?.first_name_vernacular ?? ""} ${
+        userData?.last_name_vernacular ?? ""
+      }`,
+    [userData]
   );
 
   const getCustomerDetails = () => {
@@ -34,14 +52,7 @@ export const useData = () => {
   }, [userData]);
 
   const options = {
-    selectableRows: "none",
-    download: false,
-    print: false,
-    pagination: false,
-    search: false,
-    filter: false,
-    viewColumns: false,
-    sort: false,
+    ...defaultTableOptions,
     textLabels: {
       body: {
         noMatch: loading ? (
@@ -77,15 +88,19 @@ export const useData = () => {
   const userDataArr = useMemo(
     () =>
       userData
-        ? Object.keys(userData).map((key) => ({
-            key,
-            value:
-              //Temporary decision to visually populate the 'status' column with the deprecated V1 membership_type values until V2 membership data is retrieved from the backend.
-              key === "status" ? userData[key].membership_type : userData[key],
-          }))
+        ? Object.keys(userData).flatMap((key) =>
+            !!membershipInfo.find((i) => i.key === key) || key === "status"
+              ? []
+              : [{ key, value: userData[key] }]
+          )
         : [],
     [userData]
   );
+
+  const onConfirmCancellation = () => {
+    confirmationModal.hideModal();
+    dispatch(cancelMembership(userData?.keycloak_id, goBack));
+  };
 
   return {
     goBack,
@@ -93,9 +108,16 @@ export const useData = () => {
     loading,
     options,
     payments,
+    userName,
+    userData,
     userDataArr,
     ordersColumns,
     paymentsColumns,
     userDataColumns,
+    membershipInfo,
+    confirmationModal,
+    mergeAccountsModal,
+    offlinePaymentModal,
+    onConfirmCancellation,
   };
 };

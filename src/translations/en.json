@@ -24,7 +24,10 @@
       "studyStartYear": "Study Start Year",
       "city": "City",
       "createdAt": "Created At",
-      "status": "Status"
+      "status": "Status",
+      "notActive": "Not Active",
+      "sorryNoMatching": "Sorry, no matching records found",
+      "active": "Active"
     },
     "UserDetails": {
       "name": "User Details",
@@ -32,8 +35,27 @@
       "payment": "Payment",
       "cancelMembership": "Cancel Membership",
       "mergeFromOtherAccount": "Merge From Other Account",
+      "mergeAccounts": "Merge Accounts",
       "offlinePayment": "Offline Payment",
-      "backToSearch": "Back To Search"
+      "backToSearch": "Back To Search",
+      "beCareful": "Be careful!",
+      "areYouSureYouWantToCancel": "Are you sure you want to cancel membership for {{name}}?",
+      "yesCancel": "Yes, Cancel",
+      "noBack": "No, Back",
+      "membershipInformation": "Membership Information",
+      "keycloakId": "Keycloak ID",
+      "merge": "Merge",
+      "enterValidKeycloakIdToSearch": "Enter a valid Keycloak ID to search for an account",
+      "paymentDate": "Payment Date",
+      "paymentLanguage": "Payment Language",
+      "currency": "Currency",
+      "paymentMethod": "Payment Method",
+      "note": "Note",
+      "submit": "Submit",
+      "orders": "Orders",
+      "amount": "Amount",
+      "quantity": "Quantity",
+      "paymentSuccessful": "Payment Successful"
     },
     "Activity": {
       "name": "Activity",
@@ -73,6 +95,51 @@
       "Profile": {
         "name": "Profile"
       }
-    } 
+    },
+    "HelpHaver": {
+      "name": "Help Haver",
+      "requestDate": "Request Date",
+      "requestStatus": "Request Status",
+      "gender": "Gender",
+      "details": "Details",
+      "detailsOfHelpHaverApp": "Details of the Help Haver application",
+      "detailsOfHelpHaverRequest": "Details of the Help Haver request",
+      "request": "Request",
+      "personalInfo": "Personal Info",
+      "notifications": "Notifications",
+      "descOfTheSituation": "Description of the situation",
+      "requestedDuration": "Requested duration",
+      "requested": "Requested",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "note": "Note",
+      "update": "Update",
+      "delete": "Delete",
+      "phone": "Phone",
+      "tenName": "Ten Name",
+      "firstLanguage": "First Language",
+      "dateOfBirth": "Date of Birth",
+      "sendNotification": "Send Notification",
+      "active": "Active",
+      "months": "Months",
+      "grant": "Grant",
+      "loan": "Loan",
+      "status": "Status",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "country": "Country",
+      "sorryNoMatching": "Sorry, no matching records found",
+      "userName": "Name",
+      "action": "Action"
+    },
+    "Membership": {
+      "name": "Membership",
+      "helpHaverAppForMembership": "Help Haver applications for Membership"
+    },
+    "Events": {
+      "name": "Events",
+      "helpHaverAppForEvents": "Help Haver applications for Events"
+    }
   }
 }

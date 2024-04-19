@@ -6,6 +6,7 @@ import settingsReducer from "./settingsReducers";
 import streamReducer from "./streamReducer";
 import userReducer from "./userReducer";
 import customersReducer from "./customersReducer";
+import helpHaverReducer from "./helpHaverReducer";
 
 export default combineReducers({
   themeReducer,
@@ -14,4 +15,5 @@ export default combineReducers({
   streamReducer,
   userReducer,
   customersReducer,
+  helpHaverReducer,
 });

@@ -6,6 +6,7 @@ import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchActivity } from "../../../redux/actions/customersActions";
+import { defaultTableOptions } from "../../../constants/table";
 
 export const useData = () => {
   const dispatch = useDispatch();
@@ -15,18 +16,12 @@ export const useData = () => {
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
   const options = {
+    ...defaultTableOptions,
     rowsPerPage,
-    print: false,
-    search: false,
-    filter: false,
-    download: false,
     serverSide: true,
     pagination: true,
     rowsPerPageOptions,
-    viewColumns: false,
-    selectableRows: "none",
     count: activity.totalCount,
-    sort: false,
     textLabels: {
       body: {
         noMatch: loading ? (
