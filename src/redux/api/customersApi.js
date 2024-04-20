@@ -46,7 +46,7 @@ export const ApiCustomers = new (class Api {
   }
   offlinePayment(data) {
     return axios({
-      url: `/order/v2/order/offline`,
+      url: `/pay/v2/order/offline`,
       method: "post",
       data,
     });
