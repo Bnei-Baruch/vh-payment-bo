@@ -1,6 +1,8 @@
 import React from "react";
 
+import PermIdentityOutlinedIcon from "@material-ui/icons/PermIdentityOutlined";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import MergeTypeIcon from "@material-ui/icons/MergeType";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -64,7 +66,7 @@ export default function UserDetails() {
       </Box>
 
       <Box
-        mt={10}
+        mt={7}
         mb={5}
         display="flex"
         alignItems="center"
@@ -103,21 +105,60 @@ export default function UserDetails() {
       </Typography>
 
       {userData && (
-        <div className="action-row">
-          {membershipInfo.map(({ key, label }) => (
-            <div key={key} className="info-column">
-              <div className="key">{label}</div>
-              {key === "membership_active" ? (
-                renderStatus()
-              ) : (
-                <div className="value">{userData[key]}</div>
-              )}
-            </div>
-          ))}
-        </div>
+        <Box
+          mb={7}
+          display="flex"
+          justifyContent="space-between"
+          className="action-row"
+        >
+          <Box display="flex">
+            {membershipInfo.map(({ key, label }) => (
+              <div key={key} className="info-column">
+                <div className="key">{label}</div>
+                {key === "membership_active" ? (
+                  renderStatus()
+                ) : (
+                  <div className="value">{userData[key]}</div>
+                )}
+              </div>
+            ))}
+          </Box>
+
+          <Box
+            display="flex"
+            flexDirection="column"
+            color="var(--color-primary)"
+          >
+            {userName?.trim()?.length > 0 && (
+              <Box display="flex" alignItems="center" mb={4}>
+                <PermIdentityOutlinedIcon />
+                <Typography
+                  variant="h5"
+                  style={{
+                    marginLeft: 12,
+                  }}
+                >
+                  {userName}
+                </Typography>
+              </Box>
+            )}
+
+            <Box display="flex" alignItems="center">
+              <EmailOutlinedIcon />
+              <Typography
+                variant="h5"
+                style={{
+                  marginLeft: 12,
+                }}
+              >
+                {userData?.primary_email}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
       )}
 
-      <Box mb={10} display="flex" flexDirection={{ xs: "column", sm: "row" }}>
+      <Box mb={7} display="flex" flexDirection={{ xs: "column", sm: "row" }}>
         <Button
           startIcon={<CancelIcon />}
           className="button cancel"
@@ -142,7 +183,7 @@ export default function UserDetails() {
       </Box>
 
       <Box
-        mt={10}
+        mt={7}
         mb={5}
         display="flex"
         alignItems="center"
@@ -173,11 +214,12 @@ export default function UserDetails() {
       <MUIDataTable
         columns={ordersColumns}
         options={options}
+        className="scrollable-table"
         data={loading ? [] : orders}
       />
 
       <Box
-        mt={10}
+        mt={7}
         mb={5}
         display="flex"
         alignItems="center"
@@ -208,11 +250,12 @@ export default function UserDetails() {
       <MUIDataTable
         columns={paymentsColumns}
         options={options}
+        className="scrollable-table"
         data={loading ? [] : payments}
       />
 
       <Box
-        mt={10}
+        mt={7}
         mb={5}
         display="flex"
         alignItems="center"

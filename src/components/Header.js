@@ -26,7 +26,7 @@ import { CHAT_AND_NOTIFICATION_ICONS, SEARCH_BAR } from "../shared/constants";
 import { setLoggedInUser } from "../redux/actions/userActions";
 import ModalWindow from "./ModalWindow";
 import { DASHBOARD_ROUTES } from "../routes/dashboardRoutes";
-import LanguageIcon from '@material-ui/icons/Language';
+import LanguageIcon from "@material-ui/icons/Language";
 const AppBar = styled(MuiAppBar)`
   background: ${(props) => props.theme.header.background};
   color: ${(props) => props.theme.header.color};
@@ -297,7 +297,6 @@ const Header = ({ onDrawerToggle }) => {
                   </IconButton>
                 </>
               )}
-              <LanguageMenu />
               <UserMenu />
             </Grid>
           </Grid>
