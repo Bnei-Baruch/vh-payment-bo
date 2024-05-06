@@ -2,11 +2,6 @@
     width: calc(100% - 260px);
 }
 
-.user-details-container .action-row {
-    display: flex;
-    margin-bottom: 50px;
-}
-
 .user-details-container .action-row .info-column {
     padding: 0 40px;
 }
@@ -41,8 +36,8 @@
 .user-details-container .button {
     background-color: var(--color-primary);
     color: #ffff;
-    padding: 14px 25px;
-    margin-right: 40px;
+    padding: 10px 18px;
+    margin-right: 30px;
 }
 
 .user-details-container .button:hover {
@@ -55,7 +50,7 @@
 }
 
 .user-details-container .button.cancel:hover {
-    transform: scale(1.15);
+    transform: scale(1.1);
 }
 
 .user-details-container .table {
@@ -68,6 +63,22 @@
 
 .user-details-container .MuiTable-root tbody tr:hover {
     cursor: pointer;
+}
+
+.user-details-container .scrollable-table div:has(table) {
+    max-height: 450px;
+}
+
+.user-details-container .scrollable-table div:has(table)::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+    height: 7px;
+}
+
+.user-details-container .scrollable-table div:has(table)::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, .4);
+    box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
 
 @media (max-width: 600px) {
