@@ -36,12 +36,10 @@ export const HelpRequestDetails = ({ id, type, useModal }) => {
           <div className="title">{t("HelpHaver.request")}</div>
           <div className="subtitle">{t("HelpHaver.descOfTheSituation")}</div>
           <div className="description">{requestInfo?.request_note}</div>
-          {grantInfo?.properties?.months && (
+          {requestInfo?.nb_month && (
             <>
               <div className="subtitle">{t("HelpHaver.requestedDuration")}</div>
-              <div className="duration">
-                {grantInfo?.properties?.months} months
-              </div>
+              <div className="duration">{requestInfo?.nb_month} months</div>
             </>
           )}
           <div className="title">{t("HelpHaver.status")}</div>

@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import { updateRequest } from "../../../redux/actions/helpHaverActions";
+import { APPROVED, REQUESTED } from "../../../constants/statuses";
 
 const TABS = [
   { value: "request", label: "HelpHaver.request" },
@@ -45,13 +47,12 @@ export const useData = (id, useModal) => {
 
   useEffect(() => {
     setStatus(requestInfo?.status?.toLowerCase());
+    setPeriod(
+      requestInfo?.status === APPROVED
+        ? grantInfo?.properties?.months
+        : requestInfo?.nb_month ?? 1
+    );
   }, [requestInfo]);
-
-  useEffect(() => {
-    if (grantInfo?.properties?.months) {
-      setPeriod(grantInfo?.properties?.months);
-    }
-  }, [grantInfo]);
 
   useEffect(() => {
     if (!useModal.isVisible) {
@@ -76,7 +77,7 @@ export const useData = (id, useModal) => {
   };
 
   const onChangeStatus = (val) => {
-    if (requestInfo?.status !== "REQUESTED") {
+    if (requestInfo?.status !== REQUESTED) {
       return;
     }
 
