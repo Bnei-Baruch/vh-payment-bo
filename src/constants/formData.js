@@ -94,3 +94,5 @@ export const maritalStatuses = [
     label: i18next.t("Dashboard.Profile.PersonalForm.maritalStatus.widowed"),
   },
 ];
+
+export const Enter = "Enter";

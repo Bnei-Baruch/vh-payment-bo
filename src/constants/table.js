@@ -8,3 +8,5 @@ export const defaultTableOptions = {
   viewColumns: false,
   sort: false,
 };
+
+export const rowsPerPageOptions = [10, 25, 50, 100];

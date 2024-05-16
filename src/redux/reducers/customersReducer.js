@@ -23,6 +23,7 @@ const INITIAL_STATE = {
   merge: {
     loading: false,
     fromAccount: null,
+    toAccount: null,
   },
 };
 
@@ -86,7 +87,7 @@ export default function reducer(state = INITIAL_STATE, actions) {
       return {
         ...state,
         merge: {
-          ...INITIAL_STATE.merge,
+          ...state.merge,
           ...actions.payload,
         },
       };

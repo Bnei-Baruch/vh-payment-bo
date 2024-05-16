@@ -29,6 +29,7 @@ export default function UserDetails() {
     userName,
     userData,
     userDataArr,
+    onPressMerge,
     ordersColumns,
     paymentsColumns,
     userDataColumns,
@@ -167,7 +168,7 @@ export default function UserDetails() {
           {t("UserDetails.cancelMembership")}
         </Button>
         <Button
-          onClick={mergeAccountsModal.showModal}
+          onClick={onPressMerge}
           startIcon={<MergeTypeIcon />}
           className="button"
         >

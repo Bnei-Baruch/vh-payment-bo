@@ -12,6 +12,7 @@ import {
   getCustomerOrders,
   getCustomerPayments,
 } from "../../../redux/actions/customersActions";
+import { SAVE_MERGE_DETAILS } from "../../../redux/constants";
 import { defaultTableOptions } from "../../../constants/table";
 
 export const useData = () => {
@@ -102,6 +103,14 @@ export const useData = () => {
     dispatch(cancelMembership(userData?.keycloak_id, goBack));
   };
 
+  const onPressMerge = () => {
+    mergeAccountsModal.showModal();
+    dispatch({
+      type: SAVE_MERGE_DETAILS,
+      payload: { toAccount: userData },
+    });
+  };
+
   return {
     goBack,
     orders,
@@ -111,6 +120,7 @@ export const useData = () => {
     userName,
     userData,
     userDataArr,
+    onPressMerge,
     ordersColumns,
     paymentsColumns,
     userDataColumns,

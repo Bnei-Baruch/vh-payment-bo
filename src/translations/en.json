@@ -27,7 +27,10 @@
       "status": "Status",
       "notActive": "Not Active",
       "sorryNoMatching": "Sorry, no matching records found",
-      "active": "Active"
+      "active": "Active",
+      "mail": "Mail",
+      "nameLabel": "Name",
+      "paramX": "Param X"
     },
     "UserDetails": {
       "name": "User Details",
@@ -41,6 +44,7 @@
       "beCareful": "Be careful!",
       "areYouSureYouWantToCancel": "Are you sure you want to cancel membership for {{name}}?",
       "yesCancel": "Yes, Cancel",
+      "yesMerge": "Yes, Merge",
       "noBack": "No, Back",
       "membershipInformation": "Membership Information",
       "keycloakId": "Keycloak ID",
@@ -55,7 +59,8 @@
       "orders": "Orders",
       "amount": "Amount",
       "quantity": "Quantity",
-      "paymentSuccessful": "Payment Successful"
+      "paymentSuccessful": "Payment Successful",
+      "areYouSureYouWantToMoveAll": "Are you sure you want to move all orders from the account '{{fromEmail}}' to the account '{{toEmail}}' and delete the account '{{fromEmail}}'? You can't undo this action."
     },
     "Activity": {
       "name": "Activity",

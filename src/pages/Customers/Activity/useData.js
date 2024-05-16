@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 
 import moment from "moment";
@@ -6,13 +7,15 @@ import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchActivity } from "../../../redux/actions/customersActions";
-import { defaultTableOptions } from "../../../constants/table";
+import {
+  defaultTableOptions,
+  rowsPerPageOptions,
+} from "../../../constants/table";
 
 export const useData = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { activity, loading } = useSelector((state) => state.customersReducer);
-  const rowsPerPageOptions = [10, 25, 50, 100];
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
   const options = {
@@ -104,7 +107,7 @@ export const useData = () => {
 
   useEffect(() => {
     dispatch(fetchActivity(rowsPerPage, 0));
-  }, [dispatch, rowsPerPage]);
+  }, [dispatch]);
 
   return { options, loading, columns, customerActivity: activity.list };
 };
