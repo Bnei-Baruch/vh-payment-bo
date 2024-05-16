@@ -1,3 +1,7 @@
-.user-details-table table thead {
+.merge-accounts-modal .user-details-table table thead {
     display: none;
+}
+
+.merge-accounts-modal .MuiDialog-paper {
+    overflow: hidden;
 }

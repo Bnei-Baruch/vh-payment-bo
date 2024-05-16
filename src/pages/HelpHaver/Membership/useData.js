@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 
 import moment from "moment";
@@ -7,24 +8,37 @@ import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useModal } from "../../../hooks";
-import { defaultTableOptions } from "../../../constants/table";
+import {
+  defaultTableOptions,
+  rowsPerPageOptions,
+} from "../../../constants/table";
 import {
   fetchMembershipRequests,
   fetchRequestorDetails,
 } from "../../../redux/actions/helpHaverActions";
+import { Enter } from "../../../constants/formData";
 
 export const useData = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
   const requestDetailsModal = useModal();
+  const [page, setPage] = useState(0);
   const [requestId, setRequestId] = useState(null);
-  const { loading, membershipRequests } = useSelector(
+  const [searchQuery, setSearchQuery] = useState("");
+  const [queryType, setQueryType] = useState("email");
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+  const { loading, membershipRequests, requestsCount } = useSelector(
     (state) => state.helpHaverReducer
   );
 
   const tableOptions = {
     ...defaultTableOptions,
+    rowsPerPage,
+    serverSide: true,
+    pagination: true,
+    rowsPerPageOptions,
+    count: requestsCount,
     textLabels: {
       body: {
         noMatch: loading ? (
@@ -33,6 +47,33 @@ export const useData = () => {
           t("HelpHaver.sorryNoMatching")
         ),
       },
+    },
+    onTableChange: (action, tableState) => {
+      switch (action) {
+        case "changePage":
+          setPage(tableState.page);
+          dispatch(
+            fetchMembershipRequests(
+              rowsPerPage,
+              tableState.page * rowsPerPage,
+              queryType,
+              searchQuery
+            )
+          );
+          break;
+
+        case "changeRowsPerPage":
+          setRowsPerPage(tableState.rowsPerPage);
+          dispatch(
+            fetchMembershipRequests(
+              tableState.rowsPerPage,
+              tableState.page * tableState.rowsPerPage,
+              queryType,
+              searchQuery
+            )
+          );
+          break;
+      }
     },
   };
 
@@ -89,14 +130,38 @@ export const useData = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchMembershipRequests());
+    dispatch(fetchMembershipRequests(rowsPerPage, 0, queryType, ""));
   }, [dispatch]);
 
+  const onPressSearch = () => {
+    dispatch(fetchMembershipRequests(rowsPerPage, 0, queryType, searchQuery));
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === Enter) {
+      onPressSearch();
+    }
+  };
+
+  useEffect(() => {
+    if (searchQuery.length > 0) {
+      onPressSearch();
+    }
+  }, [queryType]);
+
   return {
+    page,
     loading,
+    onKeyDown,
     requestId,
+    queryType,
+    searchQuery,
+    rowsPerPage,
     tableColumns,
     tableOptions,
+    setQueryType,
+    onPressSearch,
+    setSearchQuery,
     membershipRequests,
     onBreadcrumbsClick,
     requestDetailsModal,

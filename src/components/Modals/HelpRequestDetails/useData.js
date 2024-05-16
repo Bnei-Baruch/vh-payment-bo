@@ -18,7 +18,7 @@ const STATUSES = [
   { value: "rejected", label: "HelpHaver.rejected" },
 ];
 
-export const useData = (id, useModal) => {
+export const useData = (id, useModal, page, rowsPerPage) => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState(TABS[0].value);
   const [rejectionNote, setRejectionNote] = useState("");
@@ -73,7 +73,15 @@ export const useData = (id, useModal) => {
       payload.rejection_note = rejectionNote;
     }
 
-    dispatch(updateRequest(requestInfo?.id, payload, useModal.hideModal));
+    dispatch(
+      updateRequest(
+        requestInfo?.id,
+        payload,
+        useModal.hideModal,
+        rowsPerPage,
+        page
+      )
+    );
   };
 
   const onChangeStatus = (val) => {
@@ -91,7 +99,6 @@ export const useData = (id, useModal) => {
     STATUSES,
     status,
     onChangeStatus,
-    grantInfo,
     currentTab,
     requestInfo,
     setCurrentTab,

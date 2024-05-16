@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   loading: false,
   membershipGrants: [],
   membershipRequests: [],
+  requestsCount: 0,
   requestorDetails: null,
 };
 
@@ -26,6 +27,7 @@ export default function reducer(state = INITIAL_STATE, actions) {
         ...state,
         membershipGrants: actions.payload.grants,
         membershipRequests: actions.payload.requests,
+        requestsCount: actions.payload.requestsCount,
       };
 
     case GET_MEMBERSHIP_REQUESTS_FAILED:
@@ -33,6 +35,7 @@ export default function reducer(state = INITIAL_STATE, actions) {
         ...state,
         membershipGrants: INITIAL_STATE.membershipGrants,
         membershipRequests: INITIAL_STATE.membershipRequests,
+        requestsCount: INITIAL_STATE.requestsCount,
       };
 
     case GET_REQUESTOR_DETAILS_SUCCESS:

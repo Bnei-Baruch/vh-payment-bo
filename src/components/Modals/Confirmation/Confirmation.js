@@ -10,6 +10,7 @@ export const Confirmation = ({
   title,
   description,
   onPressConfirm,
+  confirmBtnTitle = "UserDetails.yesCancel",
 }) => {
   const { t } = useTranslation();
 
@@ -44,7 +45,7 @@ export const Confirmation = ({
               color: "var(--color-white)",
             }}
           >
-            {t("UserDetails.yesCancel")}
+            {t(confirmBtnTitle)}
           </Button>
           <Button
             onClick={useModal.hideModal}

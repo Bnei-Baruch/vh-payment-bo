@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { searchCustomers } from "../../../redux/actions/customersActions";
 import { DASHBOARD_ROUTES } from "../../../routes/dashboardRoutes";
 import { defaultTableOptions } from "../../../constants/table";
+import { Enter } from "../../../constants/formData";
 
 export const useData = () => {
   const { push } = useHistory();
@@ -102,21 +103,26 @@ export const useData = () => {
     dispatch(searchCustomers("", queryType));
   }, [dispatch]);
 
-  const onPressSearch = () => {
-    dispatch(searchCustomers(searchQuery, queryType));
-  };
+  const onPressSearch = () => dispatch(searchCustomers(searchQuery, queryType));
 
   useEffect(() => {
     if (searchQuery.length > 0) {
-      dispatch(searchCustomers(searchQuery, queryType));
+      onPressSearch();
     }
   }, [queryType]);
+
+  const onKeyDown = (e) => {
+    if (e.key === Enter) {
+      onPressSearch();
+    }
+  };
 
   return {
     options,
     columns,
     loading,
     queryType,
+    onKeyDown,
     searchQuery,
     setQueryType,
     searchResult,

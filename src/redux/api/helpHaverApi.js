@@ -1,9 +1,9 @@
 import axios from "../../services/axios";
 
 export const ApiHelpHaver = new (class Api {
-  getMembershipRequests() {
+  getMembershipRequests(limit, counter, type, query) {
     return axios({
-      url: "/profile/v1/requests",
+      url: `/profile/v1/requests?limit=${limit}&skip=${counter}&${type}=${query}`,
       method: "get",
     });
   }

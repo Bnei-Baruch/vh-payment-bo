@@ -20,6 +20,7 @@ export default function Search() {
     columns,
     loading,
     queryType,
+    onKeyDown,
     searchQuery,
     setQueryType,
     searchResult,
@@ -32,21 +33,21 @@ export default function Search() {
       <Grid item xs={12}>
         <TextField
           id="outlined-basic"
-          label="Search"
-          placeholder="abc@example.com"
+          label={t("Search.name")}
           variant="outlined"
           value={searchQuery}
           className="s-text-field"
           onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={onKeyDown}
         />
         <Select
           value={queryType}
           className="query-type-selector"
           onChange={(e) => setQueryType(e.target.value)}
         >
-          <MenuItem value="email">Mail</MenuItem>
-          <MenuItem value="name">Name</MenuItem>
-          <MenuItem value="paramX">Param X</MenuItem>
+          <MenuItem value="email">{t("Search.mail")}</MenuItem>
+          <MenuItem value="name">{t("Search.nameLabel")}</MenuItem>
+          <MenuItem value="paramX">{t("Search.paramX")}</MenuItem>
         </Select>
         <Button
           variant="contained"

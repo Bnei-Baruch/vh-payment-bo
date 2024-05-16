@@ -7,7 +7,13 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import "./styles.css";
 import { useData } from "./useData";
 
-export const HelpRequestDetails = ({ id, type, useModal }) => {
+export const HelpRequestDetails = ({
+  id,
+  type,
+  page,
+  useModal,
+  rowsPerPage,
+}) => {
   const { t } = useTranslation();
   const {
     TABS,
@@ -16,7 +22,6 @@ export const HelpRequestDetails = ({ id, type, useModal }) => {
     STATUSES,
     status,
     onChangeStatus,
-    grantInfo,
     currentTab,
     requestInfo,
     setCurrentTab,
@@ -25,7 +30,7 @@ export const HelpRequestDetails = ({ id, type, useModal }) => {
     isDisabledBtn,
     setRejectionNote,
     requestorDetails,
-  } = useData(id, useModal);
+  } = useData(id, useModal, page, rowsPerPage);
 
   const renderSwitcherTabs = () => {
     const notRejected = status !== "rejected";

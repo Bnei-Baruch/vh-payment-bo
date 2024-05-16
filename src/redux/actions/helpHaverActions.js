@@ -8,17 +8,23 @@ import {
   SET_HELP_HAVER_LOADING,
 } from "../constants";
 
-export const fetchMembershipRequests = () => {
+export const fetchMembershipRequests = (limit, counter, type, query) => {
   return async (dispatch) => {
     dispatch({ type: SET_HELP_HAVER_LOADING, payload: true });
     try {
-      const response = await ApiHelpHaver.getMembershipRequests();
+      const response = await ApiHelpHaver.getMembershipRequests(
+        limit,
+        counter,
+        type,
+        query
+      );
 
       dispatch({
         type: GET_MEMBERSHIP_REQUESTS_SUCCESS,
         payload: {
           grants: response?.data.map((i) => i.Grant),
           requests: response?.data.map((i) => i.Request),
+          requestsCount: response?.totalCount,
         },
       });
     } catch (e) {
@@ -46,11 +52,11 @@ export const fetchRequestorDetails = (keycloak_id) => {
   };
 };
 
-export const updateRequest = (requestId, data, callback) => {
+export const updateRequest = (requestId, data, callback, rowsPerPage, page) => {
   return async (dispatch) => {
     try {
       await ApiHelpHaver.updateRequest(requestId, data);
-      dispatch(fetchMembershipRequests());
+      dispatch(fetchMembershipRequests(rowsPerPage, page * rowsPerPage));
       callback();
     } catch (e) {
       console.log("Update Request Failed", e);

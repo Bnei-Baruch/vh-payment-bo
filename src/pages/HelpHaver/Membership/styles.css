@@ -6,7 +6,7 @@
 
 .m-container .header-row {
     padding: 0 13px;
-    margin-bottom: 49px;
+    margin-bottom: 35px;
 }
 
 .m-container .header-row h3 {
@@ -71,6 +71,25 @@
 
 .MuiPaper-root:has(.m-container) {
     padding: 24px 0 0;
+}
+
+.m-container .search-field .MuiInputBase-root {
+    min-width: 350px;
+    border-radius: 4px 0 0 4px;
+    height: 54px
+}
+
+.m-container .query-type-selector {
+    min-width: 100px;
+    height: 100%;
+    padding: 10px;
+    border: 1px solid #0000003b;
+    border-left-width: 0;
+    height: 54px
+}
+
+.m-container .query-type-selector::before {
+    border-bottom-width: 0;
 }
 
 @media (max-width: 575px) {
