@@ -76,7 +76,6 @@ export default function Membership() {
         <Button
           variant="contained"
           color="primary"
-          className="search-btn"
           style={{ borderRadius: "0 4px 4px 0" }}
           onClick={onPressSearch}
         >

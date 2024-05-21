@@ -1,0 +1,18 @@
+.specials-container .search-field .MuiInputBase-root {
+    min-width: 320px;
+    border-radius: 4px 0 0 4px;
+    height: 54px
+}
+
+.specials-container .query-type-selector {
+    min-width: 120px;
+    height: 100%;
+    padding: 10px;
+    border: 1px solid #0000003b;
+    border-left-width: 0;
+    height: 54px
+}
+
+.specials-container .query-type-selector::before {
+    border-bottom-width: 0;
+}

@@ -145,6 +145,22 @@
     "Events": {
       "name": "Events",
       "helpHaverAppForEvents": "Help Haver applications for Events"
+    },
+    "Specials": {
+      "name": "Specials",
+      "search": "Search",
+      "email": "Email",
+      "keycloakId": "Keycloak ID",
+      "add": "Add",
+      "expirationDate": "Expiration Date",
+      "category": "Category",
+      "subCategory": "Sub Category",
+      "remove": "Remove",
+      "areYouSureYouWantToDelete": "Are you sure you want to delete the entry?",
+      "yesDelete": "Yes, Delete",
+      "addNewEntry": "Add New Entry",
+      "submit": "Submit",
+      "newEntrySuccessfullyAdded": "New entry successfully added"
     }
   }
 }
