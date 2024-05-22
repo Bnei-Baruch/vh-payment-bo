@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Alert } from "@material-ui/lab";
 import MUIDataTable from "mui-datatables";
 import Dialog from "@material-ui/core/Dialog";
 import { useTranslation } from "react-i18next";
@@ -14,25 +15,30 @@ import {
   CircularProgress,
   Box,
   Typography,
+  Snackbar,
 } from "@material-ui/core";
 
 import "./styles.css";
 import { useData } from "./useData";
 import { Confirmation } from "../Confirmation";
 
-export const MergeAccounts = ({ useModal }) => {
+export const MergeAccounts = ({ useModal, callback }) => {
   const { t } = useTranslation();
   const {
     merge,
+    alert,
     userData,
+    alertType,
     keycloakId,
+    onHideAlert,
     tableOptions,
     tableColumns,
     setKeycloakId,
     onPressSearch,
     isDisabledBtn,
+    onConfirmMerge,
     confirmMergeModal,
-  } = useData(useModal.isVisible);
+  } = useData(useModal.isVisible, useModal.hideModal, callback);
 
   return (
     <>
@@ -125,6 +131,7 @@ export const MergeAccounts = ({ useModal }) => {
           {t("UserDetails.merge")}
         </Button>
       </Dialog>
+
       <Confirmation
         useModal={confirmMergeModal}
         title={t("UserDetails.beCareful")}
@@ -133,7 +140,18 @@ export const MergeAccounts = ({ useModal }) => {
           toEmail: merge.toAccount?.primary_email,
         })}
         confirmBtnTitle="UserDetails.yesMerge"
+        onPressConfirm={onConfirmMerge}
       />
+
+      <Snackbar
+        open={alert.visible}
+        autoHideDuration={4000}
+        onClose={onHideAlert}
+      >
+        <Alert severity={alertType} variant="filled">
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

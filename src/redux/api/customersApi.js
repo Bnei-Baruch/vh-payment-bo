@@ -51,4 +51,11 @@ export const ApiCustomers = new (class Api {
       data,
     });
   }
+  mergeAccounts(data) {
+    return axios({
+      url: `/pay/v2/account/merge`,
+      method: "post",
+      data,
+    });
+  }
 })();

@@ -144,3 +144,30 @@ export const offlinePayment = (payload, callback) => {
     }
   };
 };
+
+export const mergeAccounts = (
+  source_keycloak_id,
+  destination_keycloak_id,
+  onSuccess,
+  onFailed
+) => {
+  return async (dispatch) => {
+    dispatch({ type: SAVE_MERGE_DETAILS, payload: { loading: true } });
+    try {
+      await ApiCustomers.mergeAccounts({
+        source_keycloak_id,
+        destination_keycloak_id,
+      });
+
+      onSuccess();
+    } catch (e) {
+      console.log("Failed to merge accounts", e);
+      onFailed();
+    } finally {
+      dispatch({
+        type: SAVE_MERGE_DETAILS,
+        payload: { loading: false },
+      });
+    }
+  };
+};
