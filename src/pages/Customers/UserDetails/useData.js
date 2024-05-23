@@ -11,6 +11,7 @@ import {
   cancelMembership,
   getCustomerOrders,
   getCustomerPayments,
+  searchCustomers,
 } from "../../../redux/actions/customersActions";
 import { SAVE_MERGE_DETAILS } from "../../../redux/constants";
 import { defaultTableOptions } from "../../../constants/table";
@@ -111,6 +112,9 @@ export const useData = () => {
     });
   };
 
+  const refreshUserInfo = () =>
+    dispatch(searchCustomers(userData?.primary_email, "email"));
+
   return {
     goBack,
     orders,
@@ -125,6 +129,7 @@ export const useData = () => {
     paymentsColumns,
     userDataColumns,
     membershipInfo,
+    refreshUserInfo,
     confirmationModal,
     mergeAccountsModal,
     offlinePaymentModal,

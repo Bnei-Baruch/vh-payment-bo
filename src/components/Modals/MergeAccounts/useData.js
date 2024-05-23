@@ -6,12 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../hooks";
 import { SAVE_MERGE_DETAILS } from "../../../redux/constants";
 import { defaultTableOptions } from "../../../constants/table";
-import { getAccountForMerge } from "../../../redux/actions/customersActions";
+import {
+  getAccountForMerge,
+  mergeAccounts,
+} from "../../../redux/actions/customersActions";
 
-export const useData = (isVisible) => {
+export const useData = (isVisible, hideModal, callback) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const confirmMergeModal = useModal();
+  const [alert, setAlert] = useState({ visible: false, message: "" });
   const [keycloakId, setKeycloakId] = useState("");
   const { merge } = useSelector((state) => state.customersReducer);
 
@@ -48,6 +52,14 @@ export const useData = (isVisible) => {
 
   const isDisabledBtn = useMemo(() => userData.length === 0, [userData]);
 
+  const alertType = useMemo(
+    () =>
+      alert.message === t("UserDetails.somethingWentWrong")
+        ? "error"
+        : "success",
+    [alert.message, t]
+  );
+
   useEffect(() => {
     if (!isVisible) {
       setKeycloakId("");
@@ -58,15 +70,49 @@ export const useData = (isVisible) => {
     }
   }, [dispatch, isVisible]);
 
+  const onConfirmMerge = () => {
+    confirmMergeModal.hideModal();
+    dispatch(
+      mergeAccounts(
+        merge.fromAccount?.keycloak_id,
+        merge.toAccount?.keycloak_id,
+        onSuccess,
+        onFailed
+      )
+    );
+  };
+
+  const onSuccess = () => {
+    hideModal();
+    setAlert({
+      visible: true,
+      message: t("UserDetails.accountsHaveBeenSuccessfullyMerged"),
+    });
+    callback();
+  };
+
+  const onFailed = () => {
+    setAlert({
+      visible: true,
+      message: t("UserDetails.somethingWentWrong"),
+    });
+  };
+
+  const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
+
   return {
     merge,
+    alert,
     userData,
+    alertType,
     keycloakId,
+    onHideAlert,
     tableColumns,
     tableOptions,
     setKeycloakId,
     onPressSearch,
     isDisabledBtn,
+    onConfirmMerge,
     confirmMergeModal,
   };
 };

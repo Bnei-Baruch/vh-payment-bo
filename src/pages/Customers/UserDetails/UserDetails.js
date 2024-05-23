@@ -34,6 +34,7 @@ export default function UserDetails() {
     paymentsColumns,
     userDataColumns,
     membershipInfo,
+    refreshUserInfo,
     confirmationModal,
     mergeAccountsModal,
     offlinePaymentModal,
@@ -311,7 +312,7 @@ export default function UserDetails() {
           name: userName,
         })}
       />
-      <MergeAccounts useModal={mergeAccountsModal} />
+      <MergeAccounts useModal={mergeAccountsModal} callback={refreshUserInfo} />
       <OfflinePayment
         useModal={offlinePaymentModal}
         keycloakId={userData?.keycloak_id}
