@@ -17,20 +17,20 @@ const tableData = [
   {
     primary_email: "sharonkapach@gmail.com",
     keycloak_id: "38754aba-2eb8-4bd7-91dd-244b457da7d5",
-    category: "1",
-    sub_category: "1.1",
+    category: "general",
+    sub_category: "lessons",
   },
   {
     primary_email: "abhinavshm95@gmail.com",
     keycloak_id: "5ca78e39-d1fa-417e-a0ec-12415dbcdc4a",
-    category: "2",
-    sub_category: "2.1",
+    category: "membership",
+    sub_category: "global",
   },
   {
     primary_email: "thefreecycler@gmail.com",
     keycloak_id: "cc48e2da-8430-408f-841a-66c2771318dd",
-    category: "3",
-    sub_category: "3.1",
+    category: "general",
+    sub_category: "events",
   },
 ];
 
@@ -67,8 +67,26 @@ export const useData = () => {
       label: t("Specials.keycloakId"),
     },
     {
-      name: "expiration_date",
-      label: t("Specials.expirationDate"),
+      name: "start_date",
+      label: t("Specials.startDate"),
+      options: {
+        customBodyRender: (value) => (
+          <>{moment(value).format("DD-MM-YYYY HH:MM:SS")}</>
+        ),
+      },
+    },
+    {
+      name: "end_date",
+      label: t("Specials.endDate"),
+      options: {
+        customBodyRender: (value) => (
+          <>{moment(value).format("DD-MM-YYYY HH:MM:SS")}</>
+        ),
+      },
+    },
+    {
+      name: "created_at",
+      label: t("Specials.createdAt"),
       options: {
         customBodyRender: (value) => (
           <>{moment(value).format("DD-MM-YYYY HH:MM:SS")}</>

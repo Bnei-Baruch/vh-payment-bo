@@ -51,26 +51,45 @@ export const AddSpecialEntry = ({ useModal }) => {
                   value={value}
                   onChange={onChange}
                   error={!!error?.message}
-                  style={{ marginTop: 16, minWidth: 310 }}
+                  style={{ marginTop: 16, minWidth: 290 }}
                 />
               </FormControl>
             )}
           />
 
           <Controller
-            name="expiration_date"
+            name="start_date"
             control={control}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <FormControl focused={true}>
                 <InputLabel style={{ fontSize: 16 }}>
-                  {t("Specials.expirationDate")}
+                  {t("Specials.startDate")}
                 </InputLabel>
                 <TextField
                   type="date"
                   value={value}
                   onChange={onChange}
                   error={!!error?.message}
-                  style={{ marginTop: 16, width: 200 }}
+                  style={{ marginTop: 16, width: 110 }}
+                />
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            name="end_date"
+            control={control}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <FormControl focused={true}>
+                <InputLabel style={{ fontSize: 16 }}>
+                  {t("Specials.endDate")}
+                </InputLabel>
+                <TextField
+                  type="date"
+                  value={value}
+                  onChange={onChange}
+                  error={!!error?.message}
+                  style={{ marginTop: 16, width: 110 }}
                 />
               </FormControl>
             )}
@@ -90,7 +109,7 @@ export const AddSpecialEntry = ({ useModal }) => {
                   value={value}
                   onChange={onChange}
                   error={!!error?.message}
-                  style={{ marginTop: 16, width: 260 }}
+                  style={{ marginTop: 16, width: 267 }}
                 />
               </FormControl>
             )}
@@ -107,7 +126,7 @@ export const AddSpecialEntry = ({ useModal }) => {
                   value={value}
                   onChange={onChange}
                   error={!!error?.message}
-                  style={{ marginTop: 16, width: 260 }}
+                  style={{ marginTop: 16, width: 267 }}
                 />
               </FormControl>
             )}

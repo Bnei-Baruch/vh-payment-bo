@@ -11,7 +11,8 @@ export const useData = (useModal) => {
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       keycloak_id: "",
-      expiration_date: "",
+      start_date: "",
+      end_date: "",
       category: "",
       subcategory: "",
     },

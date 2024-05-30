@@ -152,7 +152,6 @@
       "email": "Email",
       "keycloakId": "Keycloak ID",
       "add": "Add",
-      "expirationDate": "Expiration Date",
       "category": "Category",
       "subCategory": "Sub Category",
       "remove": "Remove",
@@ -160,7 +159,10 @@
       "yesDelete": "Yes, Delete",
       "addNewEntry": "Add New Entry",
       "submit": "Submit",
-      "newEntrySuccessfullyAdded": "New entry successfully added"
+      "newEntrySuccessfullyAdded": "New entry successfully added",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "createdAt": "Created At"
     }
   }
 }
