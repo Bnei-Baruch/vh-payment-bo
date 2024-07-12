@@ -1,6 +1,8 @@
 import {
   FETCH_ACTIVITY_FAILED,
   FETCH_ACTIVITY_SUCCESS,
+  FETCH_SPECIALS_FAILED,
+  FETCH_SPECIALS_SUCCESS,
   GET_ORDERS_FAILED,
   GET_ORDERS_SUCCESS,
   GET_PAYMENTS_FAILED,
@@ -24,6 +26,10 @@ const INITIAL_STATE = {
     loading: false,
     fromAccount: null,
     toAccount: null,
+  },
+  specials: {
+    list: [],
+    totalCount: 0,
   },
 };
 
@@ -90,6 +96,18 @@ export default function reducer(state = INITIAL_STATE, actions) {
           ...state.merge,
           ...actions.payload,
         },
+      };
+
+    case FETCH_SPECIALS_SUCCESS:
+      return {
+        ...state,
+        specials: actions.payload,
+      };
+
+    case FETCH_SPECIALS_FAILED:
+      return {
+        ...state,
+        specials: INITIAL_STATE.specials,
       };
 
     default:

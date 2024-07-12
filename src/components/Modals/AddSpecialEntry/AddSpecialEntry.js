@@ -8,6 +8,7 @@ import {
   Button,
   Typography,
   Snackbar,
+  CircularProgress,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { Controller } from "react-hook-form";
@@ -19,7 +20,7 @@ import { useData } from "./useData";
 
 export const AddSpecialEntry = ({ useModal }) => {
   const { t } = useTranslation();
-  const { isOpenAlert, setIsOpenAlert, control, onPressSubmit } =
+  const { loading, isOpenAlert, setIsOpenAlert, control, onPressSubmit } =
     useData(useModal);
 
   return (
@@ -51,52 +52,32 @@ export const AddSpecialEntry = ({ useModal }) => {
                   value={value}
                   onChange={onChange}
                   error={!!error?.message}
-                  style={{ marginTop: 16, minWidth: 290 }}
+                  style={{ marginTop: 16, minWidth: 267 }}
                 />
               </FormControl>
             )}
           />
 
           <Controller
-            name="start_date"
+            name="email"
             control={control}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <FormControl focused={true}>
+              <FormControl focused={!!value}>
                 <InputLabel style={{ fontSize: 16 }}>
-                  {t("Specials.startDate")}
+                  {t("Specials.email")}
                 </InputLabel>
                 <TextField
-                  type="date"
                   value={value}
                   onChange={onChange}
                   error={!!error?.message}
-                  style={{ marginTop: 16, width: 110 }}
-                />
-              </FormControl>
-            )}
-          />
-
-          <Controller
-            name="end_date"
-            control={control}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <FormControl focused={true}>
-                <InputLabel style={{ fontSize: 16 }}>
-                  {t("Specials.endDate")}
-                </InputLabel>
-                <TextField
-                  type="date"
-                  value={value}
-                  onChange={onChange}
-                  error={!!error?.message}
-                  style={{ marginTop: 16, width: 110 }}
+                  style={{ marginTop: 16, minWidth: 267 }}
                 />
               </FormControl>
             )}
           />
         </Box>
 
-        <Box px={5} mb={10} display="flex" justifyContent="space-between">
+        <Box px={5} mb={5} display="flex" justifyContent="space-between">
           <Controller
             name="category"
             control={control}
@@ -133,6 +114,46 @@ export const AddSpecialEntry = ({ useModal }) => {
           />
         </Box>
 
+        <Box px={5} mb={10} display="flex" justifyContent="space-between">
+          <Controller
+            name="start_date"
+            control={control}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <FormControl focused={true}>
+                <InputLabel style={{ fontSize: 16 }}>
+                  {t("Specials.startDate")}
+                </InputLabel>
+                <TextField
+                  type="date"
+                  value={value}
+                  onChange={onChange}
+                  error={!!error?.message}
+                  style={{ marginTop: 16, width: 267 }}
+                />
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            name="end_date"
+            control={control}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <FormControl focused={true}>
+                <InputLabel style={{ fontSize: 16 }}>
+                  {t("Specials.endDate")}
+                </InputLabel>
+                <TextField
+                  type="date"
+                  value={value}
+                  onChange={onChange}
+                  error={!!error?.message}
+                  style={{ marginTop: 16, width: 267 }}
+                />
+              </FormControl>
+            )}
+          />
+        </Box>
+
         <Button
           onClick={onPressSubmit}
           variant="contained"
@@ -145,7 +166,11 @@ export const AddSpecialEntry = ({ useModal }) => {
             color: "var(--color-white)",
           }}
         >
-          {t("Specials.submit")}
+          {loading ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            t("Specials.submit")
+          )}
         </Button>
       </Dialog>
       <Snackbar

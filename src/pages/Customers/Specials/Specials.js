@@ -20,6 +20,7 @@ export default function Specials() {
     tableOptions,
     setQueryType,
     addEntryModal,
+    onRemoveEntry,
     onPressSearch,
     setSearchQuery,
     confirmationModal,
@@ -48,7 +49,7 @@ export default function Specials() {
             onChange={(e) => setQueryType(e.target.value)}
           >
             <MenuItem value="email">{t("Specials.email")}</MenuItem>
-            <MenuItem value="keycloakId">{t("Specials.keycloakId")}</MenuItem>
+            <MenuItem value="keycloak">{t("Specials.keycloakId")}</MenuItem>
           </Select>
           <Button
             variant="contained"
@@ -80,6 +81,7 @@ export default function Specials() {
 
       <Confirmation
         useModal={confirmationModal}
+        onPressConfirm={onRemoveEntry}
         title={t("UserDetails.beCareful")}
         description={t("Specials.areYouSureYouWantToDelete")}
         confirmBtnTitle="Specials.yesDelete"

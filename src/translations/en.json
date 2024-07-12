@@ -162,7 +162,8 @@
       "newEntrySuccessfullyAdded": "New entry successfully added",
       "startDate": "Start Date",
       "endDate": "End Date",
-      "createdAt": "Created At"
+      "createdAt": "Created At",
+      "noRecords": "Sorry, no matching records found"
     }
   }
 }
