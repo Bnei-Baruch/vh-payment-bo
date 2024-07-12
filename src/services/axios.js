@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import store from "../redux/store";
+import { setLoggedInUser } from "../redux/actions/userActions";
 
 const axiosInstance = axios.create({
   headers: {
@@ -26,6 +27,18 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-axiosInstance.interceptors.response.use((response) => response?.data);
+axiosInstance.interceptors.response.use(
+  (response) => response?.data,
+  (error) => {
+    const state = store.getState();
+
+    if (error?.response?.status === 401) {
+      state.userReducer.info.keycloak.logout();
+      store.dispatch(setLoggedInUser(null));
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export default axiosInstance;
