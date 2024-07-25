@@ -32,8 +32,11 @@ export const useData = () => {
     (state) => state.customersReducer
   );
   const userData = useMemo(
-    () => searchResult.find(({ user_id }) => user_id === state?.userId),
-    [searchResult, state?.userId]
+    () =>
+      searchResult.find(
+        ({ primary_email }) => primary_email === state?.userEmail
+      ),
+    [searchResult, state?.userEmail]
   );
 
   const userName = useMemo(
@@ -50,7 +53,13 @@ export const useData = () => {
   };
 
   useEffect(() => {
-    userData ? getCustomerDetails() : goBack();
+    if (!state?.userEmail) {
+      goBack();
+    }
+
+    userData
+      ? getCustomerDetails()
+      : dispatch(searchCustomers(state?.userEmail, "email"));
   }, [userData]);
 
   const options = {
