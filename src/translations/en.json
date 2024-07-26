@@ -62,7 +62,8 @@
       "paymentSuccessful": "Payment Successful",
       "areYouSureYouWantToMoveAll": "Are you sure you want to move all orders from the account '{{fromEmail}}' to the account '{{toEmail}}' and delete the account '{{fromEmail}}'? You can't undo this action.",
       "somethingWentWrong": "Something went wrong",
-      "accountsHaveBeenSuccessfullyMerged": "Accounts have been successfully merged"
+      "accountsHaveBeenSuccessfullyMerged": "Accounts have been successfully merged",
+      "save": "Save"
     },
     "Activity": {
       "name": "Activity",

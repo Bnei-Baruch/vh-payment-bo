@@ -35,6 +35,7 @@ export default function UserDetails() {
     userDataColumns,
     membershipInfo,
     refreshUserInfo,
+    userInfoIsUpdated,
     confirmationModal,
     mergeAccountsModal,
     offlinePaymentModal,
@@ -302,6 +303,21 @@ export default function UserDetails() {
           columns={userDataColumns}
           options={options}
         />
+      </Box>
+
+      <Box display="flex" justifyContent="center" mt={5}>
+        <Button
+          disabled={!userInfoIsUpdated}
+          variant="contained"
+          style={{
+            opacity: userInfoIsUpdated ? 1 : 0.6,
+            background: "var(--color-primary)",
+            color: "var(--color-white)",
+            width: 130,
+          }}
+        >
+          {t("UserDetails.save")}
+        </Button>
       </Box>
 
       <Confirmation
