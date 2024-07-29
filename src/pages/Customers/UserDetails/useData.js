@@ -27,6 +27,7 @@ export const useData = () => {
   const confirmationModal = useModal();
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
+  const [activeTab, setActiveTab] = useState(0);
   const [updatedUserInfo, setUpdatedUserInfo] = useState({});
   const membershipInfo = [
     { key: "membership_active", label: t("Search.status") },
@@ -88,7 +89,11 @@ export const useData = () => {
     () =>
       orders.length === 0
         ? []
-        : Object.keys(orders[0]).map((key) => ({ name: key, label: key })),
+        : Object.keys(orders[0]).map((key) => ({
+            name: key,
+            label: key,
+            options: { sort: key === "ProductType" },
+          })),
     [orders.length]
   );
 
@@ -172,7 +177,9 @@ export const useData = () => {
     payments,
     userName,
     userData,
+    activeTab,
     userDataArr,
+    setActiveTab,
     onPressMerge,
     ordersColumns,
     paymentsColumns,
