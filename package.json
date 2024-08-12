@@ -72,5 +72,10 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "5.1.1",
     "yup": "^1.4.0"
+  },
+
+  "devDependencies": {
+    "@babel/core": "7.24.7",
+    "@babel/traverse": "7.25.3"
   }
 }
