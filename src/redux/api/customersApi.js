@@ -27,13 +27,13 @@ export const ApiCustomers = new (class Api {
   }
   getPayments(email) {
     return axios({
-      url: `pay/payments/all/${email}`,
+      url: `/pay/payments/all/${email}`,
       method: "get",
     });
   }
   cancelMembership(keycloak_id) {
     return axios({
-      url: `profile/v1/membership/cancellation`,
+      url: `/profile/v1/membership/cancellation`,
       method: "post",
       data: { keycloak_id },
     });
@@ -55,6 +55,13 @@ export const ApiCustomers = new (class Api {
     return axios({
       url: `/pay/v2/account/merge`,
       method: "post",
+      data,
+    });
+  }
+  updatePersonalInfo(data, keycloakId) {
+    return axios({
+      url: `/profile/v1/profile/${keycloakId}`,
+      method: "paych",
       data,
     });
   }

@@ -171,3 +171,15 @@ export const mergeAccounts = (
     }
   };
 };
+
+export const updateCustomerInfo = (payload, keycloakId, onSuccess) => {
+  return async () => {
+    try {
+      await ApiCustomers.updatePersonalInfo(payload, keycloakId);
+
+      onSuccess();
+    } catch (e) {
+      console.log("Failed to update customer info", e);
+    }
+  };
+};

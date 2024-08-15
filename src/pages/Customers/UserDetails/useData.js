@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useMemo, useState } from "react";
 
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { CircularProgress, TextField } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useHistory } from "react-router-dom";
 
@@ -12,6 +13,7 @@ import {
   getCustomerOrders,
   getCustomerPayments,
   searchCustomers,
+  updateCustomerInfo,
 } from "../../../redux/actions/customersActions";
 import { SAVE_MERGE_DETAILS } from "../../../redux/constants";
 import {
@@ -28,7 +30,6 @@ export const useData = () => {
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
   const [activeTab, setActiveTab] = useState(0);
-  const [updatedUserInfo, setUpdatedUserInfo] = useState({});
   const membershipInfo = [
     { key: "membership_active", label: t("Search.status") },
     { key: "membership_type", label: t("Activity.type") },
@@ -36,6 +37,7 @@ export const useData = () => {
   const { orders, payments, loading, searchResult } = useSelector(
     (state) => state.customersReducer
   );
+
   const userData = useMemo(
     () =>
       searchResult.find(
@@ -44,9 +46,24 @@ export const useData = () => {
     [searchResult, state?.userEmail]
   );
 
-  const userInfoIsUpdated = useMemo(
-    () => Object.keys(updatedUserInfo).length > 0,
-    [updatedUserInfo]
+  const defaultValues = useMemo(() => {
+    const values = {};
+
+    if (userData) {
+      fieldsForEditing.map(({ name }) => (values[name] = userData[name]));
+    }
+
+    return values;
+  }, [userData]);
+
+  const { control, handleSubmit, formState, reset, setValue } = useForm({
+    defaultValues,
+    mode: "onChange",
+  });
+
+  const isEnabledSaveBtn = useMemo(
+    () => formState?.isDirty && formState?.isValid,
+    [formState?.isDirty, formState?.isValid]
   );
 
   const userName = useMemo(
@@ -65,6 +82,14 @@ export const useData = () => {
   useEffect(() => {
     if (!state?.userEmail) {
       goBack();
+    }
+
+    if (userData?.date_of_birth) {
+      setValue("date_of_birth", userData?.date_of_birth);
+    }
+
+    if (userData) {
+      fieldsForEditing.map(({ name }) => setValue(name, userData[name]));
     }
 
     userData
@@ -105,42 +130,6 @@ export const useData = () => {
     [payments.length]
   );
 
-  const userDataColumns = [
-    { name: "key", label: "" },
-    {
-      name: "value",
-      label: "",
-      options: {
-        customBodyRender: (value, { rowData }) => {
-          const canBeEdited = fieldsForEditing.includes(rowData[0]);
-
-          if (canBeEdited) {
-            return (
-              <TextField
-                defaultValue={value}
-                style={{ width: "100%" }}
-                onChange={(e) => onChangeUserInfo(rowData[0], e.target.value)}
-              />
-            );
-          }
-
-          return value;
-        },
-      },
-    },
-  ];
-
-  const onChangeUserInfo = (label, value) => {
-    const defaultValue = userData[label];
-
-    if (defaultValue == value) {
-      const { [label]: _, ...newObj } = updatedUserInfo;
-      setUpdatedUserInfo(newObj);
-    } else {
-      setUpdatedUserInfo((p) => ({ ...p, [label]: value }));
-    }
-  };
-
   const userDataArr = useMemo(
     () =>
       userData
@@ -169,11 +158,27 @@ export const useData = () => {
   const refreshUserInfo = () =>
     dispatch(searchCustomers(userData?.primary_email, "email"));
 
+  const onSubmit = (values) => {
+    const payload = {};
+
+    Object.keys(formState.dirtyFields).map((key) => {
+      payload[key] = values[key];
+    });
+
+    dispatch(
+      updateCustomerInfo(payload, userData?.keycloak_id, () => {
+        refreshUserInfo();
+        reset();
+      })
+    );
+  };
+
   return {
     goBack,
     orders,
     loading,
     options,
+    control,
     payments,
     userName,
     userData,
@@ -183,13 +188,13 @@ export const useData = () => {
     onPressMerge,
     ordersColumns,
     paymentsColumns,
-    userDataColumns,
     membershipInfo,
     refreshUserInfo,
-    userInfoIsUpdated,
+    isEnabledSaveBtn,
     confirmationModal,
     mergeAccountsModal,
     offlinePaymentModal,
     onConfirmCancellation,
+    onPressSave: handleSubmit(onSubmit),
   };
 };

@@ -1,3 +1,7 @@
+import countries from "./countries";
+import languages from "./languages";
+import { genderData, maritalStatuses } from "./formData";
+
 export const defaultTableOptions = {
   selectableRows: "none",
   download: false,
@@ -12,26 +16,27 @@ export const defaultTableOptions = {
 export const rowsPerPageOptions = [10, 25, 50, 100];
 
 export const fieldsForEditing = [
-  "first_name_latin",
-  "first_name_vernacular",
-  "last_name_latin",
-  "last_name_vernacular",
-  "street_address",
-  "country",
-  "state_region",
-  "city",
-  "gender",
-  "marital_status",
-  "primary_email",
-  "alternate_email_1",
-  "alternate_email_2",
-  "first_language",
-  "other_language_1",
-  "listening_language",
-  "reading_language",
-  "email_language",
-  "study_start_year",
-  "study_framework",
-  "has_ten_group",
-  "name_ten_group",
+  { name: "first_name_latin" },
+  { name: "first_name_vernacular" },
+  { name: "last_name_latin" },
+  { name: "last_name_vernacular" },
+  { name: "street_address" },
+  { name: "country", type: "dropdown", data: countries },
+  { name: "state_region" },
+  { name: "city" },
+  { name: "gender", type: "dropdown", data: genderData },
+  { name: "marital_status", type: "dropdown", data: maritalStatuses },
+  { name: "date_of_birth", type: "date" },
+  { name: "primary_email" },
+  { name: "alternate_email_1" },
+  { name: "alternate_email_2" },
+  { name: "first_language", type: "dropdown", data: languages },
+  { name: "other_language_1", type: "dropdown", data: languages },
+  { name: "listening_language", type: "dropdown", data: languages },
+  { name: "reading_language", type: "dropdown", data: languages },
+  { name: "email_language", type: "dropdown", data: languages },
+  { name: "study_start_year" },
+  { name: "study_framework" },
+  { name: "has_ten_group" },
+  { name: "name_ten_group" },
 ];

@@ -65,7 +65,14 @@
       "accountsHaveBeenSuccessfullyMerged": "Accounts have been successfully merged",
       "save": "Save",
       "flatView": "Flat View",
-      "treeView": "Tree View"
+      "treeView": "Tree View",
+      "single": "Single",
+      "married": "Married",
+      "divorced": "Divorced",
+      "widowed": "Widowed",
+      "male": "Male",
+      "female": "Female"
+
     },
     "Activity": {
       "name": "Activity",

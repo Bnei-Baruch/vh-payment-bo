@@ -7,6 +7,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import MergeTypeIcon from "@material-ui/icons/MergeType";
 import CancelIcon from "@material-ui/icons/Cancel";
 import { useTranslation } from "react-i18next";
+import { Controller } from "react-hook-form";
 import {
   Box,
   Tab,
@@ -16,6 +17,10 @@ import {
   TableCell,
   TableRow,
   withStyles,
+  TextField,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 
@@ -26,6 +31,7 @@ import {
 } from "../../../components";
 import { useData } from "./useData";
 import "./styles.css";
+import { fieldsForEditing } from "../../../constants/table";
 
 export default function UserDetails() {
   const { t } = useTranslation();
@@ -33,20 +39,21 @@ export default function UserDetails() {
     goBack,
     orders,
     loading,
+    control,
     options,
     payments,
     userName,
     userData,
     activeTab,
     userDataArr,
+    onPressSave,
     setActiveTab,
     onPressMerge,
     ordersColumns,
     paymentsColumns,
-    userDataColumns,
     membershipInfo,
     refreshUserInfo,
-    userInfoIsUpdated,
+    isEnabledSaveBtn,
     confirmationModal,
     mergeAccountsModal,
     offlinePaymentModal,
@@ -64,6 +71,71 @@ export default function UserDetails() {
       </div>
     );
   };
+
+  const userDataColumns = [
+    { name: "key", label: "" },
+    {
+      name: "value",
+      label: "",
+      options: {
+        customBodyRender: (value, { rowData }) => {
+          const canBeEdited = fieldsForEditing.find(
+            ({ name }) => name === rowData[0]
+          );
+
+          if (canBeEdited?.type) {
+            return (
+              <Controller
+                name={canBeEdited.name}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <FormControl focused={true} style={{ width: "100%" }}>
+                    {canBeEdited?.type === "date" && (
+                      <TextField
+                        type="date"
+                        value={value}
+                        onChange={onChange}
+                      />
+                    )}
+
+                    {canBeEdited?.type === "dropdown" && (
+                      <Select value={value} onChange={onChange}>
+                        {canBeEdited?.data.map(({ label, ISO, code }) => {
+                          const value = ISO ?? code;
+
+                          return (
+                            <MenuItem key={value} value={value}>
+                              {label}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    )}
+                  </FormControl>
+                )}
+              />
+            );
+          }
+
+          if (canBeEdited) {
+            return (
+              <Controller
+                name={canBeEdited.name}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <FormControl style={{ width: "100%" }}>
+                    <TextField value={value} onChange={onChange} />
+                  </FormControl>
+                )}
+              />
+            );
+          }
+
+          return value;
+        },
+      },
+    },
+  ];
 
   const CustomTableCell = withStyles((theme) => ({
     head: {
@@ -202,10 +274,11 @@ export default function UserDetails() {
 
         <Box display="flex" justifyContent="center" mt={5}>
           <Button
-            disabled={!userInfoIsUpdated}
+            disabled={!isEnabledSaveBtn}
+            onClick={onPressSave}
             variant="contained"
             style={{
-              opacity: userInfoIsUpdated ? 1 : 0.6,
+              opacity: isEnabledSaveBtn ? 1 : 0.6,
               background: "var(--color-primary)",
               color: "var(--color-white)",
               width: 130,

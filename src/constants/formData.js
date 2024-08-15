@@ -68,30 +68,30 @@ export const subscriptionData = [
 export const genderData = [
   {
     code: "male",
-    label: i18next.t("Dashboard.Profile.PersonalForm.gender.male"),
+    label: i18next.t("UserDetails.male"),
   },
   {
     code: "female",
-    label: i18next.t("Dashboard.Profile.PersonalForm.gender.female"),
+    label: i18next.t("UserDetails.female"),
   },
 ];
 
 export const maritalStatuses = [
   {
     code: "Single",
-    label: i18next.t("Dashboard.Profile.PersonalForm.maritalStatus.single"),
+    label: i18next.t("UserDetails.single"),
   },
   {
     code: "Married",
-    label: i18next.t("Dashboard.Profile.PersonalForm.maritalStatus.married"),
+    label: i18next.t("UserDetails.married"),
   },
   {
     code: "Divorced",
-    label: i18next.t("Dashboard.Profile.PersonalForm.maritalStatus.divorced"),
+    label: i18next.t("UserDetails.divorced"),
   },
   {
     code: "Widowed",
-    label: i18next.t("Dashboard.Profile.PersonalForm.maritalStatus.widowed"),
+    label: i18next.t("UserDetails.widowed"),
   },
 ];
 
