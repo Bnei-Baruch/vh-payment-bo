@@ -431,13 +431,13 @@ export default function UserDetails() {
           className="action-row"
         >
           <Box display="flex">
-            {membershipInfo.map(({ key, label }) => (
+            {membershipInfo.map(({ key, label, value }) => (
               <div key={key} className="info-column">
                 <div className="key">{label}</div>
                 {key === "membership_active" ? (
                   renderStatus()
                 ) : (
-                  <div className="value">{userData[key]}</div>
+                  <div className="value">{value ?? userData[key]}</div>
                 )}
               </div>
             ))}

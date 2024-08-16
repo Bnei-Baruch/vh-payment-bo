@@ -13,6 +13,7 @@ import {
   cancelMembership,
   getCustomerOrders,
   getCustomerPayments,
+  getMembershipInfo,
   searchCustomers,
   updateCustomerInfo,
 } from "../../../redux/actions/customersActions";
@@ -31,10 +32,10 @@ export const useData = () => {
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
   const [activeTab, setActiveTab] = useState(0);
-  const membershipInfo = [
+  const [membershipInfo, setMembershipInfo] = useState([
     { key: "membership_active", label: t("Search.status") },
     { key: "membership_type", label: t("Activity.type") },
-  ];
+  ]);
   const { orders, payments, loading, searchResult } = useSelector(
     (state) => state.customersReducer
   );
@@ -91,6 +92,21 @@ export const useData = () => {
 
     if (userData) {
       fieldsForEditing.map(({ name }) => setValue(name, userData[name]));
+
+      dispatch(
+        getMembershipInfo(
+          userData.keycloak_id,
+          (type) =>
+            type &&
+            setMembershipInfo((p) => [
+              ...p,
+              {
+                value: t(`UserDetails.${type}`),
+                label: t("UserDetails.paymentType"),
+              },
+            ])
+        )
+      );
     }
 
     userData

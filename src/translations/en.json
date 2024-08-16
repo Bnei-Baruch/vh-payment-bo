@@ -71,7 +71,11 @@
       "divorced": "Divorced",
       "widowed": "Widowed",
       "male": "Male",
-      "female": "Female"
+      "paymentType": "Payment Type",
+      "female": "Female",
+      "regular": "Regular",
+      "specials": "Specials",
+      "grants": "Grants"
 
     },
     "Activity": {

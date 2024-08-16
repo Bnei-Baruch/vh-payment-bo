@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 import { ApiCustomers } from "../api/customersApi";
 import {
   FETCH_ACTIVITY_FAILED,
@@ -180,6 +182,38 @@ export const updateCustomerInfo = (payload, keycloakId, onSuccess) => {
       onSuccess();
     } catch (e) {
       console.log("Failed to update customer info", e);
+    }
+  };
+};
+
+export const getMembershipInfo = (keycloakId, returnType) => {
+  return async () => {
+    try {
+      const info = await ApiCustomers.fetchMembershipInfo(keycloakId);
+
+      if (!info?.data?.active) {
+        return;
+      }
+
+      const { payment, special, help_haver } = info?.data?.details;
+
+      if (payment?.payment_type === "offline") {
+        returnType("offlinePayment");
+      }
+
+      if (!_.isEmpty(payment) && payment?.payment_type !== "offline") {
+        returnType("regular");
+      }
+
+      if (_.isEmpty(payment) && !_.isEmpty(special)) {
+        returnType("specials");
+      }
+
+      if (_.isEmpty(payment) && !_.isEmpty(help_haver)) {
+        returnType("grants");
+      }
+    } catch (e) {
+      console.log("Failed to fetch membership info", e);
     }
   };
 };
