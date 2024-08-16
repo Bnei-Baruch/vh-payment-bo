@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useMemo, useState } from "react";
 
+import moment from "moment";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { CircularProgress } from "@material-ui/core";
@@ -161,9 +162,11 @@ export const useData = () => {
   const onSubmit = (values) => {
     const payload = {};
 
-    Object.keys(formState.dirtyFields).map((key) => {
-      payload[key] = values[key];
-    });
+    Object.keys(formState.dirtyFields).map(
+      (key) =>
+        (payload[key] =
+          key === "date_of_birth" ? moment(values[key]).format() : values[key])
+    );
 
     dispatch(
       updateCustomerInfo(payload, userData?.keycloak_id, () => {

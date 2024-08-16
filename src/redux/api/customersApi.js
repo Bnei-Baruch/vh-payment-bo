@@ -61,7 +61,7 @@ export const ApiCustomers = new (class Api {
   updatePersonalInfo(data, keycloakId) {
     return axios({
       url: `/profile/v1/profile/${keycloakId}`,
-      method: "paych",
+      method: "patch",
       data,
     });
   }
