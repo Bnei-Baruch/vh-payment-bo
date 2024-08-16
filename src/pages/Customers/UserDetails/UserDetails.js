@@ -137,7 +137,7 @@ export default function UserDetails() {
     },
   ];
 
-  const CustomTableCell = withStyles((theme) => ({
+  const CustomTableCell = withStyles(() => ({
     head: {
       backgroundColor: "var(--color-grey)",
       color: "var(--color-white)",
@@ -313,17 +313,17 @@ export default function UserDetails() {
                 </CustomTableCell>
               ))}
             </TableRow>
-            <TableRow>
-              <TableCell />
-              <TableCell />
-              {relatedPayments.map((values) =>
-                paymentsColumns.map(({ label }, idx) => (
+            {relatedPayments.map((values, i) => (
+              <TableRow key={i}>
+                <TableCell />
+                <TableCell />
+                {paymentsColumns.map(({ label }, idx) => (
                   <CustomTableCell key={idx} align="center">
                     {values[label]}
                   </CustomTableCell>
-                ))
-              )}
-            </TableRow>
+                ))}
+              </TableRow>
+            ))}
           </>
         );
       },
