@@ -49,7 +49,10 @@ export const useData = () => {
       return (
         <TableRow
           key={specials.list[idx].id}
-          style={{ background: timeHasPassed ? "#f3dfe3" : "#fff" }}
+          style={{
+            fontStyle: timeHasPassed ? "italic" : "normal",
+            background: timeHasPassed ? "#f3dfe3" : "#fff",
+          }}
         >
           {values.map((el, i) => (
             <TableCell key={`${i}${specials.list[idx].id}`}>{el}</TableCell>
