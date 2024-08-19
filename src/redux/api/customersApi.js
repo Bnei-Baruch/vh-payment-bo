@@ -53,7 +53,7 @@ export const ApiCustomers = new (class Api {
   }
   getSpecials() {
     return axios({
-      url: `/pay/v2/special`,
+      url: `/pay/v2/special/`,
       method: "get",
     });
   }
