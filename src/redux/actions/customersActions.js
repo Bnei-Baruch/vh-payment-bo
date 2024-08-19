@@ -202,7 +202,7 @@ export const searchSpecials = (query, type) => {
 
       dispatch({
         type: FETCH_SPECIALS_SUCCESS,
-        payload: { list: result ?? [] },
+        payload: { list: result?.data ?? [] },
       });
     } catch (e) {
       console.log("Search failed", e);
