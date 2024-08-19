@@ -49,7 +49,7 @@ export default function Specials() {
             onChange={(e) => setQueryType(e.target.value)}
           >
             <MenuItem value="email">{t("Specials.email")}</MenuItem>
-            <MenuItem value="keycloak">{t("Specials.keycloakId")}</MenuItem>
+            <MenuItem value="keycloak_id">{t("Specials.keycloakId")}</MenuItem>
           </Select>
           <Button
             variant="contained"

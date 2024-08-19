@@ -56,7 +56,7 @@ export const useData = () => {
 
   const tableColumns = [
     {
-      name: "primary_email",
+      name: "email",
       label: t("Specials.email"),
     },
     {
