@@ -2,7 +2,12 @@
 import React, { useEffect, useState } from "react";
 
 import moment from "moment";
-import { Button, CircularProgress } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  TableCell,
+  TableRow,
+} from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
@@ -36,6 +41,22 @@ export const useData = () => {
     serverSide: true,
     pagination: true,
     rowsPerPageOptions,
+    customRowRender: (values, idx) => {
+      const timeHasPassed = moment(specials.list[idx].end_date).isBefore(
+        moment(new Date())
+      );
+
+      return (
+        <TableRow
+          key={specials.list[idx].id}
+          style={{ background: timeHasPassed ? "#f3dfe3" : "#fff" }}
+        >
+          {values.map((el, i) => (
+            <TableCell key={`${i}${specials.list[idx].id}`}>{el}</TableCell>
+          ))}
+        </TableRow>
+      );
+    },
     textLabels: {
       body: {
         noMatch: loading ? (
@@ -68,7 +89,7 @@ export const useData = () => {
       label: t("Specials.startDate"),
       options: {
         customBodyRender: (value) => (
-          <>{moment(value).format("DD-MM-YYYY HH:MM:SS")}</>
+          <>{moment(value).format("DD-MM-YYYY HH:mm:ss")}</>
         ),
       },
     },
@@ -77,7 +98,7 @@ export const useData = () => {
       label: t("Specials.endDate"),
       options: {
         customBodyRender: (value) => (
-          <>{moment(value).format("DD-MM-YYYY HH:MM:SS")}</>
+          <>{moment(value).format("DD-MM-YYYY HH:mm:ss")}</>
         ),
       },
     },
@@ -86,7 +107,7 @@ export const useData = () => {
       label: t("Specials.createdAt"),
       options: {
         customBodyRender: (value) => (
-          <>{moment(value).format("DD-MM-YYYY HH:MM:SS")}</>
+          <>{moment(value).format("DD-MM-YYYY HH:mm:ss")}</>
         ),
       },
     },
@@ -102,19 +123,27 @@ export const useData = () => {
       name: "id",
       label: t("Specials.remove"),
       options: {
-        customBodyRender: (id) => (
-          <Button
-            variant="outlined"
-            style={{
-              borderColor: "var(--color-red)",
-              color: "var(--color-red)",
-            }}
-            startIcon={<DeleteForeverIcon />}
-            onClick={() => onPressRemove(id)}
-          >
-            {t("Specials.remove")}
-          </Button>
-        ),
+        customBodyRender: (id, { rowIndex }) => {
+          const timeHasPassed = moment(
+            specials.list[rowIndex].end_date
+          ).isBefore(moment(new Date()));
+
+          return (
+            timeHasPassed || (
+              <Button
+                variant="outlined"
+                style={{
+                  borderColor: "var(--color-red)",
+                  color: "var(--color-red)",
+                }}
+                startIcon={<DeleteForeverIcon />}
+                onClick={() => onPressRemove(id)}
+              >
+                {t("Specials.remove")}
+              </Button>
+            )
+          );
+        },
       },
     },
   ];
