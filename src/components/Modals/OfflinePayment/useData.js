@@ -12,6 +12,7 @@ import { offlinePayment } from "../../../redux/actions/customersActions";
 export const useData = (ref, useModal, keycloakId) => {
   const dispatch = useDispatch();
   const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const { currentPayment } = useSelector((state) => state.customersReducer);
 
   const { control, handleSubmit, reset } = useForm({
@@ -30,14 +31,29 @@ export const useData = (ref, useModal, keycloakId) => {
 
   useImperativeHandle(ref, () => ({
     setFormValues() {
-      const { amount, currency, payment_method } =
-        currentPayment?.details?.payment;
+      setIsEditing(true);
+      const {
+        date,
+        note,
+        amount,
+        currency,
+        language,
+        quantity,
+        payment_method,
+      } = currentPayment?.details?.payment;
 
       reset({
+        note,
+        language,
+        quantity,
         amount: amount,
         currency: currency,
         payment_method: payment_method,
+        payment_date: moment(date).format("YYYY-MM-DD"),
       });
+    },
+    resetFormValues() {
+      reset();
     },
   }));
 
@@ -77,6 +93,7 @@ export const useData = (ref, useModal, keycloakId) => {
 
   return {
     control,
+    isEditing,
     isOpenAlert,
     setIsOpenAlert,
     onPressSubmit: handleSubmit(onSubmit),

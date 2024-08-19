@@ -23,11 +23,8 @@ import { Alert } from "@material-ui/lab";
 
 export const OfflinePayment = forwardRef(({ useModal, keycloakId }, ref) => {
   const { t } = useTranslation();
-  const { isOpenAlert, setIsOpenAlert, control, onPressSubmit } = useData(
-    ref,
-    useModal,
-    keycloakId
-  );
+  const { isEditing, isOpenAlert, setIsOpenAlert, control, onPressSubmit } =
+    useData(ref, useModal, keycloakId);
 
   return (
     <>
@@ -216,7 +213,7 @@ export const OfflinePayment = forwardRef(({ useModal, keycloakId }, ref) => {
               color: "var(--color-white)",
             }}
           >
-            {t("UserDetails.submit")}
+            {t(`UserDetails.${isEditing ? "save" : "submit"}`)}
           </Button>
         </Box>
       </Dialog>
