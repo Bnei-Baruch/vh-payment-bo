@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import moment from "moment";
 import { useForm } from "react-hook-form";
@@ -28,6 +29,7 @@ export const useData = () => {
   const dispatch = useDispatch();
   const { goBack } = useHistory();
   const { state } = useLocation();
+  const paymentModalRef = useRef(null);
   const confirmationModal = useModal();
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
@@ -57,6 +59,14 @@ export const useData = () => {
 
     return values;
   }, [userData]);
+
+  const isEditablePayment = useMemo(
+    () =>
+      !!membershipInfo.find(
+        ({ value }) => value === t("UserDetails.offlinePayment")
+      ),
+    [membershipInfo]
+  );
 
   const { control, handleSubmit, formState, reset, setValue } = useForm({
     defaultValues,
@@ -192,6 +202,11 @@ export const useData = () => {
     );
   };
 
+  const onPressEditPayment = () => {
+    paymentModalRef?.current?.setFormValues();
+    offlinePaymentModal.showModal();
+  };
+
   return {
     goBack,
     orders,
@@ -208,10 +223,13 @@ export const useData = () => {
     ordersColumns,
     paymentsColumns,
     membershipInfo,
+    paymentModalRef,
     refreshUserInfo,
     isEnabledSaveBtn,
+    isEditablePayment,
     confirmationModal,
     mergeAccountsModal,
+    onPressEditPayment,
     offlinePaymentModal,
     onConfirmCancellation,
     onPressSave: handleSubmit(onSubmit),

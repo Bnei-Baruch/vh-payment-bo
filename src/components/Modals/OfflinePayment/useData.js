@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useImperativeHandle, useState } from "react";
 
 import moment from "moment";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { schema } from "./validate";
 import { currencies } from "../../../constants/currencies";
 import { offlinePayment } from "../../../redux/actions/customersActions";
 
-export const useData = (useModal, keycloakId) => {
+export const useData = (ref, useModal, keycloakId) => {
   const dispatch = useDispatch();
   const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const { currentPayment } = useSelector((state) => state.customersReducer);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       amount: "",
       currency: currencies[0],
@@ -26,6 +27,19 @@ export const useData = (useModal, keycloakId) => {
     mode: "onChange",
     resolver: yupResolver(schema),
   });
+
+  useImperativeHandle(ref, () => ({
+    setFormValues() {
+      const { amount, currency, payment_method } =
+        currentPayment?.details?.payment;
+
+      reset({
+        amount: amount,
+        currency: currency,
+        payment_method: payment_method,
+      });
+    },
+  }));
 
   const onSubmit = (values) => {
     const {

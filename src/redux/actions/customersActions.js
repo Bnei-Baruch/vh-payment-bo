@@ -4,6 +4,8 @@ import { ApiCustomers } from "../api/customersApi";
 import {
   FETCH_ACTIVITY_FAILED,
   FETCH_ACTIVITY_SUCCESS,
+  GET_CURRENT_PAYMENT_FAILED,
+  GET_CURRENT_PAYMENT_SUCCESS,
   GET_ORDERS_FAILED,
   GET_ORDERS_SUCCESS,
   GET_PAYMENTS_FAILED,
@@ -187,11 +189,12 @@ export const updateCustomerInfo = (payload, keycloakId, onSuccess) => {
 };
 
 export const getMembershipInfo = (keycloakId, returnType) => {
-  return async () => {
+  return async (dispatch) => {
     try {
       const info = await ApiCustomers.fetchMembershipInfo(keycloakId);
 
       if (!info?.data?.active) {
+        dispatch({ type: GET_CURRENT_PAYMENT_FAILED });
         return;
       }
 
@@ -199,14 +202,20 @@ export const getMembershipInfo = (keycloakId, returnType) => {
 
       if (payment?.payment_type === "offline") {
         returnType("offlinePayment");
+        dispatch({ type: GET_CURRENT_PAYMENT_SUCCESS, payload: info.data });
+        return;
       }
+
+      dispatch({ type: GET_CURRENT_PAYMENT_FAILED });
 
       if (!_.isEmpty(payment) && payment?.payment_type !== "offline") {
         returnType("regular");
+        return;
       }
 
       if (_.isEmpty(payment) && !_.isEmpty(special)) {
         returnType("specials");
+        return;
       }
 
       if (_.isEmpty(payment) && !_.isEmpty(help_haver)) {
@@ -214,6 +223,7 @@ export const getMembershipInfo = (keycloakId, returnType) => {
       }
     } catch (e) {
       console.log("Failed to fetch membership info", e);
+      dispatch({ type: GET_CURRENT_PAYMENT_FAILED });
     }
   };
 };

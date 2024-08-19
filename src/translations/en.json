@@ -75,7 +75,8 @@
       "female": "Female",
       "regular": "Regular",
       "specials": "Specials",
-      "grants": "Grants"
+      "grants": "Grants",
+      "editPayment": "Edit Payment"
 
     },
     "Activity": {

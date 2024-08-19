@@ -6,6 +6,7 @@ import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import MergeTypeIcon from "@material-ui/icons/MergeType";
 import CancelIcon from "@material-ui/icons/Cancel";
+import EditIcon from "@material-ui/icons/Edit";
 import { useTranslation } from "react-i18next";
 import { Controller } from "react-hook-form";
 import {
@@ -52,10 +53,13 @@ export default function UserDetails() {
     ordersColumns,
     paymentsColumns,
     membershipInfo,
+    paymentModalRef,
     refreshUserInfo,
     isEnabledSaveBtn,
+    isEditablePayment,
     confirmationModal,
     mergeAccountsModal,
+    onPressEditPayment,
     offlinePaymentModal,
     onConfirmCancellation,
   } = useData();
@@ -432,7 +436,7 @@ export default function UserDetails() {
         >
           <Box display="flex">
             {membershipInfo.map(({ key, label, value }) => (
-              <div key={key} className="info-column">
+              <div key={value ?? key} className="info-column">
                 <div className="key">{label}</div>
                 {key === "membership_active" ? (
                   renderStatus()
@@ -499,6 +503,16 @@ export default function UserDetails() {
         >
           {t("UserDetails.offlinePayment")}
         </Button>
+
+        {isEditablePayment && (
+          <Button
+            onClick={onPressEditPayment}
+            startIcon={<EditIcon />}
+            className="button"
+          >
+            {t("UserDetails.editPayment")}
+          </Button>
+        )}
       </Box>
 
       <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)}>
@@ -519,6 +533,7 @@ export default function UserDetails() {
       />
       <MergeAccounts useModal={mergeAccountsModal} callback={refreshUserInfo} />
       <OfflinePayment
+        ref={paymentModalRef}
         useModal={offlinePaymentModal}
         keycloakId={userData?.keycloak_id}
       />

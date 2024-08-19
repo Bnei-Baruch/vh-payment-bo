@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 import { Controller } from "react-hook-form";
 import Dialog from "@material-ui/core/Dialog";
@@ -21,9 +21,10 @@ import languages from "../../../constants/languages";
 import { currencies } from "../../../constants/currencies";
 import { Alert } from "@material-ui/lab";
 
-export const OfflinePayment = ({ useModal, keycloakId }) => {
+export const OfflinePayment = forwardRef(({ useModal, keycloakId }, ref) => {
   const { t } = useTranslation();
   const { isOpenAlert, setIsOpenAlert, control, onPressSubmit } = useData(
+    ref,
     useModal,
     keycloakId
   );
@@ -230,4 +231,4 @@ export const OfflinePayment = ({ useModal, keycloakId }) => {
       </Snackbar>
     </>
   );
-};
+}, []);
