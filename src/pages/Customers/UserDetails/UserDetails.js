@@ -62,6 +62,7 @@ export default function UserDetails() {
     onPressEditPayment,
     offlinePaymentModal,
     onConfirmCancellation,
+    onPressOfflinePayment,
   } = useData();
 
   const renderStatus = () => {
@@ -497,7 +498,7 @@ export default function UserDetails() {
           {t("UserDetails.mergeFromOtherAccount")}
         </Button>
         <Button
-          onClick={offlinePaymentModal.showModal}
+          onClick={onPressOfflinePayment}
           startIcon={<MonetizationOnIcon />}
           className="button"
         >

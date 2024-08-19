@@ -7,7 +7,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { schema } from "./validate";
 import { currencies } from "../../../constants/currencies";
-import { offlinePayment } from "../../../redux/actions/customersActions";
+import {
+  offlinePayment,
+  updateOfflinePayment,
+} from "../../../redux/actions/customersActions";
 
 export const useData = (ref, useModal, keycloakId) => {
   const dispatch = useDispatch();
@@ -15,16 +18,18 @@ export const useData = (ref, useModal, keycloakId) => {
   const [isEditing, setIsEditing] = useState(false);
   const { currentPayment } = useSelector((state) => state.customersReducer);
 
-  const { control, handleSubmit, reset } = useForm({
-    defaultValues: {
-      amount: "",
-      currency: currencies[0],
-      quantity: 1,
-      payment_method: "",
-      payment_date: "",
-      language: "",
-      note: "",
-    },
+  const defaultValues = {
+    amount: "",
+    currency: currencies[0],
+    quantity: 1,
+    payment_method: "",
+    payment_date: "",
+    language: "",
+    note: "",
+  };
+
+  const { control, handleSubmit, reset, formState } = useForm({
+    defaultValues,
     mode: "onChange",
     resolver: yupResolver(schema),
   });
@@ -52,8 +57,10 @@ export const useData = (ref, useModal, keycloakId) => {
         payment_date: moment(date).format("YYYY-MM-DD"),
       });
     },
+
     resetFormValues() {
-      reset();
+      setIsEditing(false);
+      reset(defaultValues);
     },
   }));
 
@@ -86,6 +93,18 @@ export const useData = (ref, useModal, keycloakId) => {
     );
   };
 
+  const onUpdate = (values) => {
+    const payload = {};
+
+    Object.keys(formState.dirtyFields).map(
+      (key) =>
+        (payload[key] =
+          key === "payment_date" ? moment(values[key]).format() : values[key])
+    );
+
+    dispatch(updateOfflinePayment(payload, onSuccess));
+  };
+
   const onSuccess = () => {
     setIsOpenAlert(true);
     useModal.hideModal();
@@ -96,6 +115,6 @@ export const useData = (ref, useModal, keycloakId) => {
     isEditing,
     isOpenAlert,
     setIsOpenAlert,
-    onPressSubmit: handleSubmit(onSubmit),
+    onPressSubmit: handleSubmit(isEditing ? onUpdate : onSubmit),
   };
 };

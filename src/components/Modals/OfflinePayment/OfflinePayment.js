@@ -223,7 +223,11 @@ export const OfflinePayment = forwardRef(({ useModal, keycloakId }, ref) => {
         onClose={() => setIsOpenAlert(false)}
       >
         <Alert severity="success" variant="filled">
-          {t("UserDetails.paymentSuccessful")}
+          {t(
+            `UserDetails.${
+              isEditing ? "paymentSuccessfullyUpdated" : "paymentSuccessful"
+            }`
+          )}
         </Alert>
       </Snackbar>
     </>

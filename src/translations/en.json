@@ -76,7 +76,8 @@
       "regular": "Regular",
       "specials": "Specials",
       "grants": "Grants",
-      "editPayment": "Edit Payment"
+      "editPayment": "Edit Payment",
+      "paymentSuccessfullyUpdated": "Payment successfully updated"
 
     },
     "Activity": {

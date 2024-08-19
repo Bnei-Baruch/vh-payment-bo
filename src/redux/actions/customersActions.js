@@ -227,3 +227,15 @@ export const getMembershipInfo = (keycloakId, returnType) => {
     }
   };
 };
+
+export const updateOfflinePayment = (payload, callback) => {
+  return async () => {
+    try {
+      await ApiCustomers.updateOfflinePayment(payload);
+
+      callback();
+    } catch (e) {
+      console.log("Failed to update online payment", e);
+    }
+  };
+};

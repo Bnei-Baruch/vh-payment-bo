@@ -71,4 +71,11 @@ export const ApiCustomers = new (class Api {
       method: "get",
     });
   }
+  updateOfflinePayment(data) {
+    return axios({
+      url: `/pay/v2/order/offline`,
+      method: "patch",
+      data,
+    });
+  }
 })();

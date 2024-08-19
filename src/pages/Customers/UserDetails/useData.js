@@ -202,6 +202,11 @@ export const useData = () => {
     );
   };
 
+  const onPressOfflinePayment = () => {
+    paymentModalRef?.current?.resetFormValues();
+    offlinePaymentModal.showModal();
+  };
+
   const onPressEditPayment = () => {
     paymentModalRef?.current?.setFormValues();
     offlinePaymentModal.showModal();
@@ -232,6 +237,7 @@ export const useData = () => {
     onPressEditPayment,
     offlinePaymentModal,
     onConfirmCancellation,
+    onPressOfflinePayment,
     onPressSave: handleSubmit(onSubmit),
   };
 };
