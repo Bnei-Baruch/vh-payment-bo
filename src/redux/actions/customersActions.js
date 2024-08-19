@@ -156,7 +156,7 @@ export const fetchSpecials = () => {
       dispatch({
         type: FETCH_SPECIALS_SUCCESS,
         payload: {
-          list: specials.data,
+          list: specials.data ?? [],
           totalCount: specials.totalCount,
         },
       });
