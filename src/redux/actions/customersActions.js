@@ -147,12 +147,12 @@ export const offlinePayment = (payload, callback) => {
   };
 };
 
-export const fetchSpecials = () => {
+export const fetchSpecials = (limit, counter) => {
   return async (dispatch) => {
     dispatch({ type: SET_CUSTOMERS_LOADING, payload: true });
 
     try {
-      const specials = await ApiCustomers.getSpecials();
+      const specials = await ApiCustomers.getSpecials(limit, counter);
       dispatch({
         type: FETCH_SPECIALS_SUCCESS,
         payload: {
@@ -206,6 +206,7 @@ export const searchSpecials = (query, type) => {
       });
     } catch (e) {
       console.log("Search failed", e);
+      dispatch({ type: FETCH_SPECIALS_FAILED });
     }
   };
 };

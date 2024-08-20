@@ -41,6 +41,7 @@ export const useData = () => {
     serverSide: true,
     pagination: true,
     rowsPerPageOptions,
+    count: specials.totalCount,
     customRowRender: (values, idx) => {
       const timeHasPassed = moment(specials.list[idx].end_date).isBefore(
         moment(new Date())
@@ -71,8 +72,18 @@ export const useData = () => {
     },
     onTableChange: (action, tableState) => {
       switch (action) {
+        case "changePage":
+          dispatch(fetchSpecials(rowsPerPage, tableState.page * rowsPerPage));
+          break;
+
         case "changeRowsPerPage":
           setRowsPerPage(tableState.rowsPerPage);
+          dispatch(
+            fetchSpecials(
+              tableState.rowsPerPage,
+              tableState.page * tableState.rowsPerPage
+            )
+          );
           break;
       }
     },
@@ -179,7 +190,7 @@ export const useData = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchSpecials());
+    dispatch(fetchSpecials(rowsPerPage, 0));
   }, [dispatch]);
 
   return {
