@@ -183,7 +183,7 @@ export default function UserDetails() {
 
         <MUIDataTable
           columns={ordersColumns}
-          options={options}
+          options={{ ...options, sort: true }}
           className="scrollable-table"
           data={loading ? [] : orders}
         />
@@ -307,21 +307,27 @@ export default function UserDetails() {
             <TableRow>
               <TableCell />
               <TableCell />
-              {paymentsColumns.map(({ label }, idx) => (
-                <CustomTableCell key={idx} align="center" variant="head">
-                  {label}
-                </CustomTableCell>
-              ))}
+              {paymentsColumns.map(
+                ({ label }, idx) =>
+                  label !== "order_id" && (
+                    <CustomTableCell key={idx} align="center" variant="head">
+                      {label}
+                    </CustomTableCell>
+                  )
+              )}
             </TableRow>
             {relatedPayments.map((values, i) => (
               <TableRow key={i}>
                 <TableCell />
                 <TableCell />
-                {paymentsColumns.map(({ label }, idx) => (
-                  <CustomTableCell key={idx} align="center">
-                    {values[label]}
-                  </CustomTableCell>
-                ))}
+                {paymentsColumns.map(
+                  ({ label }, idx) =>
+                    label !== "order_id" && (
+                      <CustomTableCell key={idx} align="center">
+                        {values[label]}
+                      </CustomTableCell>
+                    )
+                )}
               </TableRow>
             ))}
           </>

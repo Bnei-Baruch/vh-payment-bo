@@ -134,13 +134,13 @@ const CategoryIconMore = styled(ExpandMore)`
 `;
 
 const Subtitle = styled.div`
-  color: #F3C318;
+  color: #f3c318;
   font-size: 12px;
   font-weight: bold;
 `;
 
 const Link = styled(ListItem)`
-  padding-left: ${(props) => props.theme.spacing(15)}px;
+  padding-left: ${(props) => props.theme.spacing(10)}px;
   padding-top: ${(props) => props.theme.spacing(2)}px;
   padding-bottom: ${(props) => props.theme.spacing(2)}px;
   margin-left: ${(props) => props.marginleft};
@@ -309,9 +309,7 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
                   <ExternalLink href={category.path} target="_blank">
                     <Category>
                       {category.icon}
-                      <CategoryText>
-                        {t(`${category.id}.name`)}
-                      </CategoryText>
+                      <CategoryText>{t(`${category.id}.name`)}</CategoryText>
                     </Category>
                   </ExternalLink>
                 ) : (
