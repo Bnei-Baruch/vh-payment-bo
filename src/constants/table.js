@@ -40,3 +40,5 @@ export const fieldsForEditing = [
   { name: "has_ten_group" },
   { name: "name_ten_group" },
 ];
+
+export const fieldsForSorting = ["ProductType", "ID"];

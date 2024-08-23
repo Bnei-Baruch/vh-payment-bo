@@ -22,6 +22,7 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Snackbar,
 } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 
@@ -33,10 +34,12 @@ import {
 import { useData } from "./useData";
 import "./styles.css";
 import { fieldsForEditing } from "../../../constants/table";
+import { Alert } from "@material-ui/lab";
 
 export default function UserDetails() {
   const { t } = useTranslation();
   const {
+    alert,
     goBack,
     orders,
     loading,
@@ -46,6 +49,7 @@ export default function UserDetails() {
     userName,
     userData,
     activeTab,
+    onHideAlert,
     userDataArr,
     onPressSave,
     setActiveTab,
@@ -544,6 +548,15 @@ export default function UserDetails() {
         useModal={offlinePaymentModal}
         keycloakId={userData?.keycloak_id}
       />
+      <Snackbar
+        open={alert.visible}
+        onClose={onHideAlert}
+        autoHideDuration={4000}
+      >
+        <Alert severity="success" variant="filled">
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

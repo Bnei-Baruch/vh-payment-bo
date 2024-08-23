@@ -22,6 +22,7 @@ import { SAVE_MERGE_DETAILS } from "../../../redux/constants";
 import {
   defaultTableOptions,
   fieldsForEditing,
+  fieldsForSorting,
 } from "../../../constants/table";
 
 export const useData = () => {
@@ -38,6 +39,7 @@ export const useData = () => {
     { key: "membership_active", label: t("Search.status") },
     { key: "membership_type", label: t("Activity.type") },
   ]);
+  const [alert, setAlert] = useState({ visible: false, message: "" });
   const { orders, payments, loading, searchResult } = useSelector(
     (state) => state.customersReducer
   );
@@ -144,7 +146,7 @@ export const useData = () => {
         : Object.keys(orders[0]).map((key) => ({
             name: key,
             label: key,
-            options: { sort: key === "ProductType" },
+            options: { sort: fieldsForSorting.includes(key) },
           })),
     [orders.length]
   );
@@ -198,6 +200,10 @@ export const useData = () => {
       updateCustomerInfo(payload, userData?.keycloak_id, () => {
         refreshUserInfo();
         reset();
+        setAlert({
+          visible: true,
+          message: t("UserDetails.dataUpdatedSuccessfully"),
+        });
       })
     );
   };
@@ -212,7 +218,10 @@ export const useData = () => {
     offlinePaymentModal.showModal();
   };
 
+  const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
+
   return {
+    alert,
     goBack,
     orders,
     loading,
@@ -222,6 +231,7 @@ export const useData = () => {
     userName,
     userData,
     activeTab,
+    onHideAlert,
     userDataArr,
     setActiveTab,
     onPressMerge,

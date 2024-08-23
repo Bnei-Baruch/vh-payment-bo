@@ -71,13 +71,14 @@
       "divorced": "Divorced",
       "widowed": "Widowed",
       "male": "Male",
-      "paymentType": "Payment Type",
+      "paymentType": "Active Due",
       "female": "Female",
       "regular": "Regular",
       "specials": "Specials",
       "grants": "Grants",
       "editPayment": "Edit Payment",
-      "paymentSuccessfullyUpdated": "Payment successfully updated"
+      "paymentSuccessfullyUpdated": "Payment successfully updated",
+      "dataUpdatedSuccessfully": "Data updated successfully"
 
     },
     "Activity": {
