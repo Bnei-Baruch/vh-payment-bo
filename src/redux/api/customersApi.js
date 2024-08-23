@@ -51,9 +51,9 @@ export const ApiCustomers = new (class Api {
       data,
     });
   }
-  getSpecials(limit, counter) {
+  getSpecials() {
     return axios({
-      url: `/pay/v2/special?limit=${limit}&skip=${counter}`,
+      url: `/pay/v2/special/`,
       method: "get",
     });
   }

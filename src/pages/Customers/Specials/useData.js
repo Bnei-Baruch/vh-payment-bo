@@ -12,10 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
-import {
-  defaultTableOptions,
-  rowsPerPageOptions,
-} from "../../../constants/table";
+import { defaultTableOptions } from "../../../constants/table";
 import { useModal } from "../../../hooks";
 import { Enter } from "../../../constants/formData";
 import {
@@ -32,16 +29,10 @@ export const useData = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [queryType, setQueryType] = useState("email");
   const [selectedEntryId, setSlectedEntryId] = useState();
-  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
   const { specials, loading } = useSelector((state) => state.customersReducer);
 
   const tableOptions = {
     ...defaultTableOptions,
-    rowsPerPage,
-    serverSide: true,
-    pagination: true,
-    rowsPerPageOptions,
-    count: specials.totalCount,
     customRowRender: (values, idx) => {
       const timeHasPassed = moment(specials.list[idx].end_date).isBefore(
         moment(new Date())
@@ -69,23 +60,6 @@ export const useData = () => {
           t("Specials.noRecords")
         ),
       },
-    },
-    onTableChange: (action, tableState) => {
-      switch (action) {
-        case "changePage":
-          dispatch(fetchSpecials(rowsPerPage, tableState.page * rowsPerPage));
-          break;
-
-        case "changeRowsPerPage":
-          setRowsPerPage(tableState.rowsPerPage);
-          dispatch(
-            fetchSpecials(
-              tableState.rowsPerPage,
-              tableState.page * tableState.rowsPerPage
-            )
-          );
-          break;
-      }
     },
   };
 
@@ -190,7 +164,7 @@ export const useData = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchSpecials(rowsPerPage, 0));
+    dispatch(fetchSpecials());
   }, [dispatch]);
 
   return {
