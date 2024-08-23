@@ -65,4 +65,17 @@ export const ApiCustomers = new (class Api {
       data,
     });
   }
+  fetchMembershipInfo(keycloakId) {
+    return axios({
+      url: `/profile/v1/membership/kcid/${keycloakId}`,
+      method: "get",
+    });
+  }
+  updateOfflinePayment(data) {
+    return axios({
+      url: `/pay/v2/order/offline`,
+      method: "patch",
+      data,
+    });
+  }
 })();

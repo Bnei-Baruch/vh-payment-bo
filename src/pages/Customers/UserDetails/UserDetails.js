@@ -6,6 +6,7 @@ import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import MergeTypeIcon from "@material-ui/icons/MergeType";
 import CancelIcon from "@material-ui/icons/Cancel";
+import EditIcon from "@material-ui/icons/Edit";
 import { useTranslation } from "react-i18next";
 import { Controller } from "react-hook-form";
 import {
@@ -52,12 +53,16 @@ export default function UserDetails() {
     ordersColumns,
     paymentsColumns,
     membershipInfo,
+    paymentModalRef,
     refreshUserInfo,
     isEnabledSaveBtn,
+    isEditablePayment,
     confirmationModal,
     mergeAccountsModal,
+    onPressEditPayment,
     offlinePaymentModal,
     onConfirmCancellation,
+    onPressOfflinePayment,
   } = useData();
 
   const renderStatus = () => {
@@ -437,13 +442,13 @@ export default function UserDetails() {
           className="action-row"
         >
           <Box display="flex">
-            {membershipInfo.map(({ key, label }) => (
-              <div key={key} className="info-column">
+            {membershipInfo.map(({ key, label, value }) => (
+              <div key={value ?? key} className="info-column">
                 <div className="key">{label}</div>
                 {key === "membership_active" ? (
                   renderStatus()
                 ) : (
-                  <div className="value">{userData[key]}</div>
+                  <div className="value">{value ?? userData[key]}</div>
                 )}
               </div>
             ))}
@@ -499,12 +504,22 @@ export default function UserDetails() {
           {t("UserDetails.mergeFromOtherAccount")}
         </Button>
         <Button
-          onClick={offlinePaymentModal.showModal}
+          onClick={onPressOfflinePayment}
           startIcon={<MonetizationOnIcon />}
           className="button"
         >
           {t("UserDetails.offlinePayment")}
         </Button>
+
+        {isEditablePayment && (
+          <Button
+            onClick={onPressEditPayment}
+            startIcon={<EditIcon />}
+            className="button"
+          >
+            {t("UserDetails.editPayment")}
+          </Button>
+        )}
       </Box>
 
       <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)}>
@@ -525,6 +540,7 @@ export default function UserDetails() {
       />
       <MergeAccounts useModal={mergeAccountsModal} callback={refreshUserInfo} />
       <OfflinePayment
+        ref={paymentModalRef}
         useModal={offlinePaymentModal}
         keycloakId={userData?.keycloak_id}
       />

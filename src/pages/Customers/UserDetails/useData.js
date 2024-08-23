@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import moment from "moment";
 import { useForm } from "react-hook-form";
@@ -13,6 +14,7 @@ import {
   cancelMembership,
   getCustomerOrders,
   getCustomerPayments,
+  getMembershipInfo,
   searchCustomers,
   updateCustomerInfo,
 } from "../../../redux/actions/customersActions";
@@ -27,14 +29,15 @@ export const useData = () => {
   const dispatch = useDispatch();
   const { goBack } = useHistory();
   const { state } = useLocation();
+  const paymentModalRef = useRef(null);
   const confirmationModal = useModal();
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
   const [activeTab, setActiveTab] = useState(0);
-  const membershipInfo = [
+  const [membershipInfo, setMembershipInfo] = useState([
     { key: "membership_active", label: t("Search.status") },
     { key: "membership_type", label: t("Activity.type") },
-  ];
+  ]);
   const { orders, payments, loading, searchResult } = useSelector(
     (state) => state.customersReducer
   );
@@ -56,6 +59,14 @@ export const useData = () => {
 
     return values;
   }, [userData]);
+
+  const isEditablePayment = useMemo(
+    () =>
+      !!membershipInfo.find(
+        ({ value }) => value === t("UserDetails.offlinePayment")
+      ),
+    [membershipInfo]
+  );
 
   const { control, handleSubmit, formState, reset, setValue } = useForm({
     defaultValues,
@@ -91,6 +102,21 @@ export const useData = () => {
 
     if (userData) {
       fieldsForEditing.map(({ name }) => setValue(name, userData[name]));
+
+      dispatch(
+        getMembershipInfo(
+          userData.keycloak_id,
+          (type) =>
+            type &&
+            setMembershipInfo((p) => [
+              ...p,
+              {
+                value: t(`UserDetails.${type}`),
+                label: t("UserDetails.paymentType"),
+              },
+            ])
+        )
+      );
     }
 
     userData
@@ -176,6 +202,16 @@ export const useData = () => {
     );
   };
 
+  const onPressOfflinePayment = () => {
+    paymentModalRef?.current?.resetFormValues();
+    offlinePaymentModal.showModal();
+  };
+
+  const onPressEditPayment = () => {
+    paymentModalRef?.current?.setFormValues();
+    offlinePaymentModal.showModal();
+  };
+
   return {
     goBack,
     orders,
@@ -192,12 +228,16 @@ export const useData = () => {
     ordersColumns,
     paymentsColumns,
     membershipInfo,
+    paymentModalRef,
     refreshUserInfo,
     isEnabledSaveBtn,
+    isEditablePayment,
     confirmationModal,
     mergeAccountsModal,
+    onPressEditPayment,
     offlinePaymentModal,
     onConfirmCancellation,
+    onPressOfflinePayment,
     onPressSave: handleSubmit(onSubmit),
   };
 };

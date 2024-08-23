@@ -1,7 +1,11 @@
+import _ from "lodash";
+
 import { ApiCustomers } from "../api/customersApi";
 import {
   FETCH_ACTIVITY_FAILED,
   FETCH_ACTIVITY_SUCCESS,
+  GET_CURRENT_PAYMENT_FAILED,
+  GET_CURRENT_PAYMENT_SUCCESS,
   GET_ORDERS_FAILED,
   GET_ORDERS_SUCCESS,
   GET_PAYMENTS_FAILED,
@@ -180,6 +184,58 @@ export const updateCustomerInfo = (payload, keycloakId, onSuccess) => {
       onSuccess();
     } catch (e) {
       console.log("Failed to update customer info", e);
+    }
+  };
+};
+
+export const getMembershipInfo = (keycloakId, returnType) => {
+  return async (dispatch) => {
+    try {
+      const info = await ApiCustomers.fetchMembershipInfo(keycloakId);
+
+      if (!info?.data?.active) {
+        dispatch({ type: GET_CURRENT_PAYMENT_FAILED });
+        return;
+      }
+
+      const { payment, special, help_haver } = info?.data?.details;
+
+      if (payment?.payment_type === "offline") {
+        returnType("offlinePayment");
+        dispatch({ type: GET_CURRENT_PAYMENT_SUCCESS, payload: info.data });
+        return;
+      }
+
+      dispatch({ type: GET_CURRENT_PAYMENT_FAILED });
+
+      if (!_.isEmpty(payment) && payment?.payment_type !== "offline") {
+        returnType("regular");
+        return;
+      }
+
+      if (_.isEmpty(payment) && !_.isEmpty(special)) {
+        returnType("specials");
+        return;
+      }
+
+      if (_.isEmpty(payment) && !_.isEmpty(help_haver)) {
+        returnType("grants");
+      }
+    } catch (e) {
+      console.log("Failed to fetch membership info", e);
+      dispatch({ type: GET_CURRENT_PAYMENT_FAILED });
+    }
+  };
+};
+
+export const updateOfflinePayment = (payload, callback) => {
+  return async () => {
+    try {
+      await ApiCustomers.updateOfflinePayment(payload);
+
+      callback();
+    } catch (e) {
+      console.log("Failed to update online payment", e);
     }
   };
 };
