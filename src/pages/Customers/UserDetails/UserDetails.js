@@ -6,8 +6,24 @@ import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import MergeTypeIcon from "@material-ui/icons/MergeType";
 import CancelIcon from "@material-ui/icons/Cancel";
+import EditIcon from "@material-ui/icons/Edit";
 import { useTranslation } from "react-i18next";
-import { Box, Button, Typography } from "@material-ui/core";
+import { Controller } from "react-hook-form";
+import {
+  Box,
+  Tab,
+  Tabs,
+  Button,
+  Typography,
+  TableCell,
+  TableRow,
+  withStyles,
+  TextField,
+  FormControl,
+  Select,
+  MenuItem,
+  Snackbar,
+} from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 
 import {
@@ -17,27 +33,40 @@ import {
 } from "../../../components";
 import { useData } from "./useData";
 import "./styles.css";
+import { fieldsForEditing } from "../../../constants/table";
+import { Alert } from "@material-ui/lab";
 
 export default function UserDetails() {
   const { t } = useTranslation();
   const {
+    alert,
     goBack,
     orders,
     loading,
+    control,
     options,
     payments,
     userName,
     userData,
+    activeTab,
+    onHideAlert,
     userDataArr,
+    onPressSave,
+    setActiveTab,
     onPressMerge,
     ordersColumns,
     paymentsColumns,
-    userDataColumns,
     membershipInfo,
+    paymentModalRef,
+    refreshUserInfo,
+    isEnabledSaveBtn,
+    isEditablePayment,
     confirmationModal,
     mergeAccountsModal,
+    onPressEditPayment,
     offlinePaymentModal,
     onConfirmCancellation,
+    onPressOfflinePayment,
   } = useData();
 
   const renderStatus = () => {
@@ -49,6 +78,310 @@ export default function UserDetails() {
           ? t("Search.active")
           : t("Search.notActive")}
       </div>
+    );
+  };
+
+  const userDataColumns = [
+    { name: "key", label: "" },
+    {
+      name: "value",
+      label: "",
+      options: {
+        customBodyRender: (value, { rowData }) => {
+          const canBeEdited = fieldsForEditing.find(
+            ({ name }) => name === rowData[0]
+          );
+
+          if (canBeEdited?.type) {
+            return (
+              <Controller
+                name={canBeEdited.name}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <FormControl focused={true} style={{ width: "100%" }}>
+                    {canBeEdited?.type === "date" && (
+                      <TextField
+                        type="date"
+                        value={value}
+                        onChange={onChange}
+                      />
+                    )}
+
+                    {canBeEdited?.type === "dropdown" && (
+                      <Select value={value} onChange={onChange}>
+                        {canBeEdited?.data.map(({ label, ISO, code }) => {
+                          const value = ISO ?? code;
+
+                          return (
+                            <MenuItem key={value} value={value}>
+                              {label}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    )}
+                  </FormControl>
+                )}
+              />
+            );
+          }
+
+          if (canBeEdited) {
+            return (
+              <Controller
+                name={canBeEdited.name}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <FormControl style={{ width: "100%" }}>
+                    <TextField value={value} onChange={onChange} />
+                  </FormControl>
+                )}
+              />
+            );
+          }
+
+          return value;
+        },
+      },
+    },
+  ];
+
+  const CustomTableCell = withStyles(() => ({
+    head: {
+      backgroundColor: "var(--color-grey)",
+      color: "var(--color-white)",
+      fontWeight: "700",
+      border: "1px solid var(--color-white)",
+    },
+    body: {
+      border: "1px solid var(--color-grey)",
+    },
+  }))(TableCell);
+
+  const renderFlatView = () => {
+    return (
+      <>
+        <Box
+          mt={7}
+          mb={5}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          overflow="hidden"
+          position="relative"
+        >
+          <Typography
+            variant="h3"
+            style={{
+              color: "var(--color-primary)",
+              backgroundColor: "#f2f2f2",
+              zIndex: 2,
+              paddingLeft: 20,
+              paddingRight: 20,
+            }}
+          >
+            {t("UserDetails.orders")}
+          </Typography>
+          <Box
+            width="100%"
+            height="1px"
+            position="absolute"
+            bgcolor="rgba(224, 224, 224, 1)"
+          />
+        </Box>
+
+        <MUIDataTable
+          columns={ordersColumns}
+          options={{ ...options, sort: true }}
+          className="scrollable-table"
+          data={loading ? [] : orders}
+        />
+
+        <Box
+          mt={7}
+          mb={5}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          overflow="hidden"
+          position="relative"
+        >
+          <Typography
+            variant="h3"
+            style={{
+              color: "var(--color-primary)",
+              backgroundColor: "#f2f2f2",
+              zIndex: 2,
+              paddingLeft: 20,
+              paddingRight: 20,
+            }}
+          >
+            {t("UserDetails.payment")}
+          </Typography>
+          <Box
+            width="100%"
+            height="1px"
+            position="absolute"
+            bgcolor="rgba(224, 224, 224, 1)"
+          />
+        </Box>
+
+        <MUIDataTable
+          columns={paymentsColumns}
+          options={options}
+          className="scrollable-table"
+          data={loading ? [] : payments}
+        />
+
+        <Box
+          mt={7}
+          mb={5}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          overflow="hidden"
+          position="relative"
+        >
+          <Typography
+            variant="h3"
+            style={{
+              color: "var(--color-primary)",
+              backgroundColor: "#f2f2f2",
+              zIndex: 2,
+              paddingLeft: 20,
+              paddingRight: 20,
+            }}
+          >
+            {t("UserDetails.user")}
+          </Typography>
+          <Box
+            width="100%"
+            height="1px"
+            position="absolute"
+            bgcolor="rgba(224, 224, 224, 1)"
+          />
+        </Box>
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+        >
+          <MUIDataTable
+            data={loading ? [] : userDataArr.slice(0, userDataArr.length / 2)}
+            className="table"
+            columns={userDataColumns}
+            options={options}
+          />
+          <MUIDataTable
+            data={loading ? [] : userDataArr.slice(userDataArr.length / 2)}
+            className="table"
+            columns={userDataColumns}
+            options={options}
+          />
+        </Box>
+
+        <Box display="flex" justifyContent="center" mt={5}>
+          <Button
+            disabled={!isEnabledSaveBtn}
+            onClick={onPressSave}
+            variant="contained"
+            style={{
+              opacity: isEnabledSaveBtn ? 1 : 0.6,
+              background: "var(--color-primary)",
+              color: "var(--color-white)",
+              width: 130,
+            }}
+          >
+            {t("UserDetails.save")}
+          </Button>
+        </Box>
+      </>
+    );
+  };
+
+  const renderTree = () => {
+    const collapsibleOptions = {
+      ...options,
+      sort: true,
+      expandableRows: true,
+      expandableRowsHeader: false,
+      renderExpandableRow: (rowData) => {
+        const relatedPayments = payments.filter(
+          ({ order_id }) => order_id === rowData[0]
+        );
+
+        return (
+          <>
+            <TableRow>
+              <TableCell />
+              <TableCell />
+              {paymentsColumns.map(
+                ({ label }, idx) =>
+                  label !== "order_id" && (
+                    <CustomTableCell key={idx} align="center" variant="head">
+                      {label}
+                    </CustomTableCell>
+                  )
+              )}
+            </TableRow>
+            {relatedPayments.map((values, i) => (
+              <TableRow key={i}>
+                <TableCell />
+                <TableCell />
+                {paymentsColumns.map(
+                  ({ label }, idx) =>
+                    label !== "order_id" && (
+                      <CustomTableCell key={idx} align="center">
+                        {values[label]}
+                      </CustomTableCell>
+                    )
+                )}
+              </TableRow>
+            ))}
+          </>
+        );
+      },
+    };
+
+    return (
+      <>
+        <Box
+          mt={7}
+          mb={5}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          overflow="hidden"
+          position="relative"
+        >
+          <Typography
+            variant="h3"
+            style={{
+              color: "var(--color-primary)",
+              backgroundColor: "#f2f2f2",
+              zIndex: 2,
+              paddingLeft: 20,
+              paddingRight: 20,
+            }}
+          >
+            {t("UserDetails.orders")}
+          </Typography>
+          <Box
+            width="100%"
+            height="1px"
+            position="absolute"
+            bgcolor="rgba(224, 224, 224, 1)"
+          />
+        </Box>
+
+        <MUIDataTable
+          columns={ordersColumns}
+          className="scrollable-table"
+          data={loading ? [] : orders}
+          options={collapsibleOptions}
+        />
+      </>
     );
   };
 
@@ -113,13 +446,13 @@ export default function UserDetails() {
           className="action-row"
         >
           <Box display="flex">
-            {membershipInfo.map(({ key, label }) => (
-              <div key={key} className="info-column">
+            {membershipInfo.map(({ key, label, value }) => (
+              <div key={value ?? key} className="info-column">
                 <div className="key">{label}</div>
                 {key === "membership_active" ? (
                   renderStatus()
                 ) : (
-                  <div className="value">{userData[key]}</div>
+                  <div className="value">{value ?? userData[key]}</div>
                 )}
               </div>
             ))}
@@ -175,133 +508,31 @@ export default function UserDetails() {
           {t("UserDetails.mergeFromOtherAccount")}
         </Button>
         <Button
-          onClick={offlinePaymentModal.showModal}
+          onClick={onPressOfflinePayment}
           startIcon={<MonetizationOnIcon />}
           className="button"
         >
           {t("UserDetails.offlinePayment")}
         </Button>
+
+        {isEditablePayment && (
+          <Button
+            onClick={onPressEditPayment}
+            startIcon={<EditIcon />}
+            className="button"
+          >
+            {t("UserDetails.editPayment")}
+          </Button>
+        )}
       </Box>
 
-      <Box
-        mt={7}
-        mb={5}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        overflow="hidden"
-        position="relative"
-      >
-        <Typography
-          variant="h3"
-          style={{
-            color: "var(--color-primary)",
-            backgroundColor: "#f2f2f2",
-            zIndex: 2,
-            paddingLeft: 20,
-            paddingRight: 20,
-          }}
-        >
-          {t("UserDetails.orders")}
-        </Typography>
-        <Box
-          width="100%"
-          height="1px"
-          position="absolute"
-          bgcolor="rgba(224, 224, 224, 1)"
-        />
-      </Box>
+      <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)}>
+        <Tab label={t("UserDetails.flatView")} />
+        <Tab label={t("UserDetails.treeView")} />
+      </Tabs>
 
-      <MUIDataTable
-        columns={ordersColumns}
-        options={options}
-        className="scrollable-table"
-        data={loading ? [] : orders}
-      />
-
-      <Box
-        mt={7}
-        mb={5}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        overflow="hidden"
-        position="relative"
-      >
-        <Typography
-          variant="h3"
-          style={{
-            color: "var(--color-primary)",
-            backgroundColor: "#f2f2f2",
-            zIndex: 2,
-            paddingLeft: 20,
-            paddingRight: 20,
-          }}
-        >
-          {t("UserDetails.payment")}
-        </Typography>
-        <Box
-          width="100%"
-          height="1px"
-          position="absolute"
-          bgcolor="rgba(224, 224, 224, 1)"
-        />
-      </Box>
-
-      <MUIDataTable
-        columns={paymentsColumns}
-        options={options}
-        className="scrollable-table"
-        data={loading ? [] : payments}
-      />
-
-      <Box
-        mt={7}
-        mb={5}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        overflow="hidden"
-        position="relative"
-      >
-        <Typography
-          variant="h3"
-          style={{
-            color: "var(--color-primary)",
-            backgroundColor: "#f2f2f2",
-            zIndex: 2,
-            paddingLeft: 20,
-            paddingRight: 20,
-          }}
-        >
-          {t("UserDetails.user")}
-        </Typography>
-        <Box
-          width="100%"
-          height="1px"
-          position="absolute"
-          bgcolor="rgba(224, 224, 224, 1)"
-        />
-      </Box>
-
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        flexDirection={{ xs: "column", sm: "row" }}
-      >
-        <MUIDataTable
-          data={loading ? [] : userDataArr.slice(0, userDataArr.length / 2)}
-          className="table"
-          columns={userDataColumns}
-          options={options}
-        />
-        <MUIDataTable
-          data={loading ? [] : userDataArr.slice(userDataArr.length / 2)}
-          className="table"
-          columns={userDataColumns}
-          options={options}
-        />
-      </Box>
+      <div hidden={activeTab !== 0}>{renderFlatView()}</div>
+      <div hidden={activeTab !== 1}>{renderTree()}</div>
 
       <Confirmation
         onPressConfirm={onConfirmCancellation}
@@ -311,11 +542,21 @@ export default function UserDetails() {
           name: userName,
         })}
       />
-      <MergeAccounts useModal={mergeAccountsModal} />
+      <MergeAccounts useModal={mergeAccountsModal} callback={refreshUserInfo} />
       <OfflinePayment
+        ref={paymentModalRef}
         useModal={offlinePaymentModal}
         keycloakId={userData?.keycloak_id}
       />
+      <Snackbar
+        open={alert.visible}
+        onClose={onHideAlert}
+        autoHideDuration={4000}
+      >
+        <Alert severity="success" variant="filled">
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

@@ -1,6 +1,9 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
+import moment from "moment";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,28 +14,70 @@ import {
   cancelMembership,
   getCustomerOrders,
   getCustomerPayments,
+  getMembershipInfo,
+  searchCustomers,
+  updateCustomerInfo,
 } from "../../../redux/actions/customersActions";
 import { SAVE_MERGE_DETAILS } from "../../../redux/constants";
-import { defaultTableOptions } from "../../../constants/table";
+import {
+  defaultTableOptions,
+  fieldsForEditing,
+  fieldsForSorting,
+} from "../../../constants/table";
 
 export const useData = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { goBack } = useHistory();
   const { state } = useLocation();
+  const paymentModalRef = useRef(null);
   const confirmationModal = useModal();
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
-  const membershipInfo = [
+  const [activeTab, setActiveTab] = useState(0);
+  const [membershipInfo, setMembershipInfo] = useState([
     { key: "membership_active", label: t("Search.status") },
     { key: "membership_type", label: t("Activity.type") },
-  ];
+  ]);
+  const [alert, setAlert] = useState({ visible: false, message: "" });
   const { orders, payments, loading, searchResult } = useSelector(
     (state) => state.customersReducer
   );
+
   const userData = useMemo(
-    () => searchResult.find(({ user_id }) => user_id === state?.userId),
-    [searchResult, state?.userId]
+    () =>
+      searchResult.find(
+        ({ primary_email }) => primary_email === state?.userEmail
+      ),
+    [searchResult, state?.userEmail]
+  );
+
+  const defaultValues = useMemo(() => {
+    const values = {};
+
+    if (userData) {
+      fieldsForEditing.map(({ name }) => (values[name] = userData[name]));
+    }
+
+    return values;
+  }, [userData]);
+
+  const isEditablePayment = useMemo(
+    () =>
+      !!membershipInfo.find(
+        ({ value }) => value === t("UserDetails.offlinePayment")
+      ),
+    [membershipInfo]
+  );
+
+  const { control, handleSubmit, formState, reset, setValue } = useForm({
+    defaultValues,
+    mode: "onChange",
+  });
+
+  const isEnabledSaveBtn = useMemo(
+    () => formState?.isDirty && formState?.isValid,
+    [formState?.isDirty, formState?.isValid]
   );
 
   const userName = useMemo(
@@ -49,7 +94,36 @@ export const useData = () => {
   };
 
   useEffect(() => {
-    userData ? getCustomerDetails() : goBack();
+    if (!state?.userEmail) {
+      goBack();
+    }
+
+    if (userData?.date_of_birth) {
+      setValue("date_of_birth", userData?.date_of_birth);
+    }
+
+    if (userData) {
+      fieldsForEditing.map(({ name }) => setValue(name, userData[name]));
+
+      dispatch(
+        getMembershipInfo(
+          userData.keycloak_id,
+          (type) =>
+            type &&
+            setMembershipInfo((p) => [
+              ...p,
+              {
+                value: t(`UserDetails.${type}`),
+                label: t("UserDetails.paymentType"),
+              },
+            ])
+        )
+      );
+    }
+
+    userData
+      ? getCustomerDetails()
+      : dispatch(searchCustomers(state?.userEmail, "email"));
   }, [userData]);
 
   const options = {
@@ -69,7 +143,11 @@ export const useData = () => {
     () =>
       orders.length === 0
         ? []
-        : Object.keys(orders[0]).map((key) => ({ name: key, label: key })),
+        : Object.keys(orders[0]).map((key) => ({
+            name: key,
+            label: key,
+            options: { sort: fieldsForSorting.includes(key) },
+          })),
     [orders.length]
   );
 
@@ -80,11 +158,6 @@ export const useData = () => {
         : Object.keys(payments[0]).map((key) => ({ name: key, label: key })),
     [payments.length]
   );
-
-  const userDataColumns = [
-    { name: "key", label: "" },
-    { name: "value", label: "" },
-  ];
 
   const userDataArr = useMemo(
     () =>
@@ -111,23 +184,70 @@ export const useData = () => {
     });
   };
 
+  const refreshUserInfo = () =>
+    dispatch(searchCustomers(userData?.primary_email, "email"));
+
+  const onSubmit = (values) => {
+    const payload = {};
+
+    Object.keys(formState.dirtyFields).map(
+      (key) =>
+        (payload[key] =
+          key === "date_of_birth" ? moment(values[key]).format() : values[key])
+    );
+
+    dispatch(
+      updateCustomerInfo(payload, userData?.keycloak_id, () => {
+        refreshUserInfo();
+        reset();
+        setAlert({
+          visible: true,
+          message: t("UserDetails.dataUpdatedSuccessfully"),
+        });
+      })
+    );
+  };
+
+  const onPressOfflinePayment = () => {
+    paymentModalRef?.current?.resetFormValues();
+    offlinePaymentModal.showModal();
+  };
+
+  const onPressEditPayment = () => {
+    paymentModalRef?.current?.setFormValues();
+    offlinePaymentModal.showModal();
+  };
+
+  const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
+
   return {
+    alert,
     goBack,
     orders,
     loading,
     options,
+    control,
     payments,
     userName,
     userData,
+    activeTab,
+    onHideAlert,
     userDataArr,
+    setActiveTab,
     onPressMerge,
     ordersColumns,
     paymentsColumns,
-    userDataColumns,
     membershipInfo,
+    paymentModalRef,
+    refreshUserInfo,
+    isEnabledSaveBtn,
+    isEditablePayment,
     confirmationModal,
     mergeAccountsModal,
+    onPressEditPayment,
     offlinePaymentModal,
     onConfirmCancellation,
+    onPressOfflinePayment,
+    onPressSave: handleSubmit(onSubmit),
   };
 };

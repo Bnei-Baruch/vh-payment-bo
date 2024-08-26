@@ -3,6 +3,8 @@ import {
   FETCH_ACTIVITY_SUCCESS,
   FETCH_SPECIALS_FAILED,
   FETCH_SPECIALS_SUCCESS,
+  GET_CURRENT_PAYMENT_FAILED,
+  GET_CURRENT_PAYMENT_SUCCESS,
   GET_ORDERS_FAILED,
   GET_ORDERS_SUCCESS,
   GET_PAYMENTS_FAILED,
@@ -22,6 +24,7 @@ const INITIAL_STATE = {
   },
   orders: [],
   payments: [],
+  currentPayment: {},
   merge: {
     loading: false,
     fromAccount: null,
@@ -87,6 +90,18 @@ export default function reducer(state = INITIAL_STATE, actions) {
       return {
         ...state,
         payments: INITIAL_STATE.payments,
+      };
+
+    case GET_CURRENT_PAYMENT_SUCCESS:
+      return {
+        ...state,
+        currentPayment: actions.payload,
+      };
+
+    case GET_CURRENT_PAYMENT_FAILED:
+      return {
+        ...state,
+        currentPayment: INITIAL_STATE.currentPayment,
       };
 
     case SAVE_MERGE_DETAILS:
