@@ -73,12 +73,18 @@
       "male": "Male",
       "paymentType": "Active Due",
       "female": "Female",
-      "regular": "Regular",
-      "specials": "Specials",
-      "grants": "Grants",
+      "REGULAR": "Regular",
+      "SPECIALS": "Specials",
+      "GRANTS": "Grants",
+      "OFFLINE_PAYMENT": "Offline Payment",
       "editPayment": "Edit Payment",
       "paymentSuccessfullyUpdated": "Payment successfully updated",
-      "dataUpdatedSuccessfully": "Data updated successfully"
+      "dataUpdatedSuccessfully": "Data updated successfully",
+      "addSpecial": "Add Special",
+      "deleteSpecial": "Delete Special",
+      "areYouSureYouWantToDeleteSpecial": "Are you sure you want to delete special for {{name}}?",
+      "yesDelete":"Yes, Delete",
+      "specialsSuccessfullyRemoved": "Specials successfully removed"
 
     },
     "Activity": {

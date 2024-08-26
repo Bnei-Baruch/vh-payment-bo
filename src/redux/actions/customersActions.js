@@ -17,6 +17,7 @@ import {
   SEARCH_CUSTOMERS_SUCCESS,
   SET_CUSTOMERS_LOADING,
 } from "../constants";
+import { ACTIVE_DUE } from "../../constants/specials";
 
 export const searchCustomers = (query, type) => {
   return async (dispatch) => {
@@ -202,6 +203,11 @@ export const removeSpecialEntry = (id, callback) => {
 export const searchSpecials = (query, type) => {
   return async (dispatch) => {
     try {
+      if (!query.length) {
+        dispatch(fetchSpecials());
+        return;
+      }
+
       const result = await ApiCustomers.searchSpecials(type, query);
 
       dispatch({
@@ -254,7 +260,7 @@ export const updateCustomerInfo = (payload, keycloakId, onSuccess) => {
   };
 };
 
-export const getMembershipInfo = (keycloakId, returnType) => {
+export const getMembershipInfo = (keycloakId) => {
   return async (dispatch) => {
     try {
       const info = await ApiCustomers.fetchMembershipInfo(keycloakId);
@@ -264,29 +270,12 @@ export const getMembershipInfo = (keycloakId, returnType) => {
         return;
       }
 
-      const { payment, special, help_haver } = info?.data?.details;
+      const activeDue = getActiveDue(info?.data?.details);
 
-      if (payment?.payment_type === "offline") {
-        returnType("offlinePayment");
-        dispatch({ type: GET_CURRENT_PAYMENT_SUCCESS, payload: info.data });
-        return;
-      }
-
-      dispatch({ type: GET_CURRENT_PAYMENT_FAILED });
-
-      if (!_.isEmpty(payment) && payment?.payment_type !== "offline") {
-        returnType("regular");
-        return;
-      }
-
-      if (_.isEmpty(payment) && !_.isEmpty(special)) {
-        returnType("specials");
-        return;
-      }
-
-      if (_.isEmpty(payment) && !_.isEmpty(help_haver)) {
-        returnType("grants");
-      }
+      dispatch({
+        type: GET_CURRENT_PAYMENT_SUCCESS,
+        payload: { ...info.data, activeDue },
+      });
     } catch (e) {
       console.log("Failed to fetch membership info", e);
       dispatch({ type: GET_CURRENT_PAYMENT_FAILED });
@@ -302,6 +291,39 @@ export const updateOfflinePayment = (payload, callback) => {
       callback();
     } catch (e) {
       console.log("Failed to update online payment", e);
+    }
+  };
+};
+
+const getActiveDue = (details) => {
+  const { payment, special, help_haver } = details;
+
+  if (payment?.payment_type === "offline") {
+    return ACTIVE_DUE.OFFLINE_PAYMENT;
+  }
+
+  if (!_.isEmpty(payment) && payment?.payment_type !== "offline") {
+    return ACTIVE_DUE.REGULAR;
+  }
+
+  if (_.isEmpty(payment) && !_.isEmpty(special)) {
+    return ACTIVE_DUE.SPECIALS;
+  }
+
+  if (_.isEmpty(payment) && !_.isEmpty(help_haver)) {
+    return ACTIVE_DUE.GRANTS;
+  }
+};
+
+export const removeSpecialForUser = (keycloakId, callback) => {
+  return async (dispatch) => {
+    try {
+      await ApiCustomers.removeSpecialByKeycloakId(keycloakId);
+
+      dispatch(getMembershipInfo(keycloakId));
+      callback();
+    } catch (e) {
+      console.log("Failed to delete entry", e);
     }
   };
 };

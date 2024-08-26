@@ -15,15 +15,18 @@ import {
   getCustomerOrders,
   getCustomerPayments,
   getMembershipInfo,
+  removeSpecialForUser,
   searchCustomers,
   updateCustomerInfo,
 } from "../../../redux/actions/customersActions";
 import { SAVE_MERGE_DETAILS } from "../../../redux/constants";
 import {
+  baseMembershipInfo,
   defaultTableOptions,
   fieldsForEditing,
   fieldsForSorting,
 } from "../../../constants/table";
+import { ACTIVE_DUE } from "../../../constants/specials";
 
 export const useData = () => {
   const { t } = useTranslation();
@@ -35,14 +38,19 @@ export const useData = () => {
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
   const [activeTab, setActiveTab] = useState(0);
-  const [membershipInfo, setMembershipInfo] = useState([
-    { key: "membership_active", label: t("Search.status") },
-    { key: "membership_type", label: t("Activity.type") },
-  ]);
+  const [membershipInfo, setMembershipInfo] = useState(baseMembershipInfo);
+  const [confirmationInfo, setConfirmationInfo] = useState({
+    desc: "",
+    btnTitle: "",
+  });
   const [alert, setAlert] = useState({ visible: false, message: "" });
-  const { orders, payments, loading, searchResult } = useSelector(
-    (state) => state.customersReducer
-  );
+  const { orders, payments, loading, searchResult, currentPayment } =
+    useSelector((state) => state.customersReducer);
+
+  const refreshUserInfo = () =>
+    dispatch(searchCustomers(userData?.primary_email, "email"));
+
+  const addSpecialModal = useModal(refreshUserInfo);
 
   const userData = useMemo(
     () =>
@@ -63,11 +71,8 @@ export const useData = () => {
   }, [userData]);
 
   const isEditablePayment = useMemo(
-    () =>
-      !!membershipInfo.find(
-        ({ value }) => value === t("UserDetails.offlinePayment")
-      ),
-    [membershipInfo]
+    () => currentPayment?.activeDue === ACTIVE_DUE.OFFLINE_PAYMENT,
+    [currentPayment]
   );
 
   const { control, handleSubmit, formState, reset, setValue } = useForm({
@@ -88,6 +93,11 @@ export const useData = () => {
     [userData]
   );
 
+  const hasSpecial = useMemo(
+    () => currentPayment?.activeDue === ACTIVE_DUE.SPECIALS,
+    [currentPayment]
+  );
+
   const getCustomerDetails = () => {
     dispatch(getCustomerOrders(userData.primary_email));
     dispatch(getCustomerPayments(userData.primary_email));
@@ -105,26 +115,25 @@ export const useData = () => {
     if (userData) {
       fieldsForEditing.map(({ name }) => setValue(name, userData[name]));
 
-      dispatch(
-        getMembershipInfo(
-          userData.keycloak_id,
-          (type) =>
-            type &&
-            setMembershipInfo((p) => [
-              ...p,
-              {
-                value: t(`UserDetails.${type}`),
-                label: t("UserDetails.paymentType"),
-              },
-            ])
-        )
-      );
+      dispatch(getMembershipInfo(userData.keycloak_id));
     }
 
     userData
       ? getCustomerDetails()
       : dispatch(searchCustomers(state?.userEmail, "email"));
   }, [userData]);
+
+  useEffect(() => {
+    if (currentPayment?.activeDue) {
+      setMembershipInfo([
+        ...baseMembershipInfo,
+        {
+          value: t(`UserDetails.${currentPayment.activeDue}`),
+          label: t("UserDetails.paymentType"),
+        },
+      ]);
+    }
+  }, [currentPayment]);
 
   const options = {
     ...defaultTableOptions,
@@ -184,9 +193,6 @@ export const useData = () => {
     });
   };
 
-  const refreshUserInfo = () =>
-    dispatch(searchCustomers(userData?.primary_email, "email"));
-
   const onSubmit = (values) => {
     const payload = {};
 
@@ -220,6 +226,48 @@ export const useData = () => {
 
   const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
 
+  const onPressCancelMembership = () => {
+    setConfirmationInfo({
+      desc: t("UserDetails.areYouSureYouWantToCancel", {
+        name: userName,
+      }),
+      btnTitle: "UserDetails.yesCancel",
+      onConfirm: onConfirmCancellation,
+    });
+    confirmationModal.showModal();
+  };
+
+  const onPressAddSpecial = () => {
+    if (hasSpecial) {
+      return;
+    }
+
+    addSpecialModal.showModal();
+  };
+
+  const onPressDeleteSpecial = () => {
+    setConfirmationInfo({
+      desc: t("UserDetails.areYouSureYouWantToDeleteSpecial", {
+        name: userName,
+      }),
+      btnTitle: "UserDetails.yesDelete",
+      onConfirm: onConfirmDeleteSpecial,
+    });
+    confirmationModal.showModal();
+  };
+
+  const onConfirmDeleteSpecial = () => {
+    confirmationModal.hideModal();
+    dispatch(
+      removeSpecialForUser(userData?.keycloak_id, () =>
+        setAlert({
+          visible: true,
+          message: t("UserDetails.specialsSuccessfullyRemoved"),
+        })
+      )
+    );
+  };
+
   return {
     alert,
     goBack,
@@ -231,23 +279,28 @@ export const useData = () => {
     userName,
     userData,
     activeTab,
+    hasSpecial,
     onHideAlert,
     userDataArr,
     setActiveTab,
     onPressMerge,
     ordersColumns,
+    addSpecialModal,
     paymentsColumns,
     membershipInfo,
     paymentModalRef,
     refreshUserInfo,
+    confirmationInfo,
     isEnabledSaveBtn,
     isEditablePayment,
+    onPressAddSpecial,
     confirmationModal,
     mergeAccountsModal,
     onPressEditPayment,
     offlinePaymentModal,
-    onConfirmCancellation,
+    onPressDeleteSpecial,
     onPressOfflinePayment,
+    onPressCancelMembership,
     onPressSave: handleSubmit(onSubmit),
   };
 };

@@ -18,10 +18,10 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import { useData } from "./useData";
 
-export const AddSpecialEntry = ({ useModal }) => {
+export const AddSpecialEntry = ({ useModal, email, keycloakId }) => {
   const { t } = useTranslation();
   const { loading, isOpenAlert, setIsOpenAlert, control, onPressSubmit } =
-    useData(useModal);
+    useData(useModal, email, keycloakId);
 
   return (
     <>
@@ -51,6 +51,7 @@ export const AddSpecialEntry = ({ useModal }) => {
                 <TextField
                   value={value}
                   onChange={onChange}
+                  disabled={!!keycloakId}
                   error={!!error?.message}
                   style={{ marginTop: 16, minWidth: 267 }}
                 />
@@ -68,6 +69,7 @@ export const AddSpecialEntry = ({ useModal }) => {
                 </InputLabel>
                 <TextField
                   value={value}
+                  disabled={!!email}
                   onChange={onChange}
                   error={!!error?.message}
                   style={{ marginTop: 16, minWidth: 267 }}

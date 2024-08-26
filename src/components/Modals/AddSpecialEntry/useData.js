@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -7,12 +8,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./validate";
 import { addSpecialEntry } from "../../../redux/actions/customersActions";
 
-export const useData = (useModal) => {
+export const useData = (useModal, email, keycloakId) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [isOpenAlert, setIsOpenAlert] = useState(false);
 
-  const { control, handleSubmit, reset } = useForm({
+  const { control, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       keycloak_id: "",
       email: "",
@@ -37,6 +38,16 @@ export const useData = (useModal) => {
     useModal.hideModal();
     reset();
   };
+
+  useEffect(() => {
+    if (email) {
+      setValue("email", email);
+    }
+
+    if (keycloakId) {
+      setValue("keycloak_id", keycloakId);
+    }
+  }, [email, keycloakId]);
 
   return {
     loading,

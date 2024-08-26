@@ -103,4 +103,10 @@ export const ApiCustomers = new (class Api {
       data,
     });
   }
+  removeSpecialByKeycloakId(keycloakId) {
+    return axios({
+      url: `/pay/v2/special/delete/${keycloakId}`,
+      method: "delete",
+    });
+  }
 })();
