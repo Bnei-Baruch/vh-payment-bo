@@ -2,10 +2,12 @@
 import React, { useEffect, useState } from "react";
 
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
+import { DASHBOARD_ROUTES } from "../../../routes/dashboardRoutes";
 import { fetchActivity } from "../../../redux/actions/customersActions";
 import {
   defaultTableOptions,
@@ -13,6 +15,7 @@ import {
 } from "../../../constants/table";
 
 export const useData = () => {
+  const { push } = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { activity, loading } = useSelector((state) => state.customersReducer);
@@ -25,6 +28,8 @@ export const useData = () => {
     pagination: true,
     rowsPerPageOptions,
     count: activity.totalCount,
+    onRowClick: (rowData) =>
+      push(DASHBOARD_ROUTES.CustomerDetails, { userEmail: rowData[3] }),
     textLabels: {
       body: {
         noMatch: loading ? (

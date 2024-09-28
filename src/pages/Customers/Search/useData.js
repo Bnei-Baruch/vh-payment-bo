@@ -25,7 +25,7 @@ export const useData = () => {
   const options = {
     ...defaultTableOptions,
     onRowClick: (rowData) =>
-      push(DASHBOARD_ROUTES.CustomerDetails, { userId: rowData[2] }),
+      push(DASHBOARD_ROUTES.CustomerDetails, { userEmail: rowData[3] }),
     textLabels: {
       body: {
         noMatch: loading ? (

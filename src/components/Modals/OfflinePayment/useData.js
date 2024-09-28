@@ -1,31 +1,68 @@
-import { useState } from "react";
+import { useImperativeHandle, useState } from "react";
 
 import moment from "moment";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { schema } from "./validate";
 import { currencies } from "../../../constants/currencies";
-import { offlinePayment } from "../../../redux/actions/customersActions";
+import {
+  offlinePayment,
+  updateOfflinePayment,
+} from "../../../redux/actions/customersActions";
 
-export const useData = (useModal, keycloakId) => {
+export const useData = (ref, useModal, keycloakId) => {
   const dispatch = useDispatch();
   const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const { currentPayment } = useSelector((state) => state.customersReducer);
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      amount: "",
-      currency: currencies[0],
-      quantity: 1,
-      payment_method: "",
-      payment_date: "",
-      language: "",
-      note: "",
-    },
+  const defaultValues = {
+    amount: "",
+    currency: currencies[0],
+    quantity: 1,
+    payment_method: "",
+    payment_date: "",
+    language: "",
+    note: "",
+  };
+
+  const { control, handleSubmit, reset, formState } = useForm({
+    defaultValues,
     mode: "onChange",
     resolver: yupResolver(schema),
   });
+
+  useImperativeHandle(ref, () => ({
+    setFormValues() {
+      setIsEditing(true);
+      const {
+        date,
+        note,
+        amount,
+        currency,
+        language,
+        quantity,
+        payment_method,
+      } = currentPayment?.details?.payment;
+
+      reset({
+        note,
+        language,
+        quantity,
+        amount: amount,
+        currency: currency,
+        payment_method: payment_method,
+        payment_date: moment(date).format("YYYY-MM-DD"),
+      });
+    },
+
+    resetFormValues() {
+      setIsEditing(false);
+      reset(defaultValues);
+    },
+  }));
 
   const onSubmit = (values) => {
     const {
@@ -56,6 +93,18 @@ export const useData = (useModal, keycloakId) => {
     );
   };
 
+  const onUpdate = (values) => {
+    const payload = {};
+
+    Object.keys(formState.dirtyFields).map(
+      (key) =>
+        (payload[key] =
+          key === "payment_date" ? moment(values[key]).format() : values[key])
+    );
+
+    dispatch(updateOfflinePayment(payload, onSuccess));
+  };
+
   const onSuccess = () => {
     setIsOpenAlert(true);
     useModal.hideModal();
@@ -63,8 +112,9 @@ export const useData = (useModal, keycloakId) => {
 
   return {
     control,
+    isEditing,
     isOpenAlert,
     setIsOpenAlert,
-    onPressSubmit: handleSubmit(onSubmit),
+    onPressSubmit: handleSubmit(isEditing ? onUpdate : onSubmit),
   };
 };
