@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 import { Controller } from "react-hook-form";
 import Dialog from "@material-ui/core/Dialog";
@@ -21,12 +21,10 @@ import languages from "../../../constants/languages";
 import { currencies } from "../../../constants/currencies";
 import { Alert } from "@material-ui/lab";
 
-export const OfflinePayment = ({ useModal, keycloakId }) => {
+export const OfflinePayment = forwardRef(({ useModal, keycloakId }, ref) => {
   const { t } = useTranslation();
-  const { isOpenAlert, setIsOpenAlert, control, onPressSubmit } = useData(
-    useModal,
-    keycloakId
-  );
+  const { isEditing, isOpenAlert, setIsOpenAlert, control, onPressSubmit } =
+    useData(ref, useModal, keycloakId);
 
   return (
     <>
@@ -215,7 +213,7 @@ export const OfflinePayment = ({ useModal, keycloakId }) => {
               color: "var(--color-white)",
             }}
           >
-            {t("UserDetails.submit")}
+            {t(`UserDetails.${isEditing ? "save" : "submit"}`)}
           </Button>
         </Box>
       </Dialog>
@@ -225,9 +223,13 @@ export const OfflinePayment = ({ useModal, keycloakId }) => {
         onClose={() => setIsOpenAlert(false)}
       >
         <Alert severity="success" variant="filled">
-          {t("UserDetails.paymentSuccessful")}
+          {t(
+            `UserDetails.${
+              isEditing ? "paymentSuccessfullyUpdated" : "paymentSuccessful"
+            }`
+          )}
         </Alert>
       </Snackbar>
     </>
   );
-};
+}, []);
