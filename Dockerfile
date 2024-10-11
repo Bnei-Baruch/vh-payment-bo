@@ -1,4 +1,4 @@
-FROM node:14.12.0-stretch as builder
+FROM node:21 as builder
 # this will be passed in as  --build-arg, when building docker image
 # default value will be localhost
 ARG PUBLIC_URL="/admin/payments"

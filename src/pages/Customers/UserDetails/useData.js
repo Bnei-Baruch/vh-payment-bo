@@ -193,39 +193,6 @@ export const useData = () => {
     });
   };
 
-  const onSubmit = (values) => {
-    const payload = {};
-
-    Object.keys(formState.dirtyFields).map(
-      (key) =>
-        (payload[key] =
-          key === "date_of_birth" ? moment(values[key]).format() : values[key])
-    );
-
-    dispatch(
-      updateCustomerInfo(payload, userData?.keycloak_id, () => {
-        refreshUserInfo();
-        reset();
-        setAlert({
-          visible: true,
-          message: t("UserDetails.dataUpdatedSuccessfully"),
-        });
-      })
-    );
-  };
-
-  const onPressOfflinePayment = () => {
-    paymentModalRef?.current?.resetFormValues();
-    offlinePaymentModal.showModal();
-  };
-
-  const onPressEditPayment = () => {
-    paymentModalRef?.current?.setFormValues();
-    offlinePaymentModal.showModal();
-  };
-
-  const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
-
   const onPressCancelMembership = () => {
     setConfirmationInfo({
       desc: t("UserDetails.areYouSureYouWantToCancel", {
@@ -267,6 +234,39 @@ export const useData = () => {
       )
     );
   };
+
+  const onSubmit = (values) => {
+    const payload = {};
+
+    Object.keys(formState.dirtyFields).map(
+      (key) =>
+        (payload[key] =
+          key === "date_of_birth" ? moment(values[key]).format() : values[key])
+    );
+
+    dispatch(
+      updateCustomerInfo(payload, userData?.keycloak_id, () => {
+        refreshUserInfo();
+        reset();
+        setAlert({
+          visible: true,
+          message: t("UserDetails.dataUpdatedSuccessfully"),
+        });
+      })
+    );
+  };
+
+  const onPressOfflinePayment = () => {
+    paymentModalRef?.current?.resetFormValues();
+    offlinePaymentModal.showModal();
+  };
+
+  const onPressEditPayment = () => {
+    paymentModalRef?.current?.setFormValues();
+    offlinePaymentModal.showModal();
+  };
+
+  const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
 
   return {
     alert,
