@@ -232,70 +232,6 @@ export default function UserDetails() {
           className="scrollable-table"
           data={loading ? [] : payments}
         />
-
-        <Box
-          mt={7}
-          mb={5}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          overflow="hidden"
-          position="relative"
-        >
-          <Typography
-            variant="h3"
-            style={{
-              color: "var(--color-primary)",
-              backgroundColor: "#f2f2f2",
-              zIndex: 2,
-              paddingLeft: 20,
-              paddingRight: 20,
-            }}
-          >
-            {t("UserDetails.user")}
-          </Typography>
-          <Box
-            width="100%"
-            height="1px"
-            position="absolute"
-            bgcolor="rgba(224, 224, 224, 1)"
-          />
-        </Box>
-
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          flexDirection={{ xs: "column", sm: "row" }}
-        >
-          <MUIDataTable
-            data={loading ? [] : userDataArr.slice(0, userDataArr.length / 2)}
-            className="table"
-            columns={userDataColumns}
-            options={options}
-          />
-          <MUIDataTable
-            data={loading ? [] : userDataArr.slice(userDataArr.length / 2)}
-            className="table"
-            columns={userDataColumns}
-            options={options}
-          />
-        </Box>
-
-        <Box display="flex" justifyContent="center" mt={5}>
-          <Button
-            disabled={!isEnabledSaveBtn}
-            onClick={onPressSave}
-            variant="contained"
-            style={{
-              opacity: isEnabledSaveBtn ? 1 : 0.6,
-              background: "var(--color-primary)",
-              color: "var(--color-white)",
-              width: 130,
-            }}
-          >
-            {t("UserDetails.save")}
-          </Button>
-        </Box>
       </>
     );
   };
@@ -533,6 +469,70 @@ export default function UserDetails() {
 
       <div hidden={activeTab !== 0}>{renderFlatView()}</div>
       <div hidden={activeTab !== 1}>{renderTree()}</div>
+
+      <Box
+        mt={7}
+        mb={5}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        overflow="hidden"
+        position="relative"
+      >
+        <Typography
+          variant="h3"
+          style={{
+            color: "var(--color-primary)",
+            backgroundColor: "#f2f2f2",
+            zIndex: 2,
+            paddingLeft: 20,
+            paddingRight: 20,
+          }}
+        >
+          {t("UserDetails.user")}
+        </Typography>
+        <Box
+          width="100%"
+          height="1px"
+          position="absolute"
+          bgcolor="rgba(224, 224, 224, 1)"
+        />
+      </Box>
+
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        flexDirection={{ xs: "column", sm: "row" }}
+      >
+        <MUIDataTable
+          data={loading ? [] : userDataArr.slice(0, userDataArr.length / 2)}
+          className="table"
+          columns={userDataColumns}
+          options={options}
+        />
+        <MUIDataTable
+          data={loading ? [] : userDataArr.slice(userDataArr.length / 2)}
+          className="table"
+          columns={userDataColumns}
+          options={options}
+        />
+      </Box>
+
+      <Box display="flex" justifyContent="center" mt={5}>
+        <Button
+          disabled={!isEnabledSaveBtn}
+          onClick={onPressSave}
+          variant="contained"
+          style={{
+            opacity: isEnabledSaveBtn ? 1 : 0.6,
+            background: "var(--color-primary)",
+            color: "var(--color-white)",
+            width: 130,
+          }}
+        >
+          {t("UserDetails.save")}
+        </Button>
+      </Box>
 
       <Confirmation
         onPressConfirm={onConfirmCancellation}
