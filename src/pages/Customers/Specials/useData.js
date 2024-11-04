@@ -104,7 +104,7 @@ export const useData = () => {
       label: t("Specials.category"),
     },
     {
-      name: "sub_category",
+      name: "subcategory",
       label: t("Specials.subCategory"),
     },
     {
@@ -137,12 +137,14 @@ export const useData = () => {
   ];
 
   useEffect(() => {
-    if (searchQuery.length > 0) {
-      onPressSearch();
-    }
+    onPressSearch();
   }, [queryType]);
 
-  const onPressSearch = () => dispatch(searchSpecials(searchQuery, queryType));
+  const onPressSearch = () => {
+    if (searchQuery.length > 0) {
+      dispatch(searchSpecials(searchQuery, queryType));
+    }
+  };
 
   const onPressRemove = (id) => {
     confirmationModal.showModal();
@@ -163,6 +165,11 @@ export const useData = () => {
     }
   };
 
+  const clearSearch = () => {
+    setSearchQuery("");
+    dispatch(fetchSpecials());
+  };
+
   useEffect(() => {
     dispatch(fetchSpecials());
   }, [dispatch]);
@@ -172,6 +179,7 @@ export const useData = () => {
     tableData: specials.list,
     queryType,
     searchQuery,
+    clearSearch,
     tableColumns,
     tableOptions,
     setQueryType,
