@@ -3,15 +3,7 @@ import React from "react";
 import MUIDataTable from "mui-datatables";
 import AddIcon from "@material-ui/icons/Add";
 import { useTranslation } from "react-i18next";
-import {
-  Box,
-  Button,
-  TextField,
-  Select,
-  MenuItem,
-  InputAdornment,
-} from "@material-ui/core";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { Box, Button, TextField, Select, MenuItem } from "@material-ui/core";
 
 import "./styles.css";
 import { useData } from "./useData";
@@ -24,7 +16,6 @@ export default function Specials() {
     tableData,
     queryType,
     searchQuery,
-    clearSearch,
     tableColumns,
     tableOptions,
     setQueryType,
@@ -51,19 +42,6 @@ export default function Specials() {
             onKeyDown={onKeyDown}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  {searchQuery.length ? (
-                    <HighlightOffIcon
-                      color="error"
-                      onClick={clearSearch}
-                      style={{ cursor: "pointer" }}
-                    />
-                  ) : null}
-                </InputAdornment>
-              ),
-            }}
           />
           <Select
             value={queryType}

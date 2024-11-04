@@ -16,7 +16,6 @@ import { defaultTableOptions } from "../../../constants/table";
 import { useModal } from "../../../hooks";
 import { Enter } from "../../../constants/formData";
 import {
-  fetchSpecials,
   removeSpecialEntry,
   searchSpecials,
 } from "../../../redux/actions/customersActions";
@@ -165,21 +164,11 @@ export const useData = () => {
     }
   };
 
-  const clearSearch = () => {
-    setSearchQuery("");
-    dispatch(fetchSpecials());
-  };
-
-  useEffect(() => {
-    dispatch(fetchSpecials());
-  }, [dispatch]);
-
   return {
     onKeyDown,
     tableData: specials.list,
     queryType,
     searchQuery,
-    clearSearch,
     tableColumns,
     tableOptions,
     setQueryType,
