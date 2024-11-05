@@ -82,9 +82,9 @@
       "dataUpdatedSuccessfully": "Data updated successfully",
       "addSpecial": "Add Special",
       "deleteSpecial": "Delete Special",
-      "areYouSureYouWantToDeleteSpecial": "Are you sure you want to delete special for {{name}}?",
+      "areYouSureYouWantToDeleteSpecial": "Are you sure you want to remove 'special' for {{name}}?",
       "yesDelete":"Yes, Delete",
-      "specialsSuccessfullyRemoved": "Specials successfully removed"
+      "specialsSuccessfullyRemoved": "Special successfully removed"
 
     },
     "Activity": {
