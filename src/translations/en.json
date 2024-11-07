@@ -73,12 +73,18 @@
       "male": "Male",
       "paymentType": "Active Due",
       "female": "Female",
-      "regular": "Regular",
-      "specials": "Specials",
-      "grants": "Grants",
+      "REGULAR": "Regular",
+      "SPECIALS": "Specials",
+      "GRANTS": "Grants",
+      "OFFLINE_PAYMENT": "Offline Payment",
       "editPayment": "Edit Payment",
       "paymentSuccessfullyUpdated": "Payment successfully updated",
-      "dataUpdatedSuccessfully": "Data updated successfully"
+      "dataUpdatedSuccessfully": "Data updated successfully",
+      "addSpecial": "Add Special",
+      "deleteSpecial": "Delete Special",
+      "areYouSureYouWantToDeleteSpecial": "Are you sure you want to remove 'special' for {{name}}?",
+      "yesDelete":"Yes, Delete",
+      "specialsSuccessfullyRemoved": "Special successfully removed"
 
     },
     "Activity": {
@@ -164,6 +170,25 @@
     "Events": {
       "name": "Events",
       "helpHaverAppForEvents": "Help Haver applications for Events"
+    },
+    "Specials": {
+      "name": "Specials",
+      "search": "Search",
+      "email": "Email",
+      "keycloakId": "Keycloak ID",
+      "add": "Add",
+      "category": "Category",
+      "subCategory": "Sub Category",
+      "remove": "Remove",
+      "areYouSureYouWantToDelete": "Are you sure you want to delete the entry?",
+      "yesDelete": "Yes, Delete",
+      "addNewEntry": "Add New Entry",
+      "submit": "Submit",
+      "newEntrySuccessfullyAdded": "New entry successfully added",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "createdAt": "Created At",
+      "noRecords": "Sorry, no matching records found"
     }
   }
 }

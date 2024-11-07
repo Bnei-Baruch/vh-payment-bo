@@ -6,7 +6,9 @@ import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import MergeTypeIcon from "@material-ui/icons/MergeType";
 import CancelIcon from "@material-ui/icons/Cancel";
+import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import AddIcon from "@material-ui/icons/Add";
 import { useTranslation } from "react-i18next";
 import { Controller } from "react-hook-form";
 import {
@@ -27,6 +29,7 @@ import {
 import MUIDataTable from "mui-datatables";
 
 import {
+  AddSpecialEntry,
   Confirmation,
   MergeAccounts,
   OfflinePayment,
@@ -49,24 +52,29 @@ export default function UserDetails() {
     userName,
     userData,
     activeTab,
+    hasSpecial,
     onHideAlert,
     userDataArr,
     onPressSave,
     setActiveTab,
     onPressMerge,
     ordersColumns,
+    addSpecialModal,
     paymentsColumns,
     membershipInfo,
     paymentModalRef,
     refreshUserInfo,
+    confirmationInfo,
     isEnabledSaveBtn,
+    onPressAddSpecial,
     isEditablePayment,
     confirmationModal,
     mergeAccountsModal,
     onPressEditPayment,
     offlinePaymentModal,
-    onConfirmCancellation,
+    onPressDeleteSpecial,
     onPressOfflinePayment,
+    onPressCancelMembership,
   } = useData();
 
   const renderStatus = () => {
@@ -496,7 +504,7 @@ export default function UserDetails() {
         <Button
           startIcon={<CancelIcon />}
           className="button cancel"
-          onClick={confirmationModal.showModal}
+          onClick={onPressCancelMembership}
         >
           {t("UserDetails.cancelMembership")}
         </Button>
@@ -524,6 +532,24 @@ export default function UserDetails() {
             {t("UserDetails.editPayment")}
           </Button>
         )}
+
+        {hasSpecial ? (
+          <Button
+            onClick={onPressDeleteSpecial}
+            startIcon={<DeleteIcon />}
+            className="button cancel"
+          >
+            {t("UserDetails.deleteSpecial")}
+          </Button>
+        ) : (
+          <Button
+            onClick={onPressAddSpecial}
+            startIcon={<AddIcon />}
+            className="button"
+          >
+            {t("UserDetails.addSpecial")}
+          </Button>
+        )}
       </Box>
 
       <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)}>
@@ -535,17 +561,21 @@ export default function UserDetails() {
       <div hidden={activeTab !== 1}>{renderTree()}</div>
 
       <Confirmation
-        onPressConfirm={onConfirmCancellation}
+        onPressConfirm={confirmationInfo.onConfirm}
         useModal={confirmationModal}
         title={t("UserDetails.beCareful")}
-        description={t("UserDetails.areYouSureYouWantToCancel", {
-          name: userName,
-        })}
+        description={confirmationInfo.desc}
+        confirmBtnTitle={confirmationInfo.btnTitle}
       />
       <MergeAccounts useModal={mergeAccountsModal} callback={refreshUserInfo} />
       <OfflinePayment
         ref={paymentModalRef}
         useModal={offlinePaymentModal}
+        keycloakId={userData?.keycloak_id}
+      />
+      <AddSpecialEntry
+        useModal={addSpecialModal}
+        email={userData?.primary_email}
         keycloakId={userData?.keycloak_id}
       />
       <Snackbar

@@ -12,6 +12,9 @@ const CustomerActivity = async(() =>
 );
 const CustomerCreate = async(() => import("../pages/Customers/CreateCustomer"));
 const CustomerSearch = async(() => import("../pages/Customers/Search/Search"));
+const CustomerSpecials = async(() =>
+  import("../pages/Customers/Specials/Specials")
+);
 const CustomerDetails = async(() =>
   import("../pages/Customers/UserDetails/UserDetails")
 );
@@ -95,6 +98,17 @@ const sideRoutes = [
           { name: "Search", path: DASHBOARD_ROUTES.CustomerSearch },
         ],
         component: CustomerSearch,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerSpecials,
+        id: "Specials",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Specials", path: DASHBOARD_ROUTES.CustomerSpecials },
+        ],
+        component: CustomerSpecials,
       },
       // {
       //   path: DASHBOARD_ROUTES.CustomerCreate,
@@ -190,6 +204,17 @@ const dashboardRoutes = [
           { name: "Search", path: DASHBOARD_ROUTES.CustomerSearch },
         ],
         component: CustomerSearch,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerSpecials,
+        id: "Specials",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "Specials", path: DASHBOARD_ROUTES.CustomerSpecials },
+        ],
+        component: CustomerSpecials,
       },
       {
         path: DASHBOARD_ROUTES.CustomerDetails,

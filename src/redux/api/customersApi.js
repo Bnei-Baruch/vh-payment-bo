@@ -51,6 +51,31 @@ export const ApiCustomers = new (class Api {
       data,
     });
   }
+  getSpecials() {
+    return axios({
+      url: `/pay/v2/special/`,
+      method: "get",
+    });
+  }
+  addSpecialEntry(data) {
+    return axios({
+      url: `/pay/v2/special/`,
+      method: "post",
+      data,
+    });
+  }
+  removeSpecialEntry(id) {
+    return axios({
+      url: `/pay/v2/special/${id}`,
+      method: "delete",
+    });
+  }
+  searchSpecials(type, query) {
+    return axios({
+      url: `/pay/v2/special/${type}/${query}`,
+      method: "get",
+    });
+  }
   mergeAccounts(data) {
     return axios({
       url: `/pay/v2/account/merge`,
@@ -76,6 +101,12 @@ export const ApiCustomers = new (class Api {
       url: `/pay/v2/order/offline`,
       method: "patch",
       data,
+    });
+  }
+  removeSpecialByKeycloakId(keycloakId) {
+    return axios({
+      url: `/pay/v2/special/delete/${keycloakId}`,
+      method: "delete",
     });
   }
 })();

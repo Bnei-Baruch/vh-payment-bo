@@ -1,3 +1,5 @@
+import i18next from "i18next";
+
 import countries from "./countries";
 import languages from "./languages";
 import { genderData, maritalStatuses } from "./formData";
@@ -42,3 +44,8 @@ export const fieldsForEditing = [
 ];
 
 export const fieldsForSorting = ["ProductType", "ID"];
+
+export const baseMembershipInfo = [
+  { key: "membership_active", label: i18next.t("Search.status") },
+  { key: "membership_type", label: i18next.t("Activity.type") },
+];
