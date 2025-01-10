@@ -28,6 +28,39 @@ import {
 } from "../../../constants/table";
 import { ACTIVE_DUE } from "../../../constants/specials";
 
+// Should be removed
+const comments = [
+  {
+    userName: "Charlotte Walker",
+    date: "1640995200",
+    comment:
+      "The customer support ticket has been resolved. Please confirm if all issues have been addressed. If you need further assistance, feel free to reach out.",
+  },
+  {
+    userName: "Jack Mitchell",
+    date: "1648670400",
+    comment:
+      "I’ve updated the client’s contact information in the system. Please ensure that all upcoming correspondence reflects the new details.",
+  },
+  {
+    userName: "Olivia Carter",
+    date: "1672531200",
+    comment:
+      "The system maintenance is complete, and all services should be up and running. Let me know if you encounter any issues.",
+  },
+  {
+    userName: "Mia Roberts",
+    date: "1657065600",
+    comment:
+      "The issue with the payment gateway has been escalated to the development team. I’ll update you once we have a resolution. Thanks for your patience.",
+  },
+  {
+    userName: "James Thompson",
+    date: "1664505600",
+    comment: "Your request for additional user access has been approved.",
+  },
+];
+
 export const useData = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -278,6 +311,7 @@ export const useData = () => {
     payments,
     userName,
     userData,
+    comments,
     activeTab,
     hasSpecial,
     onHideAlert,

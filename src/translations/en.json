@@ -84,8 +84,10 @@
       "deleteSpecial": "Delete Special",
       "areYouSureYouWantToDeleteSpecial": "Are you sure you want to remove 'special' for {{name}}?",
       "yesDelete":"Yes, Delete",
-      "specialsSuccessfullyRemoved": "Special successfully removed"
-
+      "specialsSuccessfullyRemoved": "Special successfully removed",
+      "comments": "Comments",
+      "addComment": "Add a comment",
+      "send": "Send"
     },
     "Activity": {
       "name": "Activity",
