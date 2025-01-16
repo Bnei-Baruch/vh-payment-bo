@@ -5,6 +5,7 @@ import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import MergeTypeIcon from "@material-ui/icons/MergeType";
+import PaymentIcon from "@material-ui/icons/Payment";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
@@ -30,6 +31,7 @@ import MUIDataTable from "mui-datatables";
 
 import {
   AddSpecialEntry,
+  CardDetails,
   Confirmation,
   MergeAccounts,
   OfflinePayment,
@@ -58,12 +60,15 @@ export default function UserDetails() {
     onPressSave,
     setActiveTab,
     onPressMerge,
+    hasCreditCard,
     ordersColumns,
+    cardInfoModal,
     addSpecialModal,
     paymentsColumns,
     membershipInfo,
     paymentModalRef,
     refreshUserInfo,
+    onShowCardPress,
     confirmationInfo,
     isEnabledSaveBtn,
     onPressAddSpecial,
@@ -550,6 +555,16 @@ export default function UserDetails() {
             {t("UserDetails.addSpecial")}
           </Button>
         )}
+
+        {hasCreditCard && (
+          <Button
+            onClick={onShowCardPress}
+            startIcon={<PaymentIcon />}
+            className="button"
+          >
+            {t("UserDetails.cardInformation")}
+          </Button>
+        )}
       </Box>
 
       <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)}>
@@ -578,6 +593,7 @@ export default function UserDetails() {
         email={userData?.primary_email}
         keycloakId={userData?.keycloak_id}
       />
+      <CardDetails useModal={cardInfoModal} userData={userData} />
       <Snackbar
         open={alert.visible}
         onClose={onHideAlert}

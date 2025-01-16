@@ -27,13 +27,16 @@ import {
   fieldsForSorting,
 } from "../../../constants/table";
 import { ACTIVE_DUE } from "../../../constants/specials";
+import { PAYMENT_TYPE } from "../../../constants/payments";
+import { DASHBOARD_ROUTES } from "../../../routes/dashboardRoutes";
 
 export const useData = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { goBack } = useHistory();
+  const { push } = useHistory();
   const { state } = useLocation();
   const paymentModalRef = useRef(null);
+  const cardInfoModal = useModal();
   const confirmationModal = useModal();
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
@@ -51,14 +54,16 @@ export const useData = () => {
     dispatch(searchCustomers(userData?.primary_email, "email"));
 
   const addSpecialModal = useModal(refreshUserInfo);
+  const userEmail =
+    state?.userEmail ??
+    new URLSearchParams(window.location.search).get("user_email");
 
   const userData = useMemo(
-    () =>
-      searchResult.find(
-        ({ primary_email }) => primary_email === state?.userEmail
-      ),
-    [searchResult, state?.userEmail]
+    () => searchResult.find(({ primary_email }) => primary_email === userEmail),
+    [searchResult, userEmail]
   );
+
+  const goBack = () => push(DASHBOARD_ROUTES.CustomerSearch);
 
   const defaultValues = useMemo(() => {
     const values = {};
@@ -98,13 +103,19 @@ export const useData = () => {
     [currentPayment]
   );
 
+  const hasCreditCard = useMemo(
+    () =>
+      currentPayment?.active && currentPayment?.type === PAYMENT_TYPE.AUTOMATIC,
+    [currentPayment]
+  );
+
   const getCustomerDetails = () => {
     dispatch(getCustomerOrders(userData.primary_email));
     dispatch(getCustomerPayments(userData.primary_email));
   };
 
   useEffect(() => {
-    if (!state?.userEmail) {
+    if (!userEmail) {
       goBack();
     }
 
@@ -120,7 +131,7 @@ export const useData = () => {
 
     userData
       ? getCustomerDetails()
-      : dispatch(searchCustomers(state?.userEmail, "email"));
+      : dispatch(searchCustomers(userEmail, "email"));
   }, [userData]);
 
   useEffect(() => {
@@ -268,6 +279,8 @@ export const useData = () => {
 
   const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
 
+  const onShowCardPress = () => cardInfoModal.showModal();
+
   return {
     alert,
     goBack,
@@ -284,12 +297,15 @@ export const useData = () => {
     userDataArr,
     setActiveTab,
     onPressMerge,
+    hasCreditCard,
     ordersColumns,
+    cardInfoModal,
     addSpecialModal,
     paymentsColumns,
     membershipInfo,
     paymentModalRef,
     refreshUserInfo,
+    onShowCardPress,
     confirmationInfo,
     isEnabledSaveBtn,
     isEditablePayment,

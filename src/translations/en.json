@@ -84,8 +84,12 @@
       "deleteSpecial": "Delete Special",
       "areYouSureYouWantToDeleteSpecial": "Are you sure you want to remove 'special' for {{name}}?",
       "yesDelete":"Yes, Delete",
-      "specialsSuccessfullyRemoved": "Special successfully removed"
-
+      "specialsSuccessfullyRemoved": "Special successfully removed",
+      "cardInformation": "Card Information",
+      "paymentCard": "Payment Card",
+      "updateCard": "Update Card",
+      "succesfullyUpdatedCard": "Card details updated successfully",
+      "failedToUpdateCard": "Failed to update card details"
     },
     "Activity": {
       "name": "Activity",
