@@ -308,100 +308,6 @@ export default function UserDetails() {
             {t("UserDetails.save")}
           </Button>
         </Box>
-
-        <Box
-          mt={7}
-          mb={5}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          overflow="hidden"
-          position="relative"
-        >
-          <Typography
-            variant="h3"
-            style={{
-              color: "var(--color-primary)",
-              backgroundColor: "#f2f2f2",
-              zIndex: 2,
-              paddingLeft: 20,
-              paddingRight: 20,
-            }}
-          >
-            {t("UserDetails.comments")}
-          </Typography>
-          <Box
-            width="100%"
-            height="1px"
-            position="absolute"
-            bgcolor="rgba(224, 224, 224, 1)"
-          />
-        </Box>
-
-        {!comments || !comments?.length ? (
-          <Box p={4} bgcolor="#FFF" borderBottom="1px solid #e0e0e0">
-            <Typography variant="body2" align="center">
-              {t("Activity.noRecords")}
-            </Typography>
-          </Box>
-        ) : null}
-
-        {comments?.map(({ date, userName, comment }) => (
-          <Box mb={7} display="flex" flexDirection="row">
-            <Avatar sx={{ width: 40, height: 40 }}>
-              {userName.slice(0, 1)}
-            </Avatar>
-            <Box ml={3}>
-              <Typography variant="h6">{userName}</Typography>
-              <Typography variant="body2" style={{ color: "gray" }}>
-                {moment(date * 1000).format("llll")}
-              </Typography>
-              <Box
-                mt={2}
-                px={3}
-                py={1}
-                border={0.5}
-                bgcolor="#FFF"
-                borderRadius={3}
-              >
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  style={{ whiteSpace: "pre-line" }}
-                >
-                  {comment}
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-        ))}
-
-        <Box mt={10} position="relative">
-          <TextField
-            rows={3}
-            fullWidth
-            multiline
-            variant="outlined"
-            className="comment-field"
-            label={t("UserDetails.addComment")}
-            style={{ backgroundColor: "#FFF" }}
-          />
-          <Button
-            color="primary"
-            variant="contained"
-            style={{ position: "absolute", bottom: 1, right: 1 }}
-            endIcon={
-              <SendIcon
-                style={{
-                  transform: "rotate(-45deg) translateY(-4px)",
-                  marginLeft: 3,
-                }}
-              />
-            }
-          >
-            {t("UserDetails.send")}
-          </Button>
-        </Box>
       </>
     );
   };
@@ -657,6 +563,98 @@ export default function UserDetails() {
 
       <div hidden={activeTab !== 0}>{renderFlatView()}</div>
       <div hidden={activeTab !== 1}>{renderTree()}</div>
+
+      <Box
+        mt={7}
+        mb={5}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        overflow="hidden"
+        position="relative"
+      >
+        <Typography
+          variant="h3"
+          style={{
+            color: "var(--color-primary)",
+            backgroundColor: "#f2f2f2",
+            zIndex: 2,
+            paddingLeft: 20,
+            paddingRight: 20,
+          }}
+        >
+          {t("UserDetails.comments")}
+        </Typography>
+        <Box
+          width="100%"
+          height="1px"
+          position="absolute"
+          bgcolor="rgba(224, 224, 224, 1)"
+        />
+      </Box>
+
+      {!comments || !comments?.length ? (
+        <Box p={4} bgcolor="#FFF" borderBottom="1px solid #e0e0e0">
+          <Typography variant="body2" align="center">
+            {t("Activity.noRecords")}
+          </Typography>
+        </Box>
+      ) : null}
+
+      {comments?.map(({ date, userName, comment }) => (
+        <Box mb={7} display="flex" flexDirection="row">
+          <Avatar sx={{ width: 40, height: 40 }}>{userName.slice(0, 1)}</Avatar>
+          <Box ml={3}>
+            <Typography variant="h6">{userName}</Typography>
+            <Typography variant="body2" style={{ color: "gray" }}>
+              {moment(date * 1000).format("llll")}
+            </Typography>
+            <Box
+              mt={2}
+              px={3}
+              py={1}
+              border={0.5}
+              bgcolor="#FFF"
+              borderRadius={3}
+            >
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                style={{ whiteSpace: "pre-line" }}
+              >
+                {comment}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      ))}
+
+      <Box mt={10} position="relative">
+        <TextField
+          rows={3}
+          fullWidth
+          multiline
+          variant="outlined"
+          className="comment-field"
+          label={t("UserDetails.addComment")}
+          style={{ backgroundColor: "#FFF" }}
+        />
+        <Button
+          color="primary"
+          variant="contained"
+          style={{ position: "absolute", bottom: 1, right: 1 }}
+          endIcon={
+            <SendIcon
+              style={{
+                transform: "rotate(-45deg) translateY(-4px)",
+                marginLeft: 3,
+              }}
+            />
+          }
+        >
+          {t("UserDetails.send")}
+        </Button>
+      </Box>
 
       <Confirmation
         onPressConfirm={confirmationInfo.onConfirm}
