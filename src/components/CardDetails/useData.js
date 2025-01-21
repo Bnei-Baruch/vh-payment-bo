@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 
-import { ApiPayments } from "../../../redux/api/paymentsApi";
+import { ApiPayments } from "../../redux/api/paymentsApi";
 
 export const useData = ({ userData }) => {
   const { language } = useSelector((state) => state.settingsReducer);
@@ -34,14 +34,25 @@ export const useData = ({ userData }) => {
 
       setOrderDetails(data);
 
-      const { data: cardDetails } = await ApiPayments.getCardDetails(
-        data?.card_details_id
-      );
+      if (data?.card_details_id) {
+        const { data: cardDetails } = await ApiPayments.getCardDetails(
+          data?.card_details_id
+        );
 
-      setCardDetails({
-        number: cardDetails?.cc_number,
-        expDate: cardDetails?.cc_expdate,
-      });
+        setCardDetails({
+          number: cardDetails?.cc_number,
+          expDate: cardDetails?.cc_expdate,
+        });
+
+        return;
+      }
+
+      if (currentPayment?.details?.payment?.payment_method) {
+        setCardDetails({
+          number: currentPayment?.details?.payment?.payment_method,
+          expDate: "****",
+        });
+      }
     } catch (error) {
       console.log("Failed to get card", error);
     }

@@ -36,7 +36,6 @@ export const useData = () => {
   const { push } = useHistory();
   const { state } = useLocation();
   const paymentModalRef = useRef(null);
-  const cardInfoModal = useModal();
   const confirmationModal = useModal();
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
@@ -279,8 +278,6 @@ export const useData = () => {
 
   const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
 
-  const onShowCardPress = () => cardInfoModal.showModal();
-
   return {
     alert,
     goBack,
@@ -299,13 +296,11 @@ export const useData = () => {
     onPressMerge,
     hasCreditCard,
     ordersColumns,
-    cardInfoModal,
     addSpecialModal,
     paymentsColumns,
     membershipInfo,
     paymentModalRef,
     refreshUserInfo,
-    onShowCardPress,
     confirmationInfo,
     isEnabledSaveBtn,
     isEditablePayment,
