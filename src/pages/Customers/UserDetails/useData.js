@@ -27,9 +27,9 @@ import {
   fieldsForSorting,
 } from "../../../constants/table";
 import { ACTIVE_DUE } from "../../../constants/specials";
-import { PAYMENT_TYPE } from "../../../constants/payments";
 import { ApiPayments } from "../../../redux/api/paymentsApi";
 import { DASHBOARD_ROUTES } from "../../../routes/dashboardRoutes";
+import { DEFAULT_CARD, PAYMENT_TYPE } from "../../../constants/payments";
 
 export const useData = () => {
   const { t } = useTranslation();
@@ -41,10 +41,7 @@ export const useData = () => {
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
   const [activeTab, setActiveTab] = useState(0);
-  const [cardDetails, setCardDetails] = useState({
-    number: "****************",
-    expDate: "****",
-  });
+  const [cardDetails, setCardDetails] = useState(DEFAULT_CARD);
   const [orderDetails, setOrderDetails] = useState(null);
   const [membershipInfo, setMembershipInfo] = useState(baseMembershipInfo);
   const [confirmationInfo, setConfirmationInfo] = useState({
@@ -361,9 +358,9 @@ export const useData = () => {
   };
 
   useEffect(() => {
-    if (currentPayment?.details?.automatic?.order_id) {
-      fetchCardDetails();
-    }
+    currentPayment?.details?.automatic?.order_id
+      ? fetchCardDetails()
+      : setCardDetails(DEFAULT_CARD);
   }, [currentPayment]);
 
   const fetchCardDetails = async () => {
