@@ -89,7 +89,9 @@
       "paymentCard": "Payment Card",
       "updateCard": "Update Card",
       "succesfullyUpdatedCard": "Card details updated successfully",
-      "failedToUpdateCard": "Failed to update card details"
+      "failedToUpdateCard": "Failed to update card details",
+      "cardNumber": "Card Number",
+      "expirationDate": "Expiration Date"
     },
     "Activity": {
       "name": "Activity",
