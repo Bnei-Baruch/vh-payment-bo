@@ -9,7 +9,7 @@ export const ApiPayments = new (class Api {
   }
   requestUpdateCard(data) {
     return axios({
-      url: "/pay/v2/transaction/new_token",
+      url: "/pay/v2/transaction/new_token_no_cvv",
       method: "post",
       data,
     });
