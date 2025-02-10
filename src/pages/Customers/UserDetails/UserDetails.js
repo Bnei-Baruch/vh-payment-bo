@@ -480,7 +480,7 @@ export default function UserDetails() {
                   </div>
                 </div>
                 <div className="info-column" style={{ height: "fit-content" }}>
-                  <div className="key">{t("UserDetails.expirationDate")}</div>
+                  <div className="key">{t("UserDetails.cardExpirationDate")}</div>
                   <div className="value">
                     {cardDetails?.expDate?.match(/.{1,2}/g).join("/")}
                   </div>

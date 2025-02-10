@@ -91,7 +91,8 @@
       "succesfullyUpdatedCard": "Card details updated successfully",
       "failedToUpdateCard": "Failed to update card details",
       "cardNumber": "Card Number",
-      "expirationDate": "Expiration Date"
+      "expirationDate": "Expiration Date",
+      "cardExpirationDate": "Card Expiration Date"
     },
     "Activity": {
       "name": "Activity",
