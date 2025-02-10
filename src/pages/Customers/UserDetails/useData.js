@@ -365,6 +365,8 @@ export const useData = () => {
 
   const fetchCardDetails = async () => {
     try {
+      if (currentPayment?.user_id !== userData?.user_id) return;
+
       const { data } = await ApiPayments.getOrderById(
         currentPayment?.details?.automatic?.order_id
       );
@@ -389,6 +391,7 @@ export const useData = () => {
           number: currentPayment?.details?.payment?.payment_method,
           expDate: "****",
         });
+
         return;
       }
 
