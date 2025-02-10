@@ -389,9 +389,13 @@ export const useData = () => {
           number: currentPayment?.details?.payment?.payment_method,
           expDate: "****",
         });
+        return;
       }
+
+      setCardDetails(DEFAULT_CARD);
     } catch (error) {
       console.log("Failed to get card", error);
+      setCardDetails(DEFAULT_CARD);
     }
   };
 
