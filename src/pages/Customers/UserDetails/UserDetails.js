@@ -53,11 +53,13 @@ export default function UserDetails() {
     userData,
     activeTab,
     hasSpecial,
+    cardDetails,
     onHideAlert,
     userDataArr,
     onPressSave,
     setActiveTab,
     onPressMerge,
+    hasCreditCard,
     ordersColumns,
     addSpecialModal,
     paymentsColumns,
@@ -66,6 +68,7 @@ export default function UserDetails() {
     refreshUserInfo,
     confirmationInfo,
     isEnabledSaveBtn,
+    onUpdateCardPress,
     onPressAddSpecial,
     isEditablePayment,
     confirmationModal,
@@ -455,7 +458,11 @@ export default function UserDetails() {
         >
           <Box display="flex">
             {membershipInfo.map(({ key, label, value }) => (
-              <div key={value ?? key} className="info-column">
+              <div
+                key={value ?? key}
+                className="info-column"
+                style={{ height: "fit-content" }}
+              >
                 <div className="key">{label}</div>
                 {key === "membership_active" ? (
                   renderStatus()
@@ -464,6 +471,22 @@ export default function UserDetails() {
                 )}
               </div>
             ))}
+            {hasCreditCard && (
+              <>
+                <div className="info-column" style={{ height: "fit-content" }}>
+                  <div className="key">{t("UserDetails.cardNumber")}</div>
+                  <div className="value">
+                    {cardDetails?.number?.match(/.{1,4}/g).join(" ")}
+                  </div>
+                </div>
+                <div className="info-column" style={{ height: "fit-content" }}>
+                  <div className="key">{t("UserDetails.cardExpirationDate")}</div>
+                  <div className="value">
+                    {cardDetails?.expDate?.match(/.{1,2}/g).join("/")}
+                  </div>
+                </div>
+              </>
+            )}
           </Box>
 
           <Box
@@ -550,6 +573,15 @@ export default function UserDetails() {
             {t("UserDetails.addSpecial")}
           </Button>
         )}
+        {hasCreditCard && (
+          <Button
+            onClick={onUpdateCardPress}
+            startIcon={<EditIcon />}
+            className="button"
+          >
+            {t("UserDetails.updateCard")}
+          </Button>
+        )}
       </Box>
 
       <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)}>
@@ -583,7 +615,7 @@ export default function UserDetails() {
         onClose={onHideAlert}
         autoHideDuration={4000}
       >
-        <Alert severity="success" variant="filled">
+        <Alert severity={alert.type} variant="filled">
           {alert.message}
         </Alert>
       </Snackbar>
