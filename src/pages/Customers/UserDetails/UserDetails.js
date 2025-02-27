@@ -2,6 +2,7 @@ import React from "react";
 
 import PermIdentityOutlinedIcon from "@material-ui/icons/PermIdentityOutlined";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import MergeTypeIcon from "@material-ui/icons/MergeType";
@@ -58,11 +59,14 @@ export default function UserDetails() {
     activeTab,
     hasSpecial,
     onHideAlert,
+    currentUser,
+    noteControl,
     userDataArr,
     onPressSave,
     setActiveTab,
     onPressMerge,
     ordersColumns,
+    onAddNoteClick,
     addSpecialModal,
     paymentsColumns,
     membershipInfo,
@@ -72,6 +76,7 @@ export default function UserDetails() {
     isEnabledSaveBtn,
     onPressAddSpecial,
     isEditablePayment,
+    onDeleteNoteClick,
     confirmationModal,
     mergeAccountsModal,
     onPressEditPayment,
@@ -601,47 +606,73 @@ export default function UserDetails() {
         </Box>
       ) : null}
 
-      {comments?.map(({ date, userName, comment }) => (
-        <Box mb={7} display="flex" flexDirection="row">
-          <Avatar sx={{ width: 40, height: 40 }}>{userName.slice(0, 1)}</Avatar>
-          <Box ml={3}>
-            <Typography variant="h6">{userName}</Typography>
-            <Typography variant="body2" style={{ color: "gray" }}>
-              {moment(date * 1000).format("llll")}
-            </Typography>
-            <Box
-              mt={2}
-              px={3}
-              py={1}
-              border={0.5}
-              bgcolor="#FFF"
-              borderRadius={3}
-            >
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                style={{ whiteSpace: "pre-line" }}
-              >
-                {comment}
+      {comments?.map(
+        ({ id, created_at, author_name, content, author_keycloak_id }) => (
+          <Box mb={7} display="flex" flexDirection="row" key={id}>
+            <Avatar sx={{ width: 40, height: 40 }}>
+              {author_name?.slice(0, 1)}
+            </Avatar>
+            <Box ml={3}>
+              <Typography variant="h6">{author_name}</Typography>
+              <Typography variant="body2" style={{ color: "gray" }}>
+                {moment(created_at).format("DD-MM-YYYY HH:MM:SS")}
               </Typography>
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="end"
+                gridGap={10}
+              >
+                <Box
+                  mt={2}
+                  px={3}
+                  py={1}
+                  border={0.5}
+                  bgcolor="#FFF"
+                  borderRadius={3}
+                >
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ whiteSpace: "pre-line" }}
+                  >
+                    {content}
+                  </Typography>
+                </Box>
+                {currentUser?.keycloak_id === author_keycloak_id ? (
+                  <DeleteForeverIcon
+                    onClick={() => onDeleteNoteClick(id)}
+                    style={{ color: "red", cursor: "pointer" }}
+                  />
+                ) : null}
+              </Box>
             </Box>
           </Box>
-        </Box>
-      ))}
+        )
+      )}
 
       <Box mt={10} position="relative">
-        <TextField
-          rows={3}
-          fullWidth
-          multiline
-          variant="outlined"
-          className="comment-field"
-          label={t("UserDetails.addComment")}
-          style={{ backgroundColor: "#FFF" }}
+        <Controller
+          name="note"
+          control={noteControl}
+          render={({ field: { onChange, value } }) => (
+            <TextField
+              rows={3}
+              fullWidth
+              multiline
+              value={value}
+              variant="outlined"
+              onChange={onChange}
+              className="comment-field"
+              label={t("UserDetails.addComment")}
+              style={{ backgroundColor: "#FFF" }}
+            />
+          )}
         />
         <Button
           color="primary"
           variant="contained"
+          onClick={onAddNoteClick}
           style={{ position: "absolute", bottom: 1, right: 1 }}
           endIcon={
             <SendIcon

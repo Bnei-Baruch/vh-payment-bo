@@ -87,7 +87,9 @@
       "specialsSuccessfullyRemoved": "Special successfully removed",
       "comments": "Comments",
       "addComment": "Add a comment",
-      "send": "Send"
+      "send": "Send",
+      "areYouSureYouWantToDeleteComment": "Are you sure you want to delete the comment?",
+      "commentSuccessfullyRemoved": "Comment successfully removed"
     },
     "Activity": {
       "name": "Activity",

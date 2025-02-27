@@ -11,10 +11,13 @@ import { useLocation, useHistory } from "react-router-dom";
 
 import { useModal } from "../../../hooks";
 import {
+  addComment,
   cancelMembership,
+  getComments,
   getCustomerOrders,
   getCustomerPayments,
   getMembershipInfo,
+  removeCommentById,
   removeSpecialForUser,
   searchCustomers,
   updateCustomerInfo,
@@ -28,38 +31,7 @@ import {
 } from "../../../constants/table";
 import { ACTIVE_DUE } from "../../../constants/specials";
 
-// Should be removed
-const comments = [
-  {
-    userName: "Charlotte Walker",
-    date: "1640995200",
-    comment:
-      "The customer support ticket has been resolved. Please confirm if all issues have been addressed. If you need further assistance, feel free to reach out.",
-  },
-  {
-    userName: "Jack Mitchell",
-    date: "1648670400",
-    comment:
-      "I’ve updated the client’s contact information in the system. Please ensure that all upcoming correspondence reflects the new details.",
-  },
-  {
-    userName: "Olivia Carter",
-    date: "1672531200",
-    comment:
-      "The system maintenance is complete, and all services should be up and running. Let me know if you encounter any issues.",
-  },
-  {
-    userName: "Mia Roberts",
-    date: "1657065600",
-    comment:
-      "The issue with the payment gateway has been escalated to the development team. I’ll update you once we have a resolution. Thanks for your patience.",
-  },
-  {
-    userName: "James Thompson",
-    date: "1664505600",
-    comment: "Your request for additional user access has been approved.",
-  },
-];
+const PAGE_ID = 1;
 
 export const useData = () => {
   const { t } = useTranslation();
@@ -70,6 +42,7 @@ export const useData = () => {
   const confirmationModal = useModal();
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
+  const [comments, setComments] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [membershipInfo, setMembershipInfo] = useState(baseMembershipInfo);
   const [confirmationInfo, setConfirmationInfo] = useState({
@@ -79,6 +52,7 @@ export const useData = () => {
   const [alert, setAlert] = useState({ visible: false, message: "" });
   const { orders, payments, loading, searchResult, currentPayment } =
     useSelector((state) => state.customersReducer);
+  const { info: currentUser } = useSelector((state) => state.profileReducer);
 
   const refreshUserInfo = () =>
     dispatch(searchCustomers(userData?.primary_email, "email"));
@@ -131,12 +105,22 @@ export const useData = () => {
     [currentPayment]
   );
 
+  const {
+    control: noteControl,
+    handleSubmit: handleNoteSubmit,
+    reset: resetNoteField,
+  } = useForm({
+    mode: "onChange",
+  });
+
   const getCustomerDetails = () => {
     dispatch(getCustomerOrders(userData.primary_email));
     dispatch(getCustomerPayments(userData.primary_email));
   };
 
   useEffect(() => {
+    fetchComments();
+
     if (!state?.userEmail) {
       goBack();
     }
@@ -301,6 +285,47 @@ export const useData = () => {
 
   const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
 
+  const fetchComments = () => {
+    if (!userData?.keycloak_id) return;
+
+    dispatch(
+      getComments(PAGE_ID, userData?.keycloak_id, (data) => setComments(data))
+    );
+  };
+
+  const onAddNoteClick = ({ note }) => {
+    if (note && note?.length > 1) {
+      dispatch(
+        addComment(PAGE_ID, userData?.keycloak_id, note, () => fetchComments())
+      );
+
+      resetNoteField({ note: "" });
+    }
+  };
+
+  const onDeleteNoteClick = (id) => {
+    setConfirmationInfo({
+      desc: t("UserDetails.areYouSureYouWantToDeleteComment"),
+      btnTitle: "UserDetails.yesDelete",
+      onConfirm: () => onConfirmDeleteNote(id),
+    });
+    confirmationModal.showModal();
+  };
+
+  const onConfirmDeleteNote = (id) => {
+    confirmationModal.hideModal();
+
+    dispatch(
+      removeCommentById(id, () => {
+        setAlert({
+          visible: true,
+          message: t("UserDetails.commentSuccessfullyRemoved"),
+        });
+        fetchComments();
+      })
+    );
+  };
+
   return {
     alert,
     goBack,
@@ -314,6 +339,8 @@ export const useData = () => {
     comments,
     activeTab,
     hasSpecial,
+    currentUser,
+    noteControl,
     onHideAlert,
     userDataArr,
     setActiveTab,
@@ -327,6 +354,7 @@ export const useData = () => {
     confirmationInfo,
     isEnabledSaveBtn,
     isEditablePayment,
+    onDeleteNoteClick,
     onPressAddSpecial,
     confirmationModal,
     mergeAccountsModal,
@@ -336,5 +364,6 @@ export const useData = () => {
     onPressOfflinePayment,
     onPressCancelMembership,
     onPressSave: handleSubmit(onSubmit),
+    onAddNoteClick: handleNoteSubmit(onAddNoteClick),
   };
 };
