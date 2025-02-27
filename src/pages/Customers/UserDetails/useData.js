@@ -31,7 +31,7 @@ import {
 } from "../../../constants/table";
 import { ACTIVE_DUE } from "../../../constants/specials";
 
-const PAGE_ID = 1;
+const USER_DETAILS_PAGE_ID = 1;
 
 export const useData = () => {
   const { t } = useTranslation();
@@ -289,14 +289,14 @@ export const useData = () => {
     if (!userData?.keycloak_id) return;
 
     dispatch(
-      getComments(PAGE_ID, userData?.keycloak_id, (data) => setComments(data))
+      getComments(USER_DETAILS_PAGE_ID, userData?.keycloak_id, (data) => setComments(data))
     );
   };
 
   const onAddNoteClick = ({ note }) => {
     if (note && note?.length > 1) {
       dispatch(
-        addComment(PAGE_ID, userData?.keycloak_id, note, () => fetchComments())
+        addComment(USER_DETAILS_PAGE_ID, userData?.keycloak_id, note, () => fetchComments())
       );
 
       resetNoteField({ note: "" });
