@@ -90,6 +90,7 @@
       "send": "Send",
       "areYouSureYouWantToDeleteComment": "Are you sure you want to delete the comment?",
       "commentSuccessfullyRemoved": "Comment successfully removed",
+      "noAdminCommentsYet": "Looks like there are no comments yet",
       "cardInformation": "Card Information",
       "paymentCard": "Payment Card",
       "updateCard": "Update Card",

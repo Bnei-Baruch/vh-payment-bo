@@ -633,7 +633,7 @@ export default function UserDetails() {
       {!comments || !comments?.length ? (
         <Box p={4} bgcolor="#FFF" borderBottom="1px solid #e0e0e0">
           <Typography variant="body2" align="center">
-            {t("Activity.noRecords")}
+            {t("UserDetails.noAdminCommentsYet")}
           </Typography>
         </Box>
       ) : null}
