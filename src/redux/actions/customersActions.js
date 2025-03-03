@@ -331,7 +331,7 @@ export const removeSpecialForUser = (keycloakId, callback) => {
 export const getComments = (pageId, keycloakId, callback) => {
   return async () => {
     try {
-      const data = await ApiCustomers.fetchComments(pageId, keycloakId);
+      const { data } = await ApiCustomers.fetchComments(pageId, keycloakId);
 
       callback(data);
     } catch (e) {
