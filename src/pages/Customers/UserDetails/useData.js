@@ -314,7 +314,7 @@ export const useData = () => {
 
     dispatch(
       getComments(USER_DETAILS_PAGE_ID, userData?.keycloak_id, (data) =>
-        setComments(data)
+        setComments(data ?? [])
       )
     );
   };
