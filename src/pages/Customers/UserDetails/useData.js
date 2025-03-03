@@ -11,10 +11,13 @@ import { useLocation, useHistory } from "react-router-dom";
 
 import { useModal } from "../../../hooks";
 import {
+  addComment,
   cancelMembership,
+  getComments,
   getCustomerOrders,
   getCustomerPayments,
   getMembershipInfo,
+  removeCommentById,
   removeSpecialForUser,
   searchCustomers,
   updateCustomerInfo,
@@ -31,6 +34,8 @@ import { ApiPayments } from "../../../redux/api/paymentsApi";
 import { DASHBOARD_ROUTES } from "../../../routes/dashboardRoutes";
 import { DEFAULT_CARD, PAYMENT_TYPE } from "../../../constants/payments";
 
+const USER_DETAILS_PAGE_ID = 1;
+
 export const useData = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -40,6 +45,7 @@ export const useData = () => {
   const confirmationModal = useModal();
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
+  const [comments, setComments] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [cardDetails, setCardDetails] = useState(DEFAULT_CARD);
   const [orderDetails, setOrderDetails] = useState(null);
@@ -56,6 +62,7 @@ export const useData = () => {
   const { language } = useSelector((state) => state.settingsReducer);
   const { orders, payments, loading, searchResult, currentPayment } =
     useSelector((state) => state.customersReducer);
+  const { info: currentUser } = useSelector((state) => state.profileReducer);
 
   const paramX = new URLSearchParams(
     window.location.search.slice(1).replace("?", "&")
@@ -114,6 +121,14 @@ export const useData = () => {
     [currentPayment]
   );
 
+  const {
+    control: noteControl,
+    handleSubmit: handleNoteSubmit,
+    reset: resetNoteField,
+  } = useForm({
+    mode: "onChange",
+  });
+
   const hasCreditCard = useMemo(
     () =>
       currentPayment?.active && currentPayment?.type === PAYMENT_TYPE.AUTOMATIC,
@@ -126,6 +141,8 @@ export const useData = () => {
   };
 
   useEffect(() => {
+    fetchComments();
+
     if (!userEmail) {
       goBack();
     }
@@ -292,6 +309,51 @@ export const useData = () => {
 
   const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
 
+  const fetchComments = () => {
+    if (!userData?.keycloak_id) return;
+
+    dispatch(
+      getComments(USER_DETAILS_PAGE_ID, userData?.keycloak_id, (data) =>
+        setComments(data)
+      )
+    );
+  };
+
+  const onAddNoteClick = ({ note }) => {
+    if (note && note?.length > 1) {
+      dispatch(
+        addComment(USER_DETAILS_PAGE_ID, userData?.keycloak_id, note, () =>
+          fetchComments()
+        )
+      );
+
+      resetNoteField({ note: "" });
+    }
+  };
+
+  const onDeleteNoteClick = (id) => {
+    setConfirmationInfo({
+      desc: t("UserDetails.areYouSureYouWantToDeleteComment"),
+      btnTitle: "UserDetails.yesDelete",
+      onConfirm: () => onConfirmDeleteNote(id),
+    });
+    confirmationModal.showModal();
+  };
+
+  const onConfirmDeleteNote = (id) => {
+    confirmationModal.hideModal();
+
+    dispatch(
+      removeCommentById(id, () => {
+        setAlert({
+          visible: true,
+          message: t("UserDetails.commentSuccessfullyRemoved"),
+        });
+        fetchComments();
+      })
+    );
+  };
+
   useEffect(() => {
     if (
       new URLSearchParams(window.location.search).get("status") === "failed"
@@ -441,8 +503,11 @@ export const useData = () => {
     payments,
     userName,
     userData,
+    comments,
     activeTab,
     hasSpecial,
+    currentUser,
+    noteControl,
     cardDetails,
     onHideAlert,
     userDataArr,
@@ -459,6 +524,7 @@ export const useData = () => {
     isEnabledSaveBtn,
     onUpdateCardPress,
     isEditablePayment,
+    onDeleteNoteClick,
     onPressAddSpecial,
     confirmationModal,
     mergeAccountsModal,
@@ -468,5 +534,6 @@ export const useData = () => {
     onPressOfflinePayment,
     onPressCancelMembership,
     onPressSave: handleSubmit(onSubmit),
+    onAddNoteClick: handleNoteSubmit(onAddNoteClick),
   };
 };

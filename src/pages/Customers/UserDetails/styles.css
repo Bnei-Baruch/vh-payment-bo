@@ -81,6 +81,10 @@
     box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
 
+.user-details-container .comment-field div {
+    padding-bottom: 37px;
+}
+
 @media (max-width: 600px) {
     .user-details-container .table {
         width: 100%;

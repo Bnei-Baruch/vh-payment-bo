@@ -327,3 +327,40 @@ export const removeSpecialForUser = (keycloakId, callback) => {
     }
   };
 };
+
+export const getComments = (pageId, keycloakId, callback) => {
+  return async () => {
+    try {
+      const data = await ApiCustomers.fetchComments(pageId, keycloakId);
+
+      callback(data);
+    } catch (e) {
+      callback([]);
+      console.log("Failed to fetch comments", e);
+    }
+  };
+};
+
+export const addComment = (page_id, page_keycloak_id, content, callback) => {
+  return async () => {
+    try {
+      await ApiCustomers.addComment({ page_id, page_keycloak_id, content });
+
+      callback();
+    } catch (e) {
+      console.log("Failed to create comment", e);
+    }
+  };
+};
+
+export const removeCommentById = (id, callback) => {
+  return async () => {
+    try {
+      await ApiCustomers.removeCommentById(id);
+
+      callback();
+    } catch (e) {
+      console.log("Failed to delete comment", e);
+    }
+  };
+};

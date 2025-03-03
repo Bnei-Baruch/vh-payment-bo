@@ -109,4 +109,23 @@ export const ApiCustomers = new (class Api {
       method: "delete",
     });
   }
+  fetchComments(pageId, keycloakId) {
+    return axios({
+      url: `profile/v1/page-notes?page_keycloak_id=${keycloakId}&page_id=${pageId}`,
+      method: "get",
+    });
+  }
+  addComment(data) {
+    return axios({
+      url: `profile/v1/page-notes`,
+      method: "post",
+      data,
+    });
+  }
+  removeCommentById(id) {
+    return axios({
+      url: `profile/v1/page-notes/${id}`,
+      method: "delete",
+    });
+  }
 })();
