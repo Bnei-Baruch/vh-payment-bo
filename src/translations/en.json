@@ -30,7 +30,10 @@
       "active": "Active",
       "mail": "Mail",
       "nameLabel": "Name",
-      "paramX": "Param X"
+      "paramX": "Param X",
+      "notifyCreatedFromOrders": "\u2022 Profile created from Orders account data.\n",
+      "notifyRetrievedByEmailFromOrders": "\u2022 The profile was retrieved from email address matching in Orders accounts.\n",
+      "notifyEmailUpdatedFromOrders": "\u2022 An email address from an Orders account has been added to the profile based on the matching of the Keycloak ID.\n"
     },
     "UserDetails": {
       "name": "User Details",
