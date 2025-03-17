@@ -81,11 +81,11 @@ export default function Search() {
       <Snackbar
         open={alert.visible}
         onClose={onHideAlert}
-        autoHideDuration={10000}
+        autoHideDuration={25000}
       >
         <Alert
           icon={false}
-          severity="info"
+          severity="success"
           variant="filled"
           onClose={onHideAlert}
           style={{ whiteSpace: "pre-line" }}
