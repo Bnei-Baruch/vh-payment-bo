@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { searchCustomers } from "../../../redux/actions/customersActions";
 import { DASHBOARD_ROUTES } from "../../../routes/dashboardRoutes";
+import { SEARCH_NOTIFICATIONS } from "../../../constants/search";
 import { defaultTableOptions } from "../../../constants/table";
 import { Enter } from "../../../constants/formData";
 
@@ -18,6 +19,7 @@ export const useData = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [queryType, setQueryType] = useState("email");
+  const [alert, setAlert] = useState({ visible: false, message: "" });
   const { loading, searchResult } = useSelector(
     (state) => state.customersReducer
   );
@@ -111,6 +113,28 @@ export const useData = () => {
     }
   }, [queryType]);
 
+  useEffect(() => {
+    if (searchResult?.length === 1) {
+      checkIfNotificationNeeded(searchResult[0]);
+    }
+  }, [searchResult]);
+
+  const checkIfNotificationNeeded = (result) => {
+    let message = "";
+
+    Object.keys(SEARCH_NOTIFICATIONS).forEach((key) => {
+      if (result?.[key]) {
+        message += t(SEARCH_NOTIFICATIONS[key]);
+      }
+    });
+
+    if (!!message.length) {
+      setAlert({ visible: true, message });
+    }
+  };
+
+  const onHideAlert = () => setAlert((p) => ({ ...p, visible: false }));
+
   const onKeyDown = (e) => {
     if (e.key === Enter) {
       onPressSearch();
@@ -118,12 +142,14 @@ export const useData = () => {
   };
 
   return {
+    alert,
     options,
     columns,
     loading,
     queryType,
     onKeyDown,
     searchQuery,
+    onHideAlert,
     setQueryType,
     searchResult,
     onPressSearch,

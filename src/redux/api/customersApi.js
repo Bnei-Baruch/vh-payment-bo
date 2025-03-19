@@ -9,7 +9,7 @@ export const ApiCustomers = new (class Api {
   }
   searchByEmailOrName(type, query) {
     return axios({
-      url: `/profile/v1/profiles?${type}=${query}`,
+      url: `/profile/v1/profiles/search?${type}=${query}`,
       method: "get",
     });
   }
