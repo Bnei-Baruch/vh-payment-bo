@@ -13,7 +13,7 @@ const Auth = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const keycloak = Keycloak(window.APP_CONFIG.KEYCLOAK_CONFIG);
+    const keycloak = new Keycloak(window.APP_CONFIG.KEYCLOAK_CONFIG);
     keycloak
       .init({ onLoad: "login-required", checkLoginIframe: false })
       .then((authenticated) => {
@@ -34,7 +34,9 @@ const Auth = (props) => {
             profile,
           });
         });
-      });
+      }).catch((err) => {
+        console.error("Keycloak initialization failed:", err);
+      })
   }, [dispatch]);
 
   if (auth.keycloak) {
