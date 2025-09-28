@@ -1,5 +1,5 @@
 export const PAYMENTS_ROOT = "/admin/payments";
-export const HELP_HAVER_ROOT = "/admin/helphaver";
+export const HELP_HAVER_ROOT = "/admin/payments/helphaver";
 export const ROOT = "/";
 
 export const DASHBOARD_ROUTES = {
