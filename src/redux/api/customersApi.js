@@ -7,9 +7,11 @@ export const ApiCustomers = new (class Api {
       method: "get",
     });
   }
-  searchByEmailOrName(type, query) {
+  search(fields, clause) {
+    const queryParams = new URLSearchParams(fields).toString();
+    const clauseParam = clause ? `&clause=${clause}` : "";
     return axios({
-      url: `/profile/v1/profiles/search?${type}=${query}`,
+      url: `/profile/v1/profiles/search?${queryParams}${clauseParam}`,
       method: "get",
     });
   }
@@ -88,6 +90,16 @@ export const ApiCustomers = new (class Api {
       url: `/profile/v1/profile/${keycloakId}`,
       method: "patch",
       data,
+    });
+  }
+  setSpouse(keycloakId, spouseKeycloakId, forceUpdate) {
+    return axios({
+      url: `/profile/v1/profile/${keycloakId}/spouse`,
+      method: "patch",
+      data: {
+        spouse_keycloak_id: spouseKeycloakId,
+        force_update: forceUpdate,
+      },
     });
   }
   fetchMembershipInfo(keycloakId) {

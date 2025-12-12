@@ -31,9 +31,9 @@
       "mail": "Mail",
       "nameLabel": "Name",
       "paramX": "Param X",
-      "notifyCreatedFromOrders": "\u2022 Profile created from Orders account data.\n",
-      "notifyRetrievedByEmailFromOrders": "\u2022 The profile was retrieved from email address matching in Orders accounts.\n",
-      "notifyEmailUpdatedFromOrders": "\u2022 An email address from an Orders account has been added to the profile based on the matching of the Keycloak ID.\n"
+      "notifyCreatedFromOrders": "• Profile created from Orders account data.\n",
+      "notifyRetrievedByEmailFromOrders": "• The profile was retrieved from email address matching in Orders accounts.\n",
+      "notifyEmailUpdatedFromOrders": "• An email address from an Orders account has been added to the profile based on the matching of the Keycloak ID.\n"
     },
     "UserDetails": {
       "name": "User Details",
@@ -73,6 +73,7 @@
       "married": "Married",
       "divorced": "Divorced",
       "widowed": "Widowed",
+      "unspecified": "Unspecified",
       "male": "Male",
       "paymentType": "Active Due",
       "female": "Female",
@@ -101,7 +102,21 @@
       "failedToUpdateCard": "Failed to update card details",
       "cardNumber": "Card Number",
       "expirationDate": "Expiration Date",
-      "cardExpirationDate": "Card Expiration Date"
+      "cardExpirationDate": "Card Expiration Date",
+      "setSpouse": "Set Spouse",
+      "removeSpouse": "Remove Spouse",
+      "searchSpouse": "Search Spouse",
+      "spouseUpdatedSuccessfully": "Spouse updated successfully",
+      "failedToUpdateSpouse": "Failed to update spouse",
+      "spouseConflictConfirmation": "This user or the selected spouse already has a spouse. Do you want to force the update?",
+      "forceUpdate": "Force Update",
+      "confirmRemoveSpouse": "Are you sure you want to remove {{spouseName}} as a spouse? This action is symmetric and will remove the spouse from both persons.",
+      "spouseRemovedSuccessfully": "Spouse removed successfully",
+      "failedToRemoveSpouse": "Failed to remove spouse",
+      "cannotSetSpouseToSelf": "You cannot set yourself as a spouse",
+      "spouse": "Spouse",
+      "spouse_keycloak_id": "Spouse Keycloak ID",
+      "spouse_user_id": "Spouse User ID"
     },
     "Activity": {
       "name": "Activity",

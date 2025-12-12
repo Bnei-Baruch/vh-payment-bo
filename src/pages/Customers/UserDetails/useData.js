@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import moment from "moment";
+import debounce from "lodash/debounce";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { CircularProgress } from "@material-ui/core";
@@ -31,6 +32,7 @@ import {
 } from "../../../constants/table";
 import { ACTIVE_DUE } from "../../../constants/specials";
 import { ApiPayments } from "../../../redux/api/paymentsApi";
+import { ApiCustomers } from "../../../redux/api/customersApi";
 import { DASHBOARD_ROUTES } from "../../../routes/dashboardRoutes";
 import { DEFAULT_CARD, PAYMENT_TYPE } from "../../../constants/payments";
 
@@ -45,6 +47,7 @@ export const useData = () => {
   const confirmationModal = useModal();
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
+  const spouseModal = useModal();
   const [comments, setComments] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [cardDetails, setCardDetails] = useState(DEFAULT_CARD);
@@ -53,12 +56,17 @@ export const useData = () => {
   const [confirmationInfo, setConfirmationInfo] = useState({
     desc: "",
     btnTitle: "",
+    onConfirm: () => {},
   });
   const [alert, setAlert] = useState({
     type: "success",
     visible: false,
     message: "",
   });
+  const [spouseSearchResult, setSpouseSearchResult] = useState([]);
+  const [selectedSpouse, setSelectedSpouse] = useState(null);
+  const [spouseData, setSpouseData] = useState(null);
+
   const { language } = useSelector((state) => state.settingsReducer);
   const { orders, payments, loading, searchResult, currentPayment } =
     useSelector((state) => state.customersReducer);
@@ -68,18 +76,32 @@ export const useData = () => {
     window.location.search.slice(1).replace("?", "&")
   ).get("paramX");
 
+  const userEmail =
+    state?.userEmail ??
+    new URLSearchParams(window.location.search).get("user_email");
+  const userData = useMemo(
+    () => {
+      let user = searchResult.find(({ primary_email }) => primary_email === userEmail);
+      if (user && user.marital_status === null) {
+        user = { ...user, marital_status: "Unspecified" };
+      }
+      if (spouseData) {
+        user = {
+          ...user,
+          "spouse": `${spouseData.first_name_vernacular} ${spouseData.last_name_vernacular} (${spouseData.primary_email})`,
+          // "spouse_keycloak_id": spouseData.keycloak_id,
+          "spouse_user_id": spouseData.user_id,
+        };
+      }
+      return user;
+    },
+    [searchResult, userEmail, spouseData]
+  );
+
   const refreshUserInfo = () =>
     dispatch(searchCustomers(userData?.primary_email, "email"));
 
   const addSpecialModal = useModal(refreshUserInfo);
-  const userEmail =
-    state?.userEmail ??
-    new URLSearchParams(window.location.search).get("user_email");
-
-  const userData = useMemo(
-    () => searchResult.find(({ primary_email }) => primary_email === userEmail),
-    [searchResult, userEmail]
-  );
 
   const goBack = () => push(DASHBOARD_ROUTES.CustomerSearch);
 
@@ -174,6 +196,124 @@ export const useData = () => {
     }
   }, [currentPayment]);
 
+  useEffect(() => {
+    let isMounted = true;
+    const fetchSpouseData = async () => {
+      if (userData?.spouse_keycloak_id) {
+        const spouse = await ApiCustomers.search({ keycloak_id: userData.spouse_keycloak_id }, "or");
+        if (isMounted) setSpouseData(spouse[0]);
+      } else {
+        if (isMounted) setSpouseData(null);
+      }
+    };
+    fetchSpouseData();
+    return () => { isMounted = false; };
+  }, [userData?.spouse_keycloak_id]);
+
+
+  const onSearchSpouse = useMemo(() => 
+    debounce(async (term) => {
+      if (term.length >= 2) {
+        try {
+        const results = await ApiCustomers.search({ email: term, name: term, user_id: term, keycloak_id: term }, "or")
+        setSpouseSearchResult(results || []);
+        } catch (error) { 
+          console.error("Failed to search spouse", error);
+          setSpouseSearchResult([]);
+        }
+      } else {
+        setSpouseSearchResult([]);
+      }
+    }, 300),
+    []
+  );
+  
+  const onSetSpouse = async (spouse, forceUpdate = false) => {
+    if (userData?.keycloak_id === spouse?.keycloak_id) {
+      setAlert({
+        visible: true,
+        type: "error",
+        message: t("UserDetails.cannotSetSpouseToSelf"),
+      });
+      return;
+    }
+    try {
+      await ApiCustomers.setSpouse(
+        userData?.keycloak_id,
+        spouse?.keycloak_id,
+        forceUpdate
+      );
+      setAlert({
+        visible: true,
+        type: "success",
+        message: t("UserDetails.spouseUpdatedSuccessfully"),
+      });
+      refreshUserInfo();
+      spouseModal.hideModal();
+      setSelectedSpouse(null);
+      setSpouseSearchResult([]);
+    } catch (error) {
+      if (error?.response?.status === 409 && !forceUpdate) {
+        setSelectedSpouse(spouse); 
+        setConfirmationInfo({
+          desc: t("UserDetails.spouseConflictConfirmation"),
+          btnTitle: t("UserDetails.forceUpdate"),
+          onConfirm: () => onConfirmSetSpouse(spouse),
+        });
+        confirmationModal.showModal();
+      } else {
+        setAlert({
+          visible: true,
+          type: "error",
+          message: `${t("UserDetails.failedToUpdateSpouse")}: ${error?.response?.data?.error}`,
+        });
+      }
+      console.error("Failed to set spouse", error);
+    }
+  };
+
+  const onConfirmSetSpouse = () => {
+    confirmationModal.hideModal();
+    if (selectedSpouse) {
+      onSetSpouse(selectedSpouse, true);
+    }
+  };
+  
+  const onPressSetSpouse = () => {
+    spouseModal.showModal();
+  };
+
+  const onConfirmRemoveSpouse = async () => {
+    try {
+        await ApiCustomers.setSpouse(userData?.keycloak_id, "", false); // Keep existing API call for now
+        setAlert({
+            visible: true,
+            type: "success",
+            message: t("UserDetails.spouseRemovedSuccessfully"), // New translation key
+        });
+        refreshUserInfo();
+    } catch (error) {
+        setAlert({
+            visible: true,
+            type: "error",
+            message: t("UserDetails.failedToRemoveSpouse"), // Already handled in en.json
+        });
+        console.error("Failed to remove spouse", error);
+    }
+    confirmationModal.hideModal();
+  }
+
+  const onPressRemoveSpouse = () => {
+    setConfirmationInfo({
+      desc: t("UserDetails.confirmRemoveSpouse", {
+        spouseName: `${spouseData?.first_name_vernacular ?? ""} ${spouseData?.last_name_vernacular ?? ""}`,
+      }),
+      btnTitle: t("UserDetails.yesDelete"),
+      onConfirm: onConfirmRemoveSpouse,
+    });
+    confirmationModal.showModal();
+  };
+
   const options = {
     ...defaultTableOptions,
     textLabels: {
@@ -207,17 +347,16 @@ export const useData = () => {
     [payments.length]
   );
 
-  const userDataArr = useMemo(
-    () =>
-      userData
-        ? Object.keys(userData).flatMap((key) =>
-            !!membershipInfo.find((i) => i.key === key) || key === "status"
-              ? []
-              : [{ key, value: userData[key] }]
-          )
-        : [],
-    [userData]
-  );
+  const userDataArr = useMemo(() => {
+    return Object.keys(userData || {}).flatMap((key) => {
+      const isMembershipKey = !!membershipInfo.find((i) => i.key === key);
+      const isStatusKey = key === "status";
+      if (isMembershipKey || isStatusKey) {
+        return []; // Skip this item.
+      }
+      return [{ key, value: userData[key] }];
+    });
+  }, [userData, spouseData]);
 
   const onConfirmCancellation = () => {
     confirmationModal.hideModal();
@@ -278,11 +417,15 @@ export const useData = () => {
   const onSubmit = (values) => {
     const payload = {};
 
-    Object.keys(formState.dirtyFields).map(
-      (key) =>
-        (payload[key] =
-          key === "date_of_birth" ? moment(values[key]).format() : values[key])
-    );
+    Object.keys(formState.dirtyFields).forEach((key) => {
+      let value = values[key];
+      if (key === "marital_status" && value === "Unspecified") {
+        value = null;
+      } else if (key === "date_of_birth") {
+        value = moment(value).format();
+      }
+      payload[key] = value;
+    });
 
     dispatch(
       updateCustomerInfo(payload, userData?.keycloak_id, () => {
@@ -535,5 +678,15 @@ export const useData = () => {
     onPressCancelMembership,
     onPressSave: handleSubmit(onSubmit),
     onAddNoteClick: handleNoteSubmit(onAddNoteClick),
+    // Spouse functionality
+    spouseModal,
+    spouseSearchResult,
+    selectedSpouse,
+    onSearchSpouse,
+    setSelectedSpouse,
+    onPressSetSpouse,
+    onPressRemoveSpouse,
+    onSetSpouse,
+    spouseData,
   };
 };
