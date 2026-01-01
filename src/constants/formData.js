@@ -78,6 +78,10 @@ export const genderData = [
 
 export const maritalStatuses = [
   {
+    code: "Unspecified",
+    label: i18next.t("UserDetails.unspecified"),
+  },
+  {
     code: "Single",
     label: i18next.t("UserDetails.single"),
   },

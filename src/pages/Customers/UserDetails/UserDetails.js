@@ -37,6 +37,7 @@ import {
   Confirmation,
   MergeAccounts,
   OfflinePayment,
+  SpouseModal,
 } from "../../../components";
 import { useData } from "./useData";
 import "./styles.css";
@@ -87,6 +88,15 @@ export default function UserDetails() {
     onPressDeleteSpecial,
     onPressOfflinePayment,
     onPressCancelMembership,
+    // Spouse functionality
+    spouseModal,
+    spouseSearchResult,
+    selectedSpouse,
+    onSearchSpouse,
+    setSelectedSpouse,
+    onPressSetSpouse,
+    onPressRemoveSpouse,
+    onSetSpouse,
   } = useData();
 
   const renderStatus = () => {
@@ -591,6 +601,23 @@ export default function UserDetails() {
             {t("UserDetails.updateCard")}
           </Button>
         )}
+        {userData?.spouse_keycloak_id ? (
+          <Button
+            startIcon={<CancelIcon />}
+            className="button cancel"
+            onClick={onPressRemoveSpouse}
+          >
+            {t("UserDetails.removeSpouse")}
+          </Button>
+        ) : (
+          <Button
+            onClick={onPressSetSpouse}
+            startIcon={<AddIcon />}
+            className="button"
+          >
+            {t("UserDetails.setSpouse")}
+          </Button>
+        )}
       </Box>
 
       <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)}>
@@ -736,6 +763,14 @@ export default function UserDetails() {
         useModal={addSpecialModal}
         email={userData?.primary_email}
         keycloakId={userData?.keycloak_id}
+      />
+      <SpouseModal
+        useModal={spouseModal}
+        onSetSpouse={onSetSpouse}
+        onSearchSpouse={onSearchSpouse}
+        spouseSearchResult={spouseSearchResult}
+        setSelectedSpouse={setSelectedSpouse}
+        selectedSpouse={selectedSpouse}
       />
       <Snackbar
         open={alert.visible}

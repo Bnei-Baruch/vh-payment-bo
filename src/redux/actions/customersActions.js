@@ -23,16 +23,16 @@ export const searchCustomers = (query, type) => {
   return async (dispatch) => {
     dispatch({ type: SET_CUSTOMERS_LOADING, payload: true });
     try {
-      const result =
-        type === "paramX"
-          ? await ApiCustomers.searchByParamX(query)
-          : await ApiCustomers.searchByEmailOrName(type, query);
-
-      dispatch(
-        type === "paramX"
-          ? searchCustomers(result?.Email, "email")
-          : { type: SEARCH_CUSTOMERS_SUCCESS, payload: result ?? [] }
-      );
+      let finalResult = [];
+      if (type === "paramX") {
+        const paramXResult = await ApiCustomers.searchByParamX(query);
+        const fields = { email: paramXResult?.Email };
+        finalResult = await ApiCustomers.search(fields);
+      } else {
+        const fields = { [type]: query };
+        finalResult = await ApiCustomers.search(fields);
+      }
+      dispatch({ type: SEARCH_CUSTOMERS_SUCCESS, payload: finalResult ?? [] });
     } catch (e) {
       console.log("SEARCH_CUSTOMERS_FAILED", e);
       dispatch({ type: SEARCH_CUSTOMERS_FAILED });
