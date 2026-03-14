@@ -185,15 +185,26 @@ export const useData = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (currentPayment?.activeDue) {
-      setMembershipInfo([
-        ...baseMembershipInfo,
-        {
-          value: t(`UserDetails.${currentPayment.activeDue}`),
-          label: t("UserDetails.paymentType"),
-        },
-      ]);
-    }
+    setMembershipInfo([
+      ...baseMembershipInfo,
+      ...(currentPayment?.activeDue
+        ? [
+            {
+              value: t(`UserDetails.${currentPayment.activeDue}`),
+              label: t("UserDetails.paymentType"),
+            },
+          ]
+        : []),
+      ...(currentPayment?.expiry
+        ? [
+            {
+              key: "membership_expiry",
+              value: currentPayment.expiry,
+              label: t("UserDetails.membershipExpiry"),
+            },
+          ]
+        : []),
+    ]);
   }, [currentPayment]);
 
   useEffect(() => {

@@ -485,6 +485,14 @@ export default function UserDetails() {
                 <div className="key">{label}</div>
                 {key === "membership_active" ? (
                   renderStatus()
+                ) : key === "membership_expiry" ? (
+                  <div className="value">
+                    {(() => {
+                      if (value == null || value === "") return null;
+                      const m = moment(value);
+                      return m.isValid() ? m.format("DD/MM/YYYY") : value;
+                    })()}
+                  </div>
                 ) : (
                   <div className="value">{value ?? userData[key]}</div>
                 )}

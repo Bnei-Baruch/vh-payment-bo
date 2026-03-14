@@ -298,21 +298,11 @@ export const updateOfflinePayment = (payload, callback) => {
 const getActiveDue = (details) => {
   const { payment, special, help_haver } = details;
 
-  if (payment?.payment_type === "offline") {
-    return ACTIVE_DUE.OFFLINE_PAYMENT;
+  if (!_.isEmpty(payment)) {
+    return payment?.payment_type === "offline" ? ACTIVE_DUE.OFFLINE_PAYMENT : ACTIVE_DUE.PAYMENT;
   }
-
-  if (!_.isEmpty(payment) && payment?.payment_type !== "offline") {
-    return ACTIVE_DUE.REGULAR;
-  }
-
-  if (_.isEmpty(payment) && !_.isEmpty(special)) {
-    return ACTIVE_DUE.SPECIALS;
-  }
-
-  if (_.isEmpty(payment) && !_.isEmpty(help_haver)) {
-    return ACTIVE_DUE.GRANTS;
-  }
+  if (!_.isEmpty(special)) return ACTIVE_DUE.SPECIALS;
+  if (!_.isEmpty(help_haver)) return ACTIVE_DUE.GRANTS;
 };
 
 export const removeSpecialForUser = (keycloakId, callback) => {
