@@ -297,6 +297,42 @@
       "ArvutSystem": {
         "name": "Arvut система"
       }
+    },
+    "PriceCalculator": {
+      "title": "Рассчитать цену",
+      "pricingVersion": "Версия тарификации",
+      "calculate": "Рассчитать",
+      "amount": "Сумма",
+      "currency": "Валюта",
+      "version": "Версия тарификации",
+      "error": "Ошибка расчёта цены",
+      "result": "Результат",
+      "v2Details": "Детали тарификации V2",
+      "evaluatedAt": "Дата расчёта",
+      "country": "Страна",
+      "basePrice": "Базовая цена",
+      "priceGroup": "Ценовая группа",
+      "primaryAccount": "Основной аккаунт",
+      "primaryAccountId": "ID аккаунта",
+      "emailsQueried": "Запрошенные email",
+      "finalPrice": "Итоговая цена",
+      "properties": "Свойства",
+      "spouseEmailsQueried": "Email супруга(и)",
+      "spouse": "Супруг(а)",
+      "spouseAccount": "Аккаунт супруга(и)",
+      "spouseKeycloakId": "Keycloak ID супруга(и)",
+      "spouseGetsDiscount": "Супруг(а) получает скидку",
+      "noSpouse": "Супруг(а) не привязан(а)",
+      "donations": "Пожертвования",
+      "donationsFetched": "Пожертвования загружены",
+      "fetchNote": "Примечание загрузки",
+      "discounts": "Скидки",
+      "discountType": "Тип",
+      "discountAmountPct": "Размер",
+      "discountEligible": "Применимо",
+      "explain": "Объяснение",
+      "yes": "Да",
+      "no": "Нет"
     }
   }
 }

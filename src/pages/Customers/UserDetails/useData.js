@@ -48,6 +48,7 @@ export const useData = () => {
   const mergeAccountsModal = useModal();
   const offlinePaymentModal = useModal();
   const spouseModal = useModal();
+  const priceCalculatorModal = useModal();
   const [comments, setComments] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [cardDetails, setCardDetails] = useState(DEFAULT_CARD);
@@ -618,6 +619,10 @@ export const useData = () => {
     }
   };
 
+  const onPressCalculatePrice = () => {
+    priceCalculatorModal.showModal();
+  };
+
   const onUpdateCardPress = async () => {
     try {
       const payload = {
@@ -687,6 +692,8 @@ export const useData = () => {
     onPressDeleteSpecial,
     onPressOfflinePayment,
     onPressCancelMembership,
+    onPressCalculatePrice,
+    priceCalculatorModal,
     onPressSave: handleSubmit(onSubmit),
     onAddNoteClick: handleNoteSubmit(onAddNoteClick),
     // Spouse functionality
