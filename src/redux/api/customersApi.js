@@ -1,5 +1,7 @@
 import axios from "../../services/axios";
 
+const PRICING_TIMEOUT_MS = 60000;
+
 export const ApiCustomers = new (class Api {
   searchByParamX(query) {
     return axios({
@@ -138,6 +140,14 @@ export const ApiCustomers = new (class Api {
     return axios({
       url: `profile/v1/page-notes/${id}`,
       method: "delete",
+    });
+  }
+  getMonthlyPrice(keycloakId, pricingVersion) {
+    const params = pricingVersion ? `?pricing_version=${pricingVersion}` : "";
+    return axios({
+      url: `/pay/v2/pricing/monthly/${keycloakId}${params}`,
+      method: "get",
+      timeout: PRICING_TIMEOUT_MS,
     });
   }
 })();

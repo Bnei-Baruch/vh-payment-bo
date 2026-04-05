@@ -2,6 +2,7 @@ import React from "react";
 
 import PermIdentityOutlinedIcon from "@material-ui/icons/PermIdentityOutlined";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import MonetizationOnOutlinedIcon from "@material-ui/icons/MonetizationOnOutlined";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
@@ -38,6 +39,7 @@ import {
   MergeAccounts,
   OfflinePayment,
   SpouseModal,
+  PriceCalculatorModal,
 } from "../../../components";
 import { useData } from "./useData";
 import "./styles.css";
@@ -88,6 +90,8 @@ export default function UserDetails() {
     onPressDeleteSpecial,
     onPressOfflinePayment,
     onPressCancelMembership,
+    onPressCalculatePrice,
+    priceCalculatorModal,
     // Spouse functionality
     spouseModal,
     spouseSearchResult,
@@ -572,6 +576,13 @@ export default function UserDetails() {
         >
           {t("UserDetails.offlinePayment")}
         </Button>
+        <Button
+          onClick={onPressCalculatePrice}
+          startIcon={<MonetizationOnOutlinedIcon />}
+          className="button"
+        >
+          {t("UserDetails.calculatePrice")}
+        </Button>
 
         {isEditablePayment && (
           <Button
@@ -770,6 +781,10 @@ export default function UserDetails() {
       <AddSpecialEntry
         useModal={addSpecialModal}
         email={userData?.primary_email}
+        keycloakId={userData?.keycloak_id}
+      />
+      <PriceCalculatorModal
+        useModal={priceCalculatorModal}
         keycloakId={userData?.keycloak_id}
       />
       <SpouseModal

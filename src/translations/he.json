@@ -294,6 +294,42 @@
       "ArvutSystem": {
         "name": "מערכת הערבות"
       }
+    },
+    "PriceCalculator": {
+      "title": "חשב מחיר",
+      "pricingVersion": "גרסת תמחור",
+      "calculate": "חשב",
+      "amount": "סכום",
+      "currency": "מטבע",
+      "version": "גרסת תמחור",
+      "error": "שגיאה בחישוב המחיר",
+      "result": "תוצאה",
+      "v2Details": "פרטי תמחור V2",
+      "evaluatedAt": "תאריך חישוב",
+      "country": "מדינה",
+      "basePrice": "מחיר בסיס",
+      "priceGroup": "קבוצת מחיר",
+      "primaryAccount": "חשבון ראשי",
+      "primaryAccountId": "מזהה חשבון",
+      "emailsQueried": "מספר אימיילים",
+      "finalPrice": "מחיר סופי",
+      "properties": "פרטים",
+      "spouseEmailsQueried": "מספר אימיילים של בן/בת זוג",
+      "spouse": "בן/בת זוג",
+      "spouseAccount": "חשבון בן/בת זוג",
+      "spouseKeycloakId": "מזהה Keycloak בן/בת זוג",
+      "spouseGetsDiscount": "בן/בת זוג מקבל/ת הנחה",
+      "noSpouse": "אין בן/בת זוג מקושר/ת",
+      "donations": "תרומות",
+      "donationsFetched": "תרומות נטענו",
+      "fetchNote": "הערת שליפה",
+      "discounts": "הנחות",
+      "discountType": "סוג",
+      "discountAmountPct": "סכום",
+      "discountEligible": "זכאי",
+      "explain": "הסבר",
+      "yes": "כן",
+      "no": "לא"
     }
   }
 }
