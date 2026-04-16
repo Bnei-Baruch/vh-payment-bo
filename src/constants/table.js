@@ -23,7 +23,7 @@ export const fieldsForEditing = [
   { name: "last_name_latin" },
   { name: "last_name_vernacular" },
   { name: "street_address" },
-  { name: "country", type: "dropdown", data: countries },
+  { name: "country", type: "dropdown", data: countries, alwaysShow: true },
   { name: "state_region" },
   { name: "city" },
   { name: "gender", type: "dropdown", data: genderData },
