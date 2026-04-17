@@ -360,14 +360,24 @@ export const useData = () => {
   );
 
   const userDataArr = useMemo(() => {
-    return Object.keys(userData || {}).flatMap((key) => {
+    const presentKeys = new Set();
+    const rows = Object.keys(userData || {}).flatMap((key) => {
       const isMembershipKey = !!membershipInfo.find((i) => i.key === key);
       const isStatusKey = key === "status";
       if (isMembershipKey || isStatusKey) {
         return []; // Skip this item.
       }
+      presentKeys.add(key);
       return [{ key, value: userData[key] }];
     });
+
+    for (const { name, alwaysShow } of fieldsForEditing) {
+      if (alwaysShow && !presentKeys.has(name)) {
+        rows.push({ key: name, value: null });
+      }
+    }
+
+    return rows;
   }, [userData, spouseData]);
 
   const onConfirmCancellation = () => {
