@@ -371,8 +371,8 @@ export const useData = () => {
       return [{ key, value: userData[key] }];
     });
 
-    for (const { name, alwaysShow } of fieldsForEditing) {
-      if (alwaysShow && !presentKeys.has(name)) {
+    for (const { name } of fieldsForEditing) {
+      if (!presentKeys.has(name)) {
         rows.push({ key: name, value: null });
       }
     }
