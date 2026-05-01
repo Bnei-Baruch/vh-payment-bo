@@ -4,6 +4,8 @@ import {
   GET_MEMBERSHIP_REQUESTS_SUCCESS,
   GET_REQUESTOR_DETAILS_SUCCESS,
   GET_REQUESTOR_DETAILS_FAILED,
+  GET_USER_REQUEST_HISTORY_SUCCESS,
+  GET_USER_REQUEST_HISTORY_FAILED,
 } from "../constants";
 
 const INITIAL_STATE = {
@@ -12,6 +14,7 @@ const INITIAL_STATE = {
   membershipRequests: [],
   requestsCount: 0,
   requestorDetails: null,
+  userRequestHistory: [],
 };
 
 export default function reducer(state = INITIAL_STATE, actions) {
@@ -49,6 +52,19 @@ export default function reducer(state = INITIAL_STATE, actions) {
         ...state,
         requestorDetails: INITIAL_STATE.membershipRequests,
       };
+
+    case GET_USER_REQUEST_HISTORY_SUCCESS:
+      return {
+        ...state,
+        userRequestHistory: actions.payload,
+      };
+
+    case GET_USER_REQUEST_HISTORY_FAILED:
+      return {
+        ...state,
+        userRequestHistory: [],
+      };
+
     default:
       return state;
   }

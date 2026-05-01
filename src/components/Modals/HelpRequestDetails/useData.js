@@ -3,14 +3,19 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { updateRequest } from "../../../redux/actions/helpHaverActions";
-import { APPROVED, REQUESTED } from "../../../constants/statuses";
+import {
+  updateRequest,
+  fetchUserRequestHistory,
+} from "../../../redux/actions/helpHaverActions";
+import { REQUESTED } from "../../../constants/statuses";
 
-const TABS = [
-  { value: "request", label: "HelpHaver.request" },
-  { value: "personalInfo", label: "HelpHaver.personalInfo" },
-  { value: "notifications ", label: "HelpHaver.notifications" },
-];
+const VALID_HH_TYPES = new Set(["hh_hayal", "hh_gimlaj", "hh_other"]);
+
+function normalizeHHType(type) {
+  if (!type) return "";
+  const normalized = type.replace("hh-", "hh_");
+  return VALID_HH_TYPES.has(normalized) ? normalized : "";
+}
 
 const STATUSES = [
   { value: "requested", label: "HelpHaver.requested" },
@@ -20,11 +25,12 @@ const STATUSES = [
 
 export const useData = (id, useModal, page, rowsPerPage) => {
   const dispatch = useDispatch();
-  const [currentTab, setCurrentTab] = useState(TABS[0].value);
   const [rejectionNote, setRejectionNote] = useState("");
-  const [period, setPeriod] = useState(1);
+  const [period, setPeriod] = useState("");
   const [status, setStatus] = useState();
-  const { membershipGrants, membershipRequests, requestorDetails } =
+  const [hhType, setHhType] = useState("");
+  const [discountPct, setDiscountPct] = useState("");
+  const { membershipGrants, membershipRequests, requestorDetails, userRequestHistory } =
     useSelector((state) => state.helpHaverReducer);
 
   const requestInfo = useMemo(
@@ -37,28 +43,36 @@ export const useData = (id, useModal, page, rowsPerPage) => {
     [id, membershipGrants]
   );
 
-  const isDisabledBtn = useMemo(
-    () =>
-      status === "requested" ||
-      (status === requestInfo?.status?.toLowerCase() &&
-        grantInfo?.properties?.months === Number(period)),
-    [grantInfo, period, requestInfo, status]
-  );
+  const isStatusLocked = requestInfo?.status !== REQUESTED;
+
+  const isDisabledBtn = useMemo(() => {
+    if (isStatusLocked) return true;
+    if (status === "requested") return true;
+    if (status !== requestInfo?.status?.toLowerCase()) return false;
+    const p = grantInfo?.properties ?? {};
+    if (p.months !== Number(period) || p.type !== hhType) return false;
+    return p.discount_pct === Number(discountPct);
+  }, [grantInfo, period, hhType, discountPct, requestInfo, status, isStatusLocked]);
+
+  useEffect(() => {
+    if (requestInfo?.keycloak_id) {
+      dispatch(fetchUserRequestHistory(requestInfo.keycloak_id));
+    }
+  }, [requestInfo?.keycloak_id]);
 
   useEffect(() => {
     setStatus(requestInfo?.status?.toLowerCase());
-    setPeriod(
-      requestInfo?.status === APPROVED
-        ? grantInfo?.properties?.months
-        : requestInfo?.nb_month ?? 1
-    );
-  }, [requestInfo]);
-
-  useEffect(() => {
-    if (!useModal.isVisible) {
-      setTimeout(() => setCurrentTab(TABS[0].value), 500);
+    if (requestInfo?.status !== REQUESTED) {
+      setPeriod("");
+      setHhType("");
+      setDiscountPct("");
+    } else {
+      const p = requestInfo?.properties ?? {};
+      setPeriod(p.months ?? "");
+      setHhType(normalizeHHType(requestInfo?.type));
+      setDiscountPct(p.discount_pct ?? "");
     }
-  }, [useModal.isVisible]);
+  }, [requestInfo, grantInfo]);
 
   const onPressUpdate = () => {
     if (isDisabledBtn) return;
@@ -67,7 +81,8 @@ export const useData = (id, useModal, page, rowsPerPage) => {
 
     if (status === "approved") {
       payload.approved = true;
-      payload.months = Number(period);
+      payload.type = hhType;
+      payload.properties = { months: Number(period), discount_pct: Number(discountPct) };
     } else {
       payload.approved = false;
       payload.rejection_note = rejectionNote;
@@ -93,19 +108,22 @@ export const useData = (id, useModal, page, rowsPerPage) => {
   };
 
   return {
-    TABS,
     period,
     setPeriod,
+    hhType,
+    setHhType,
+    discountPct,
+    setDiscountPct,
     STATUSES,
     status,
     onChangeStatus,
-    currentTab,
     requestInfo,
-    setCurrentTab,
     onPressUpdate,
     rejectionNote,
     isDisabledBtn,
+    isStatusLocked,
     setRejectionNote,
     requestorDetails,
+    userRequestHistory,
   };
 };

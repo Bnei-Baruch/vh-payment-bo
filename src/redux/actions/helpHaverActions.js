@@ -6,6 +6,8 @@ import {
   GET_REQUESTOR_DETAILS_SUCCESS,
   GET_REQUESTOR_DETAILS_FAILED,
   SET_HELP_HAVER_LOADING,
+  GET_USER_REQUEST_HISTORY_SUCCESS,
+  GET_USER_REQUEST_HISTORY_FAILED,
 } from "../constants";
 
 export const fetchMembershipRequests = (limit, counter, type, query) => {
@@ -48,6 +50,22 @@ export const fetchRequestorDetails = (keycloak_id) => {
     } catch (e) {
       console.log("GET_REQUESTOR_DETAILS_FAILED", e);
       dispatch({ type: GET_REQUESTOR_DETAILS_FAILED });
+    }
+  };
+};
+
+export const fetchUserRequestHistory = (kcid) => {
+  return async (dispatch) => {
+    dispatch({ type: GET_USER_REQUEST_HISTORY_SUCCESS, payload: [] });
+    try {
+      const response = await ApiHelpHaver.getUserRequests(kcid);
+      dispatch({
+        type: GET_USER_REQUEST_HISTORY_SUCCESS,
+        payload: response?.data ?? [],
+      });
+    } catch (e) {
+      console.log("GET_USER_REQUEST_HISTORY_FAILED", e);
+      dispatch({ type: GET_USER_REQUEST_HISTORY_FAILED });
     }
   };
 };

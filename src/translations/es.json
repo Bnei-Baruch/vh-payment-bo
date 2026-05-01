@@ -536,6 +536,7 @@
       "version": "Versión de precios",
       "error": "Error al calcular el precio",
       "result": "Resultado",
+      "v1Details": "Detalles de precios V1",
       "v2Details": "Detalles de precios V2",
       "evaluatedAt": "Fecha de evaluación",
       "country": "País",

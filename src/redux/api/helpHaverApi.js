@@ -14,4 +14,10 @@ export const ApiHelpHaver = new (class Api {
       data,
     });
   }
+  getUserRequests(kcid) {
+    return axios({
+      url: `/profile/v1/requests?kcid=${kcid}&o_created_at=desc`,
+      method: "get",
+    });
+  }
 })();

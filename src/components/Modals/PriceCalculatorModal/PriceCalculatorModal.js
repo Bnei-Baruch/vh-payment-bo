@@ -22,7 +22,6 @@ const PRICING_VERSIONS = [
   { value: "", label: "Default — backend decides" },
   { value: "v1", label: "V1 — Static pricing" },
   { value: "v2", label: "V2 — Country-based tiered pricing" },
-  { value: "t1", label: "T1 — Tier 1 rollout (IL/NIS → v2, others → v1)" },
 ];
 
 const Row = ({ label, value }) => (
@@ -76,7 +75,7 @@ const DonationsProperties = ({ dp, accountID, finalPrice, t }) => (
   </Box>
 );
 
-const DiscountCard = ({ discount, v2, t }) => (
+const DiscountCard = ({ discount, evaluation, t }) => (
   <Box mt={1.5} p={2} bgcolor="#fff" borderRadius={4} border="1px solid #ddd">
     <Row label={t("PriceCalculator.discountType")} value={discount.type} />
     <Row label={t("PriceCalculator.discountAmountPct")} value={`${discount.amount_pct}%`} />
@@ -84,8 +83,8 @@ const DiscountCard = ({ discount, v2, t }) => (
     {discount.type === "donations" && discount.properties && (
       <DonationsProperties
         dp={discount.properties}
-        accountID={v2.account_id}
-        finalPrice={v2.final_price}
+        accountID={evaluation.account_id}
+        finalPrice={evaluation.final_price}
         t={t}
       />
     )}
@@ -119,6 +118,7 @@ export const PriceCalculatorModal = ({ useModal, keycloakId }) => {
     }
   };
 
+  const v1 = result?.v1_details;
   const v2 = result?.v2_details;
   const donationsDiscount = v2?.discounts?.find(d => d.type === "donations");
 
@@ -174,6 +174,40 @@ export const PriceCalculatorModal = ({ useModal, keycloakId }) => {
               </Box>
             )}
 
+            {v1 && (
+              <>
+                <Divider style={{ margin: "12px 0" }} />
+                <SectionTitle>{t("PriceCalculator.v1Details")}</SectionTitle>
+                <Row label={t("PriceCalculator.evaluatedAt")} value={new Date(v1.evaluated_at).toLocaleString()} />
+                <Row label={t("PriceCalculator.basePrice")} value={`${v1.base_price?.amount} ${v1.base_price?.currency?.toUpperCase()}`} />
+
+                {v1.discounts?.length > 0 && (
+                  <>
+                    <Divider style={{ margin: "8px 0" }} />
+                    <SectionTitle>{t("PriceCalculator.discounts")}</SectionTitle>
+                    {v1.discounts.map((d, i) => (
+                      <DiscountCard key={i} discount={d} evaluation={v1} t={t} />
+                    ))}
+                  </>
+                )}
+
+                {v1.explain?.length > 0 && (
+                  <>
+                    <Divider style={{ margin: "12px 0" }} />
+                    <SectionTitle>{t("PriceCalculator.explain")}</SectionTitle>
+                    <Box
+                      p={1.5}
+                      bgcolor="#e8e8e8"
+                      borderRadius={4}
+                      style={{ fontFamily: "monospace", fontSize: 11, wordBreak: "break-all", whiteSpace: "pre-wrap" }}
+                    >
+                      {v1.explain.map((line, i) => <div key={i}>{line}</div>)}
+                    </Box>
+                  </>
+                )}
+              </>
+            )}
+
             {v2 && (
               <>
                 <Divider style={{ margin: "12px 0" }} />
@@ -188,7 +222,7 @@ export const PriceCalculatorModal = ({ useModal, keycloakId }) => {
                     <Divider style={{ margin: "8px 0" }} />
                     <SectionTitle>{t("PriceCalculator.discounts")}</SectionTitle>
                     {v2.discounts.map((d, i) => (
-                      <DiscountCard key={i} discount={d} v2={v2} t={t} />
+                      <DiscountCard key={i} discount={d} evaluation={v2} t={t} />
                     ))}
                   </>
                 )}
