@@ -15,6 +15,9 @@ const CustomerSearch = async(() => import("../pages/Customers/Search/Search"));
 const CustomerSpecials = async(() =>
   import("../pages/Customers/Specials/Specials")
 );
+const CustomerManualDiscount = async(() =>
+  import("../pages/Customers/ManualDiscount/ManualDiscount")
+);
 const CustomerDetails = async(() =>
   import("../pages/Customers/UserDetails/UserDetails")
 );
@@ -109,6 +112,17 @@ const sideRoutes = [
           { name: "Specials", path: DASHBOARD_ROUTES.CustomerSpecials },
         ],
         component: CustomerSpecials,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerManualDiscount,
+        id: "ManualDiscount",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "ManualDiscount", path: DASHBOARD_ROUTES.CustomerManualDiscount },
+        ],
+        component: CustomerManualDiscount,
       },
       // {
       //   path: DASHBOARD_ROUTES.CustomerCreate,
@@ -215,6 +229,17 @@ const dashboardRoutes = [
           { name: "Specials", path: DASHBOARD_ROUTES.CustomerSpecials },
         ],
         component: CustomerSpecials,
+      },
+      {
+        path: DASHBOARD_ROUTES.CustomerManualDiscount,
+        id: "ManualDiscount",
+        icon: <PeopleIcon />,
+        enableHeader: true,
+        breadcrumbs: [
+          { name: "Customers", path: DASHBOARD_ROUTES.Customers },
+          { name: "ManualDiscount", path: DASHBOARD_ROUTES.CustomerManualDiscount },
+        ],
+        component: CustomerManualDiscount,
       },
       {
         path: DASHBOARD_ROUTES.CustomerDetails,

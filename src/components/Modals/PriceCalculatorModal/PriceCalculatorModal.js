@@ -77,10 +77,16 @@ const DonationsProperties = ({ dp, accountID, finalPrice, t }) => (
 );
 
 const DiscountCard = ({ discount, v2, t }) => (
-  <Box mt={1.5} p={2} bgcolor="#fff" borderRadius={4} border="1px solid #ddd">
+  <Box mt={1.5} p={2} bgcolor="#fff" borderRadius={4} border={discount.error ? "1px solid #f44336" : "1px solid #ddd"}>
     <Row label={t("PriceCalculator.discountType")} value={discount.type} />
     <Row label={t("PriceCalculator.discountAmountPct")} value={`${discount.amount_pct}%`} />
     <Row label={t("PriceCalculator.discountEligible")} value={discount.eligible ? t("PriceCalculator.yes") : t("PriceCalculator.no")} />
+    {discount.error && (
+      <Row
+        label={<span style={{ color: "#c62828", fontWeight: 600 }}>{t("PriceCalculator.discountError")}</span>}
+        value={<span style={{ color: "#c62828" }}>{t("PriceCalculator.yes")}</span>}
+      />
+    )}
     {discount.type === "donations" && discount.properties && (
       <DonationsProperties
         dp={discount.properties}
@@ -120,7 +126,7 @@ export const PriceCalculatorModal = ({ useModal, keycloakId }) => {
   };
 
   const v2 = result?.v2_details;
-  const donationsDiscount = v2?.discounts?.find(d => d.type === "donations");
+  const hasDiscountErrors = v2?.discounts?.some(d => d.error);
 
   return (
     <Dialog open={useModal.isVisible} onClose={handleClose} maxWidth="sm" fullWidth>
@@ -159,20 +165,19 @@ export const PriceCalculatorModal = ({ useModal, keycloakId }) => {
         {result && (
           <Box p={3} bgcolor="#f5f5f5" borderRadius={4}>
             <SectionTitle>{t("PriceCalculator.result")}</SectionTitle>
-            <Row label={t("PriceCalculator.amount")} value={result.amount} />
-            <Row label={t("PriceCalculator.currency")} value={result.currency?.toUpperCase()} />
-            <Row label={t("PriceCalculator.version")} value={result.pricing_version} />
-
-            {donationsDiscount?.properties?.donations_fetch_error && (
-              <Box mt={1} p={1.5} bgcolor="#ffebee" borderRadius={4} border="1px solid #f44336">
+            {hasDiscountErrors ? (
+              <Box p={1.5} bgcolor="#ffebee" borderRadius={4} border="1px solid #f44336" mb={1}>
                 <Typography variant="body2" style={{ color: "#c62828", fontWeight: 600 }}>
-                  {t("PriceCalculator.donationsFetchError")}
-                </Typography>
-                <Typography variant="body2" style={{ color: "#c62828", fontFamily: "monospace", fontSize: 11, wordBreak: "break-all" }}>
-                  {donationsDiscount.properties.donations_fetch_error}
+                  {t("PriceCalculator.priceUnreliable")}
                 </Typography>
               </Box>
+            ) : (
+              <>
+                <Row label={t("PriceCalculator.amount")} value={result.amount} />
+                <Row label={t("PriceCalculator.currency")} value={result.currency?.toUpperCase()} />
+              </>
             )}
+            <Row label={t("PriceCalculator.version")} value={result.pricing_version} />
 
             {v2 && (
               <>
