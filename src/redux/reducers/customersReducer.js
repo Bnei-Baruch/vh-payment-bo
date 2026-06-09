@@ -1,6 +1,8 @@
 import {
   FETCH_ACTIVITY_FAILED,
   FETCH_ACTIVITY_SUCCESS,
+  FETCH_MANUAL_DISCOUNTS_FAILED,
+  FETCH_MANUAL_DISCOUNTS_SUCCESS,
   FETCH_SPECIALS_FAILED,
   FETCH_SPECIALS_SUCCESS,
   GET_CURRENT_PAYMENT_FAILED,
@@ -33,6 +35,9 @@ const INITIAL_STATE = {
   specials: {
     list: [],
     totalCount: 0,
+  },
+  manualDiscounts: {
+    list: [],
   },
 };
 
@@ -123,6 +128,18 @@ export default function reducer(state = INITIAL_STATE, actions) {
       return {
         ...state,
         specials: INITIAL_STATE.specials,
+      };
+
+    case FETCH_MANUAL_DISCOUNTS_SUCCESS:
+      return {
+        ...state,
+        manualDiscounts: actions.payload,
+      };
+
+    case FETCH_MANUAL_DISCOUNTS_FAILED:
+      return {
+        ...state,
+        manualDiscounts: INITIAL_STATE.manualDiscounts,
       };
 
     default:

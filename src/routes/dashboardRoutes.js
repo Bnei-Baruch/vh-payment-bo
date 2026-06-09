@@ -10,6 +10,7 @@ export const DASHBOARD_ROUTES = {
   CustomerActivity: `${PAYMENTS_ROOT}/customers/activity`,
   CustomerSearch: `${PAYMENTS_ROOT}/customers/search`,
   CustomerSpecials: `${PAYMENTS_ROOT}/customers/specials`,
+  CustomerManualDiscount: `${PAYMENTS_ROOT}/customers/manual-discount`,
   CustomerDetails: `${PAYMENTS_ROOT}/customers/search/userdetails`,
   CustomerCreate: `${PAYMENTS_ROOT}/customers/create`,
   CustomerCreateAccount: `${PAYMENTS_ROOT}/customers/create/account`,

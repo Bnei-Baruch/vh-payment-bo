@@ -4,6 +4,8 @@ import { ApiCustomers } from "../api/customersApi";
 import {
   FETCH_ACTIVITY_FAILED,
   FETCH_ACTIVITY_SUCCESS,
+  FETCH_MANUAL_DISCOUNTS_FAILED,
+  FETCH_MANUAL_DISCOUNTS_SUCCESS,
   FETCH_SPECIALS_FAILED,
   FETCH_SPECIALS_SUCCESS,
   GET_CURRENT_PAYMENT_FAILED,
@@ -339,6 +341,50 @@ export const addComment = (page_id, page_keycloak_id, content, callback) => {
       callback();
     } catch (e) {
       console.log("Failed to create comment", e);
+    }
+  };
+};
+
+export const fetchManualDiscounts = (search) => {
+  return async (dispatch) => {
+    dispatch({ type: SET_CUSTOMERS_LOADING, payload: true });
+    try {
+      const result = await ApiCustomers.getManualDiscounts(search);
+      dispatch({
+        type: FETCH_MANUAL_DISCOUNTS_SUCCESS,
+        payload: { list: result?.data ?? [] },
+      });
+    } catch (e) {
+      console.error("FETCH_MANUAL_DISCOUNTS_FAILED", e);
+      dispatch({ type: FETCH_MANUAL_DISCOUNTS_FAILED });
+    } finally {
+      dispatch({ type: SET_CUSTOMERS_LOADING, payload: false });
+    }
+  };
+};
+
+export const createOrUpdateManualDiscountEntry = (payload, onSuccess, onError) => {
+  return async (dispatch) => {
+    try {
+      await ApiCustomers.createOrUpdateManualDiscount(payload);
+      dispatch(fetchManualDiscounts());
+      onSuccess();
+    } catch (e) {
+      console.error("Create/update manual discount failed", e);
+      if (onError) onError(e);
+    }
+  };
+};
+
+export const cancelManualDiscountEntry = (keycloakId, callback, onError) => {
+  return async (dispatch) => {
+    try {
+      await ApiCustomers.cancelManualDiscount(keycloakId);
+      dispatch(fetchManualDiscounts());
+      callback();
+    } catch (e) {
+      console.error("Cancel manual discount failed", e);
+      if (onError) onError(e);
     }
   };
 };

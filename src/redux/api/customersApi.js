@@ -142,6 +142,26 @@ export const ApiCustomers = new (class Api {
       method: "delete",
     });
   }
+  getManualDiscounts(search) {
+    const params = search ? `?search=${encodeURIComponent(search)}` : "";
+    return axios({
+      url: `/pay/v2/manual_discount/${params}`,
+      method: "get",
+    });
+  }
+  createOrUpdateManualDiscount(data) {
+    return axios({
+      url: `/pay/v2/manual_discount/`,
+      method: "post",
+      data,
+    });
+  }
+  cancelManualDiscount(keycloakId) {
+    return axios({
+      url: `/pay/v2/manual_discount/${keycloakId}`,
+      method: "delete",
+    });
+  }
   getMonthlyPrice(keycloakId, pricingVersion) {
     const params = pricingVersion ? `?pricing_version=${pricingVersion}` : "";
     return axios({
