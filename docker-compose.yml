@@ -1,15 +1,15 @@
-version: '2.2'
 services:
   vh-payment-bo:
-    container_name: 'vh-payment-bo'
+    container_name: vh-payment-bo
     image: "${IMAGE_NAME}"
+    restart: unless-stopped
     cpus: '0.1'
     mem_limit: 50M
     ports:
       - 8087:80
     volumes:
-      - /opt/$CI_PROJECT_PATH/public/config/:/usr/share/nginx/html/config/
+      - /opt/vh/vh-payment-bo/public/config/:/usr/share/nginx/html/config/
 networks:
   default:
-      external:
-        name: vh
+    name: vh
+    external: true
