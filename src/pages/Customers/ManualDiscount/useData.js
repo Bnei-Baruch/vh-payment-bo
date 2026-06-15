@@ -9,7 +9,6 @@ import CancelIcon from "@material-ui/icons/Cancel";
 
 import { defaultTableOptions } from "../../../constants/table";
 import { useModal } from "../../../hooks";
-import { Enter } from "../../../constants/formData";
 import {
   cancelManualDiscountEntry,
   fetchManualDiscounts,
@@ -21,7 +20,6 @@ export const useData = () => {
   const confirmationModal = useModal();
   const addEntryModal = useModal();
   const editEntryModal = useModal();
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedKeycloakId, setSelectedKeycloakId] = useState(null);
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [isCancelError, setIsCancelError] = useState(false);
@@ -140,26 +138,19 @@ export const useData = () => {
     }
   };
 
-  const onPressSearch = () => {
-    dispatch(fetchManualDiscounts(searchQuery || undefined));
-  };
-
-  const onKeyDown = (e) => {
-    if (e.key === Enter) onPressSearch();
+  const onSearch = (keycloakId) => {
+    dispatch(fetchManualDiscounts(keycloakId));
   };
 
   return {
-    onKeyDown,
+    onSearch,
     tableData: manualDiscounts.list,
-    searchQuery,
     tableColumns,
     tableOptions,
     addEntryModal,
     editEntryModal,
     selectedEntry,
-    onPressSearch,
     onConfirmCancel,
-    setSearchQuery,
     confirmationModal,
     isCancelError,
     setIsCancelError,

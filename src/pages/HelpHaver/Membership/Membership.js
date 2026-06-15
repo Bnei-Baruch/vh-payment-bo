@@ -2,19 +2,11 @@ import React from "react";
 
 import MUIDataTable from "mui-datatables";
 import { useTranslation } from "react-i18next";
-import {
-  Breadcrumbs,
-  Link,
-  Box,
-  Button,
-  TextField,
-  Select,
-  MenuItem,
-} from "@material-ui/core";
+import { Breadcrumbs, Link, Box } from "@material-ui/core";
 
 import "./styles.css";
 import { useData } from "./useData";
-import { HelpRequestDetails } from "../../../components";
+import { HelpRequestDetails, UserSearchField } from "../../../components";
 import { MEMBERSHIP_BREADCRUMBS } from "../../../routes/consts";
 
 export default function Membership() {
@@ -22,16 +14,11 @@ export default function Membership() {
   const {
     page,
     loading,
-    onKeyDown,
+    onSearch,
     requestId,
-    queryType,
     rowsPerPage,
-    searchQuery,
     tableColumns,
     tableOptions,
-    setQueryType,
-    onPressSearch,
-    setSearchQuery,
     membershipRequests,
     onBreadcrumbsClick,
     requestDetailsModal,
@@ -57,30 +44,7 @@ export default function Membership() {
       </div>
 
       <Box mb={8} display="flex">
-        <TextField
-          label={t("Search.name")}
-          variant="outlined"
-          className="search-field"
-          onKeyDown={onKeyDown}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <Select
-          value={queryType}
-          className="query-type-selector"
-          onChange={(e) => setQueryType(e.target.value)}
-        >
-          <MenuItem value="email">{t("Search.mail")}</MenuItem>
-          <MenuItem value="name">{t("Search.nameLabel")}</MenuItem>
-        </Select>
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ borderRadius: "0 4px 4px 0" }}
-          onClick={onPressSearch}
-        >
-          {t("Search.name")}
-        </Button>
+        <UserSearchField onSearch={onSearch} />
       </Box>
 
       <MUIDataTable

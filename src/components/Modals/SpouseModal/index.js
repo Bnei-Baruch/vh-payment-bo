@@ -5,18 +5,16 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
 } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
 import { useTranslation } from "react-i18next";
+
+import { ProfileAutocomplete } from "../../ProfileAutocomplete";
 
 export const SpouseModal = ({
   useModal,
   onSetSpouse,
-  onSearchSpouse,
-  spouseSearchResult,
   setSelectedSpouse,
-  selectedSpouse, // Added selectedSpouse to props
+  selectedSpouse,
 }) => {
   const { t } = useTranslation();
 
@@ -24,28 +22,11 @@ export const SpouseModal = ({
     <Dialog open={useModal.isVisible} onClose={useModal.hideModal}>
       <DialogTitle>{t("UserDetails.setSpouse")}</DialogTitle>
       <DialogContent>
-        <Autocomplete
+        <ProfileAutocomplete
           value={selectedSpouse}
-          getOptionSelected={(option, value) => option.keycloak_id === value.keycloak_id}
-          options={spouseSearchResult}
-          getOptionLabel={(option) =>
-            `${option.first_name_vernacular} ${option.last_name_vernacular} (${option.primary_email})`
-          }
-          filterOptions={(x) => x}
+          label={t("UserDetails.searchSpouse")}
           style={{ width: 300 }}
-          onInputChange={(event, newInputValue) => {
-            onSearchSpouse(newInputValue);
-          }}
-          onChange={(event, newValue) => {
-            setSelectedSpouse(newValue);
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label={t("UserDetails.searchSpouse")}
-              variant="outlined"
-            />
-          )}
+          onChange={(event, newValue) => setSelectedSpouse(newValue)}
         />
       </DialogContent>
       <DialogActions>

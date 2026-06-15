@@ -6,3 +6,6 @@ export * from "./Modals/AddSpecialEntry";
 export * from "./Modals/SpouseModal";
 export * from "./Modals/PriceCalculatorModal";
 export * from "./Modals/ManualDiscountModal";
+export * from "./Modals/HHRequestDetails";
+export * from "./ProfileAutocomplete";
+export * from "./UserSearchField";

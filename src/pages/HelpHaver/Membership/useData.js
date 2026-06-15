@@ -16,7 +16,6 @@ import {
   fetchMembershipRequests,
   fetchRequestorDetails,
 } from "../../../redux/actions/helpHaverActions";
-import { Enter } from "../../../constants/formData";
 
 export const useData = () => {
   const { t } = useTranslation();
@@ -25,8 +24,7 @@ export const useData = () => {
   const requestDetailsModal = useModal();
   const [page, setPage] = useState(0);
   const [requestId, setRequestId] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [queryType, setQueryType] = useState("email");
+  const [searchKcid, setSearchKcid] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
   const { loading, membershipRequests, requestsCount } = useSelector(
     (state) => state.helpHaverReducer
@@ -56,8 +54,8 @@ export const useData = () => {
             fetchMembershipRequests(
               rowsPerPage,
               tableState.page * rowsPerPage,
-              queryType,
-              searchQuery
+              "kcid",
+              searchKcid
             )
           );
           break;
@@ -68,8 +66,8 @@ export const useData = () => {
             fetchMembershipRequests(
               tableState.rowsPerPage,
               tableState.page * tableState.rowsPerPage,
-              queryType,
-              searchQuery
+              "kcid",
+              searchKcid
             )
           );
           break;
@@ -130,38 +128,23 @@ export const useData = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchMembershipRequests(rowsPerPage, 0, queryType, ""));
+    dispatch(fetchMembershipRequests(rowsPerPage, 0, "kcid", ""));
   }, [dispatch]);
 
-  const onPressSearch = () => {
-    dispatch(fetchMembershipRequests(rowsPerPage, 0, queryType, searchQuery));
+  const onSearch = (keycloakId) => {
+    const kcid = keycloakId ?? "";
+    setSearchKcid(kcid);
+    dispatch(fetchMembershipRequests(rowsPerPage, 0, "kcid", kcid));
   };
-
-  const onKeyDown = (e) => {
-    if (e.key === Enter) {
-      onPressSearch();
-    }
-  };
-
-  useEffect(() => {
-    if (searchQuery.length > 0) {
-      onPressSearch();
-    }
-  }, [queryType]);
 
   return {
     page,
     loading,
-    onKeyDown,
+    onSearch,
     requestId,
-    queryType,
-    searchQuery,
     rowsPerPage,
     tableColumns,
     tableOptions,
-    setQueryType,
-    onPressSearch,
-    setSearchQuery,
     membershipRequests,
     onBreadcrumbsClick,
     requestDetailsModal,
