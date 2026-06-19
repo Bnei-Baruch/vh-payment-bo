@@ -40,6 +40,7 @@ const Events = async(() => import("../pages/HelpHaver/Events/Events"));
 const Membership = async(() =>
   import("../pages/HelpHaver/Membership/Membership")
 );
+const HHGrants = async(() => import("../pages/HelpHaver/Grants/Grants"));
 
 const sideRoutes = [
   // {
@@ -146,8 +147,13 @@ const sideRoutes = [
     children: [
       {
         path: DASHBOARD_ROUTES.HelpHaverMembership,
-        id: "Membership",
+        id: "HHMembershipV1",
         component: Membership,
+      },
+      {
+        path: DASHBOARD_ROUTES.HelpHaverMembershipV2,
+        id: "HHGrants",
+        component: HHGrants,
       },
       // {
       //   path: DASHBOARD_ROUTES.HelpHaverEvents,
@@ -346,8 +352,13 @@ const dashboardRoutes = [
     children: [
       {
         path: DASHBOARD_ROUTES.HelpHaverMembership,
-        id: "Membership",
+        id: "HHMembershipV1",
         component: Membership,
+      },
+      {
+        path: DASHBOARD_ROUTES.HelpHaverMembershipV2,
+        id: "HHGrants",
+        component: HHGrants,
       },
       {
         path: DASHBOARD_ROUTES.HelpHaverEvents,

@@ -94,9 +94,7 @@ export default function UserDetails() {
     priceCalculatorModal,
     // Spouse functionality
     spouseModal,
-    spouseSearchResult,
     selectedSpouse,
-    onSearchSpouse,
     setSelectedSpouse,
     onPressSetSpouse,
     onPressRemoveSpouse,
@@ -790,8 +788,6 @@ export default function UserDetails() {
       <SpouseModal
         useModal={spouseModal}
         onSetSpouse={onSetSpouse}
-        onSearchSpouse={onSearchSpouse}
-        spouseSearchResult={spouseSearchResult}
         setSelectedSpouse={setSelectedSpouse}
         selectedSpouse={selectedSpouse}
       />

@@ -4,6 +4,8 @@ import {
   GET_MEMBERSHIP_REQUESTS_SUCCESS,
   GET_REQUESTOR_DETAILS_SUCCESS,
   GET_REQUESTOR_DETAILS_FAILED,
+  FETCH_HH_REQUESTS_SUCCESS,
+  FETCH_HH_REQUESTS_FAILED,
 } from "../constants";
 
 const INITIAL_STATE = {
@@ -12,6 +14,9 @@ const INITIAL_STATE = {
   membershipRequests: [],
   requestsCount: 0,
   requestorDetails: null,
+  hhRequests: {
+    list: [],
+  },
 };
 
 export default function reducer(state = INITIAL_STATE, actions) {
@@ -48,6 +53,18 @@ export default function reducer(state = INITIAL_STATE, actions) {
       return {
         ...state,
         requestorDetails: INITIAL_STATE.membershipRequests,
+      };
+
+    case FETCH_HH_REQUESTS_SUCCESS:
+      return {
+        ...state,
+        hhRequests: actions.payload,
+      };
+
+    case FETCH_HH_REQUESTS_FAILED:
+      return {
+        ...state,
+        hhRequests: INITIAL_STATE.hhRequests,
       };
     default:
       return state;

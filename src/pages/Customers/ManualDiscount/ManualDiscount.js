@@ -3,26 +3,23 @@ import React from "react";
 import MUIDataTable from "mui-datatables";
 import AddIcon from "@material-ui/icons/Add";
 import { useTranslation } from "react-i18next";
-import { Box, Button, Snackbar, TextField } from "@material-ui/core";
+import { Box, Button, Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 
 import { useData } from "./useData";
-import { Confirmation, ManualDiscountModal } from "../../../components";
+import { Confirmation, ManualDiscountModal, UserSearchField } from "../../../components";
 
 export default function ManualDiscount() {
   const { t } = useTranslation();
   const {
-    onKeyDown,
+    onSearch,
     tableData,
-    searchQuery,
     tableColumns,
     tableOptions,
     addEntryModal,
     editEntryModal,
     selectedEntry,
-    onPressSearch,
     onConfirmCancel,
-    setSearchQuery,
     confirmationModal,
     isCancelError,
     setIsCancelError,
@@ -31,24 +28,7 @@ export default function ManualDiscount() {
   return (
     <Box px={5} py={7} bgcolor="var(--color-white)">
       <Box mb={8} display="flex" justifyContent="space-between">
-        <Box display="flex">
-          <TextField
-            label={t("ManualDiscount.search")}
-            variant="outlined"
-            style={{ minWidth: 320 }}
-            onKeyDown={onKeyDown}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ borderRadius: "0 4px 4px 0" }}
-            onClick={onPressSearch}
-          >
-            {t("ManualDiscount.search")}
-          </Button>
-        </Box>
+        <UserSearchField onSearch={onSearch} />
 
         <Button
           variant="contained"

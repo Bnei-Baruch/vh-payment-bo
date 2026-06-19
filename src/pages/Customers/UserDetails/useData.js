@@ -3,7 +3,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import moment from "moment";
-import debounce from "lodash/debounce";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { CircularProgress } from "@material-ui/core";
@@ -64,7 +63,6 @@ export const useData = () => {
     visible: false,
     message: "",
   });
-  const [spouseSearchResult, setSpouseSearchResult] = useState([]);
   const [selectedSpouse, setSelectedSpouse] = useState(null);
   const [spouseData, setSpouseData] = useState(null);
 
@@ -223,23 +221,6 @@ export const useData = () => {
   }, [userData?.spouse_keycloak_id]);
 
 
-  const onSearchSpouse = useMemo(() => 
-    debounce(async (term) => {
-      if (term.length >= 2) {
-        try {
-        const results = await ApiCustomers.search({ email: term, name: term, user_id: term, keycloak_id: term }, "or")
-        setSpouseSearchResult(results || []);
-        } catch (error) { 
-          console.error("Failed to search spouse", error);
-          setSpouseSearchResult([]);
-        }
-      } else {
-        setSpouseSearchResult([]);
-      }
-    }, 300),
-    []
-  );
-  
   const onSetSpouse = async (spouse, forceUpdate = false) => {
     if (userData?.keycloak_id === spouse?.keycloak_id) {
       setAlert({
@@ -263,7 +244,6 @@ export const useData = () => {
       refreshUserInfo();
       spouseModal.hideModal();
       setSelectedSpouse(null);
-      setSpouseSearchResult([]);
     } catch (error) {
       if (error?.response?.status === 409 && !forceUpdate) {
         setSelectedSpouse(spouse); 
@@ -708,9 +688,7 @@ export const useData = () => {
     onAddNoteClick: handleNoteSubmit(onAddNoteClick),
     // Spouse functionality
     spouseModal,
-    spouseSearchResult,
     selectedSpouse,
-    onSearchSpouse,
     setSelectedSpouse,
     onPressSetSpouse,
     onPressRemoveSpouse,
