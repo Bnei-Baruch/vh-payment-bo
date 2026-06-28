@@ -10473,6 +10473,11 @@ ticky@1.0.1:
   resolved "https://registry.npmjs.org/ticky/-/ticky-1.0.1.tgz"
   integrity sha1-t8+nHnaPHJAAxJe5FRswlHxQ5G0=
 
+timezone-mock@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/timezone-mock/-/timezone-mock-1.4.3.tgz#3d04acff3be60d00240dfb0c3480f30415d80032"
+  integrity sha512-sO5xj1j5bXgKPgUzbM/t0l2O3hZ2F22cczYRo7Kj2Pm8wfbMMw3ohyAunBBP0Vltkd4X3tF0rFu0WAlGvAClGg==
+
 tiny-case@^1.0.3:
   version "1.0.3"
   resolved "https://registry.npmjs.org/tiny-case/-/tiny-case-1.0.3.tgz"

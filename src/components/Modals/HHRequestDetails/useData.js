@@ -19,6 +19,13 @@ export const isGrantActive = (grant) =>
   moment(grant.start_date).isBefore(moment()) &&
   moment(grant.end_date).isAfter(moment());
 
+// Granted duration in whole months. The grant has no months column — it's derived
+// from the date window, which is lossless (end_date = start_date + N months) when
+// compared in UTC. Bare moment() would parse in local time, and a DST offset change
+// across the window can shift the day anchor and truncate the last month.
+export const grantMonths = (grant) =>
+  grant ? moment.utc(grant.end_date).diff(moment.utc(grant.start_date), "months") : null;
+
 export const useData = (useModal, request) => {
   const dispatch = useDispatch();
   const [status, setStatus] = useState("");
