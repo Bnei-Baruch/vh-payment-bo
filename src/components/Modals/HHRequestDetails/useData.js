@@ -57,7 +57,8 @@ export const useData = (useModal, request) => {
   const isDisabledBtn =
     isConcluded ||
     !status ||
-    (status === "approved" && (!finalType || !finalPct || !finalMonths || !finalStartDate));
+    (status === "approved" &&
+      (!finalType || !finalPct || !finalMonths || !finalStartDate || parseInt(finalPct, 10) >= 100));
 
   const onPressUpdate = () => {
     if (isDisabledBtn || loading) return;

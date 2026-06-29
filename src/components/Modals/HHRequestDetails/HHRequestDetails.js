@@ -153,7 +153,7 @@ export const HHRequestDetails = ({ useModal, request }) => {
                   size="small"
                   type="number"
                   fullWidth
-                  inputProps={{ min: 1, max: 100 }}
+                  inputProps={{ min: 1, max: 99 }}
                   disabled={isConcluded || status !== "approved"}
                   value={finalPct}
                   onChange={(e) => setFinalPct(e.target.value)}

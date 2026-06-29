@@ -85,13 +85,13 @@ export const ManualDiscountModal = ({ useModal, editEntry }) => {
             <Controller
               name="discount_pct"
               control={control}
-              rules={{ required: true, validate: v => (parseFloat(v) > 0 && parseFloat(v) <= 100) || "Must be between 0 (exclusive) and 100 (inclusive)" }}
+              rules={{ required: true, validate: v => (parseFloat(v) > 0 && parseFloat(v) < 100) || "Must be between 0 and 100 (both exclusive)" }}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
                   label={t("ManualDiscount.discountPct")}
                   variant="outlined"
                   type="number"
-                  inputProps={{ min: 0.01, max: 100, step: 0.01 }}
+                  inputProps={{ min: 0.01, max: 99.99, step: 0.01 }}
                   value={value}
                   onChange={onChange}
                   error={!!error}
@@ -106,13 +106,13 @@ export const ManualDiscountModal = ({ useModal, editEntry }) => {
               <Controller
                 name="fixed_price"
                 control={control}
-                rules={{ required: true, min: 0 }}
+                rules={{ required: true, validate: v => parseFloat(v) > 0 || "Must be greater than 0" }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     label={t("ManualDiscount.fixedPrice")}
                     variant="outlined"
                     type="number"
-                    inputProps={{ min: 0, step: 0.01 }}
+                    inputProps={{ min: 0.01, step: 0.01 }}
                     value={value}
                     onChange={onChange}
                     error={!!error}
