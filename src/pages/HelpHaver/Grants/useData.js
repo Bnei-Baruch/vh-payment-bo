@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { defaultTableOptions } from "../../../constants/table";
 import { useModal } from "../../../hooks";
-import { isGrantActive } from "../../../components/Modals/HHRequestDetails/useData";
+import { isGrantActive, grantMonths } from "../../../components/Modals/HHRequestDetails/useData";
 import { statusColor } from "../../../components/Modals/HHRequestDetails/HHRequestDetails";
 import { fetchHHRequests } from "../../../redux/actions/helpHaverActions";
 
@@ -85,7 +85,7 @@ export const useData = () => {
           grant ? (
             <Chip
               size="small"
-              label={`${grant.discount_pct}% ${
+              label={`${grant.discount_pct}% / ${grantMonths(grant)} ${t("HHGrants.months").toLowerCase()} · ${
                 isGrantActive(grant) ? t("HHGrants.grantActive") : t("HHGrants.grantEnded")
               }`}
               color={isGrantActive(grant) ? "primary" : "default"}

@@ -19,7 +19,7 @@ import {
 } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 
-import { useData, isGrantActive, HH_GRANT_TYPES, HH_MONTHS } from "./useData";
+import { useData, isGrantActive, grantMonths, HH_GRANT_TYPES, HH_MONTHS } from "./useData";
 
 export const statusColor = {
   REQUESTED: "var(--color-blue)",
@@ -221,6 +221,9 @@ export const HHRequestDetails = ({ useModal, request }) => {
                       label={`${t("HHGrants.startDate")} - ${t("HHGrants.endDate")}`}
                       value={`${moment(grant.start_date).format("DD-MM-YYYY")} - ${moment(grant.end_date).format("DD-MM-YYYY")}`}
                     />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <InfoField label={t("HHGrants.months")} value={grantMonths(grant)} />
                   </Grid>
                 </Grid>
                 {isGrantActive(grant) && (
