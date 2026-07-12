@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useModal } from "../../../hooks";
+import { useModal, useProfileBriefs } from "../../../hooks";
 import {
   defaultTableOptions,
   rowsPerPageOptions,
@@ -29,9 +29,12 @@ export const useData = () => {
   const { loading, membershipRequests, requestsCount } = useSelector(
     (state) => state.helpHaverReducer
   );
+  const briefs = useProfileBriefs((membershipRequests ?? []).map((r) => r.keycloak_id));
 
   const tableOptions = {
     ...defaultTableOptions,
+    onRowClick: (rowData, { dataIndex }) => onPressDetails(membershipRequests[dataIndex]?.id),
+    setRowProps: () => ({ style: { cursor: "pointer" } }),
     rowsPerPage,
     serverSide: true,
     pagination: true,
@@ -101,16 +104,16 @@ export const useData = () => {
       label: t("HelpHaver.userName"),
     },
     {
-      name: "id",
-      label: t("HelpHaver.action"),
-      options: {
-        customBodyRender: (id) => (
-          <div className="details-btn" onClick={() => onPressDetails(id)}>
-            {t("HelpHaver.details")}
-          </div>
-        ),
-      },
+      name: "keycloak_id",
+      label: t("AdminTable.ten"),
+      options: { sort: false, customBodyRender: (kcid) => briefs[kcid]?.ten || "—" },
     },
+    {
+      name: "keycloak_id",
+      label: t("AdminTable.country"),
+      options: { sort: false, customBodyRender: (kcid) => briefs[kcid]?.country || "—" },
+    },
+    { name: "keycloak_id", label: t("HHGrants.keycloakId") },
   ];
 
   const onPressDetails = (id) => {
@@ -137,10 +140,22 @@ export const useData = () => {
     dispatch(fetchMembershipRequests(rowsPerPage, 0, "kcid", kcid));
   };
 
+  const tsvHeaders = [
+    t("HelpHaver.requestDate"), t("HelpHaver.requestStatus"), t("HelpHaver.userName"),
+    t("AdminTable.ten"), t("AdminTable.country"), t("HHGrants.keycloakId"),
+  ];
+  const tsvRows = () =>
+    (membershipRequests ?? []).map((r) => [
+      moment(r.created_at).format("DD-MM-YYYY"), r.status, r.name,
+      briefs[r.keycloak_id]?.ten, briefs[r.keycloak_id]?.country, r.keycloak_id,
+    ]);
+
   return {
     page,
     loading,
     onSearch,
+    tsvHeaders,
+    tsvRows,
     requestId,
     rowsPerPage,
     tableColumns,

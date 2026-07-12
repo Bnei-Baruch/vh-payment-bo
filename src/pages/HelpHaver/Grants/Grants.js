@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Box, MenuItem, Select } from "@material-ui/core";
 
 import { useData } from "./useData";
-import { HHRequestDetails, UserSearchField } from "../../../components";
+import { CopyTsvButton, HHRequestDetails, UserSearchField } from "../../../components";
 
 const STATUS_FILTERS = ["", "REQUESTED", "APPROVED", "DENIED"];
 
@@ -15,6 +15,8 @@ export default function Grants() {
     onSearch,
     statusFilter,
     onChangeStatusFilter,
+    tsvHeaders,
+    tsvRows,
     tableData,
     tableColumns,
     tableOptions,
@@ -38,6 +40,9 @@ export default function Grants() {
             </MenuItem>
           ))}
         </Select>
+        <Box ml="auto">
+          <CopyTsvButton headers={tsvHeaders} getRows={tsvRows} />
+        </Box>
       </Box>
 
       <MUIDataTable title={t("HHGrants.name")} data={tableData} options={tableOptions} columns={tableColumns} />

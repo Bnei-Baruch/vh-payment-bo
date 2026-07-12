@@ -206,6 +206,13 @@
       "placeholder": "Search by name, email or Keycloak ID",
       "search": "Search"
     },
+    "AdminTable": {
+      "name": "Name",
+      "ten": "Ten",
+      "country": "Country",
+      "copyTsv": "Copy for spreadsheet",
+      "copied": "Copied!"
+    },
     "HHGrants": {
       "name": "Membership (V2)",
       "keycloakId": "Keycloak ID",

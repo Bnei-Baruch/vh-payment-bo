@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 import { defaultTableOptions } from "../../../constants/table";
-import { useModal } from "../../../hooks";
+import { useModal, useProfileBriefs } from "../../../hooks";
 import {
   cancelManualDiscountEntry,
   fetchManualDiscounts,
@@ -24,6 +24,7 @@ export const useData = () => {
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [isCancelError, setIsCancelError] = useState(false);
   const { manualDiscounts, loading } = useSelector((state) => state.customersReducer);
+  const briefs = useProfileBriefs(manualDiscounts.list.map((row) => row.keycloak_id));
 
   useEffect(() => {
     dispatch(fetchManualDiscounts());
@@ -31,6 +32,14 @@ export const useData = () => {
 
   const isActive = (row) =>
     moment(row.end_date).isAfter(moment()) && moment(row.start_date).isBefore(moment());
+
+  const formatDiscount = (properties) => {
+    if (!properties) return "-";
+    const p = typeof properties === "string" ? JSON.parse(properties) : properties;
+    if (p.discount_pct != null) return `${p.discount_pct}% off`;
+    if (p.fixed_price != null) return `${p.fixed_price} ${p.currency}`;
+    return JSON.stringify(p);
+  };
 
   const tableOptions = {
     ...defaultTableOptions,
@@ -65,20 +74,23 @@ export const useData = () => {
     },
   };
 
+  const briefColumn = (label, field) => ({
+    name: "keycloak_id",
+    label,
+    options: { sort: false, customBodyRender: (kcid) => briefs[kcid]?.[field] || "—" },
+  });
+
   const tableColumns = [
     { name: "keycloak_id", label: t("ManualDiscount.keycloakId") },
+    briefColumn(t("AdminTable.name"), "name"),
+    briefColumn(t("AdminTable.ten"), "ten"),
+    briefColumn(t("AdminTable.country"), "country"),
     { name: "type", label: t("ManualDiscount.type") },
     {
       name: "properties",
       label: t("ManualDiscount.properties"),
       options: {
-        customBodyRender: (value) => {
-          if (!value) return "-";
-          const p = typeof value === "string" ? JSON.parse(value) : value;
-          if (p.discount_pct != null) return `${p.discount_pct}% off`;
-          if (p.fixed_price != null) return `${p.fixed_price} ${p.currency}`;
-          return JSON.stringify(p);
-        },
+        customBodyRender: (value) => formatDiscount(value),
       },
     },
     {
@@ -142,8 +154,22 @@ export const useData = () => {
     dispatch(fetchManualDiscounts(keycloakId));
   };
 
+  const tsvHeaders = [
+    t("ManualDiscount.keycloakId"), t("AdminTable.name"), t("AdminTable.ten"),
+    t("AdminTable.country"), t("ManualDiscount.type"), t("ManualDiscount.properties"),
+    t("ManualDiscount.startDate"), t("ManualDiscount.endDate"), t("ManualDiscount.note"),
+  ];
+  const tsvRows = () =>
+    manualDiscounts.list.map((row) => [
+      row.keycloak_id, briefs[row.keycloak_id]?.name, briefs[row.keycloak_id]?.ten,
+      briefs[row.keycloak_id]?.country, row.type, formatDiscount(row.properties),
+      moment(row.start_date).format("DD-MM-YYYY"), moment(row.end_date).format("DD-MM-YYYY"), row.note,
+    ]);
+
   return {
     onSearch,
+    tsvHeaders,
+    tsvRows,
     tableData: manualDiscounts.list,
     tableColumns,
     tableOptions,

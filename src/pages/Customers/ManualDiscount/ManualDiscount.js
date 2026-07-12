@@ -7,12 +7,14 @@ import { Box, Button, Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 
 import { useData } from "./useData";
-import { Confirmation, ManualDiscountModal, UserSearchField } from "../../../components";
+import { Confirmation, CopyTsvButton, ManualDiscountModal, UserSearchField } from "../../../components";
 
 export default function ManualDiscount() {
   const { t } = useTranslation();
   const {
     onSearch,
+    tsvHeaders,
+    tsvRows,
     tableData,
     tableColumns,
     tableOptions,
@@ -30,15 +32,18 @@ export default function ManualDiscount() {
       <Box mb={8} display="flex" justifyContent="space-between">
         <UserSearchField onSearch={onSearch} />
 
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          color="primary"
-          style={{ fontSize: 16 }}
-          onClick={addEntryModal.showModal}
-        >
-          {t("ManualDiscount.add")}
-        </Button>
+        <Box display="flex" style={{ gap: 12 }}>
+          <CopyTsvButton headers={tsvHeaders} getRows={tsvRows} />
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            color="primary"
+            style={{ fontSize: 16 }}
+            onClick={addEntryModal.showModal}
+          >
+            {t("ManualDiscount.add")}
+          </Button>
+        </Box>
       </Box>
 
       <MUIDataTable title={t("ManualDiscount.name")} data={tableData} options={tableOptions} columns={tableColumns} />
