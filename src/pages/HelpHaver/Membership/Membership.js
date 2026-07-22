@@ -6,7 +6,7 @@ import { Breadcrumbs, Link, Box } from "@material-ui/core";
 
 import "./styles.css";
 import { useData } from "./useData";
-import { HelpRequestDetails, UserSearchField } from "../../../components";
+import { CopyTsvButton, HelpRequestDetails, UserSearchField } from "../../../components";
 import { MEMBERSHIP_BREADCRUMBS } from "../../../routes/consts";
 
 export default function Membership() {
@@ -15,6 +15,8 @@ export default function Membership() {
     page,
     loading,
     onSearch,
+    tsvHeaders,
+    tsvRows,
     requestId,
     rowsPerPage,
     tableColumns,
@@ -45,6 +47,9 @@ export default function Membership() {
 
       <Box mb={8} display="flex">
         <UserSearchField onSearch={onSearch} />
+        <Box ml="auto">
+          <CopyTsvButton headers={tsvHeaders} getRows={tsvRows} />
+        </Box>
       </Box>
 
       <MUIDataTable

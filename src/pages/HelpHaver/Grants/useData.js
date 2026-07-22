@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from "react"; // eslint-disable-line no-unused-vars
 
 import moment from "moment";
-import { Button, Chip, CircularProgress } from "@material-ui/core";
+import { Chip, CircularProgress } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 import { defaultTableOptions } from "../../../constants/table";
-import { useModal } from "../../../hooks";
+import { useModal, useProfileBriefs } from "../../../hooks";
 import { isGrantActive, grantMonths } from "../../../components/Modals/HHRequestDetails/useData";
 import { statusColor } from "../../../components/Modals/HHRequestDetails/HHRequestDetails";
 import { fetchHHRequests } from "../../../redux/actions/helpHaverActions";
@@ -20,13 +20,19 @@ export const useData = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [searchKcid, setSearchKcid] = useState("");
   const { hhRequests, loading } = useSelector((state) => state.helpHaverReducer);
+  const briefs = useProfileBriefs(hhRequests.list.map((r) => r.keycloak_id));
 
   useEffect(() => {
     dispatch(fetchHHRequests());
   }, []);
 
+  const grantSummary = (grant) =>
+    grant ? `${grant.discount_pct}% / ${grantMonths(grant)} ${t("HHGrants.months").toLowerCase()}` : "";
+
   const tableOptions = {
     ...defaultTableOptions,
+    onRowClick: (rowData, { dataIndex }) => onPressDetails(dataIndex),
+    setRowProps: () => ({ style: { cursor: "pointer" } }),
     textLabels: {
       body: {
         noMatch: loading ? (
@@ -59,7 +65,24 @@ export const useData = () => {
     {
       name: "member_name",
       label: t("HHGrants.memberName"),
-      options: { customBodyRender: (value) => value || "—" },
+      options: {
+        // Prefer the live profile name; fall back to the orders account name.
+        // Lite render gets the data index — correct row even when sorted/filtered.
+        customBodyRenderLite: (dataIndex) => {
+          const row = hhRequests.list[dataIndex];
+          return briefs[row?.keycloak_id]?.name || row?.member_name || "—";
+        },
+      },
+    },
+    {
+      name: "keycloak_id",
+      label: t("AdminTable.ten"),
+      options: { sort: false, customBodyRender: (kcid) => briefs[kcid]?.ten || "—" },
+    },
+    {
+      name: "keycloak_id",
+      label: t("AdminTable.country"),
+      options: { sort: false, customBodyRender: (kcid) => briefs[kcid]?.country || "—" },
     },
     { name: "keycloak_id", label: t("HHGrants.keycloakId") },
     {
@@ -95,17 +118,6 @@ export const useData = () => {
           ),
       },
     },
-    {
-      name: "id",
-      label: t("HHGrants.action"),
-      options: {
-        customBodyRender: (id, { rowIndex }) => (
-          <Button variant="outlined" color="primary" onClick={() => onPressDetails(rowIndex)}>
-            {t("HHGrants.details")}
-          </Button>
-        ),
-      },
-    },
   ];
 
   const onPressDetails = (rowIndex) => {
@@ -124,10 +136,25 @@ export const useData = () => {
     dispatch(fetchHHRequests(status, searchKcid));
   };
 
+  const tsvHeaders = [
+    t("HHGrants.requestDate"), t("HHGrants.status"), t("HHGrants.memberName"),
+    t("AdminTable.ten"), t("AdminTable.country"), t("HHGrants.keycloakId"),
+    t("HHGrants.type"), t("HHGrants.requestedPct"), t("HHGrants.months"), t("HHGrants.grant"),
+  ];
+  const tsvRows = () =>
+    hhRequests.list.map((r) => [
+      moment(r.created_at).format("DD-MM-YYYY"), r.status,
+      briefs[r.keycloak_id]?.name || r.member_name, briefs[r.keycloak_id]?.ten,
+      briefs[r.keycloak_id]?.country, r.keycloak_id,
+      t(`HHGrants.type_${r.type}`, r.type), r.requested_pct, r.months, grantSummary(r.grant),
+    ]);
+
   return {
     onSearch,
     statusFilter,
     onChangeStatusFilter,
+    tsvHeaders,
+    tsvRows,
     tableData: hhRequests.list,
     tableColumns,
     tableOptions,
