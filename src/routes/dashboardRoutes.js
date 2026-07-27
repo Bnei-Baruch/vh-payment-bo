@@ -22,4 +22,5 @@ export const DASHBOARD_ROUTES = {
   HelpHaverMembership: `${HELP_HAVER_ROOT}/membership`,
   HelpHaverEvents: `${HELP_HAVER_ROOT}/events`,
   HelpHaverMembershipV2: `${HELP_HAVER_ROOT}/membership-v2`,
+  Coupons: `${PAYMENTS_ROOT}/coupons`,
 };
