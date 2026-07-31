@@ -44,9 +44,9 @@ export const fetchCouponRedemptions = (couponId) => {
 export const createCouponEntry = (payload, onSuccess, onError) => {
   return async (dispatch) => {
     try {
-      await ApiCoupons.createCoupon(payload);
+      const response = await ApiCoupons.createCoupon(payload);
       dispatch(fetchCoupons());
-      onSuccess();
+      onSuccess(response.data?.data);
     } catch (e) {
       console.error("Create coupon failed", e);
       if (onError) onError(e);

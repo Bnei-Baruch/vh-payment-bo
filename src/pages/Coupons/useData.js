@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react"; // eslint-disable-line no-unused-vars
 
 import moment from "moment";
-import { Chip, CircularProgress, IconButton } from "@material-ui/core";
+import { Chip, CircularProgress, IconButton, Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import DoneIcon from "@material-ui/icons/Done";
 import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import { useTranslation } from "react-i18next";
@@ -14,21 +15,30 @@ import { fetchCoupons } from "../../redux/actions/couponActions";
 
 // Coupon code cell with an inline copy-to-clipboard icon.
 const CodeWithCopy = ({ code }) => {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
   const onCopy = (e) => {
     e.stopPropagation(); // don't open the row's detail dialog
-    navigator.clipboard.writeText(code).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    if (!navigator.clipboard) { setCopyFailed(true); return; }
+    navigator.clipboard.writeText(code)
+      .then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); })
+      .catch(() => setCopyFailed(true));
   };
   return (
-    <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
-      {code}
-      <IconButton size="small" style={{ marginLeft: 8 }} onClick={onCopy}>
-        {copied ? <DoneIcon fontSize="small" /> : <FileCopyOutlinedIcon fontSize="small" />}
-      </IconButton>
-    </span>
+    <>
+      <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+        {code}
+        <IconButton size="small" style={{ marginLeft: 8 }} onClick={onCopy}>
+          {copied ? <DoneIcon fontSize="small" /> : <FileCopyOutlinedIcon fontSize="small" />}
+        </IconButton>
+      </span>
+      <Snackbar open={copyFailed} autoHideDuration={3000} onClose={() => setCopyFailed(false)}>
+        <Alert severity="error" variant="filled" onClose={() => setCopyFailed(false)}>
+          {t("Coupons.copyFailed")}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 
@@ -87,6 +97,14 @@ export const useData = () => {
         customBodyRender: (value) => (value ? moment(value, "YYYY-MM-DD").format("DD-MM-YYYY") : "—"),
       },
     },
+    {
+      name: "redeem_until",
+      label: t("Coupons.redeemUntil"),
+      options: {
+        customBodyRender: (value) => (value ? moment(value, "YYYY-MM-DD").format("DD-MM-YYYY") : "—"),
+      },
+    },
+    { name: "description", label: t("Coupons.description") },
   ];
 
   return {

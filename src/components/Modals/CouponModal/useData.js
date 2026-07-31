@@ -40,6 +40,7 @@ const defaultValues = () => ({
   benefit_end: "",
   countries: [],
   max_redemptions: 25,
+  redeem_from: "",
   redeem_until: "",
 });
 
@@ -47,6 +48,7 @@ export const useData = (modal, coupon) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [createdCode, setCreatedCode] = useState(null);
   const [revokeOk, setRevokeOk] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const confirmationModal = useModal();
@@ -124,7 +126,8 @@ export const useData = (modal, coupon) => {
     } else {
       dispatch(
         createCouponEntry(
-          { prefix: data.prefix, ...editable, ...buildDiscountAndBenefit(data) },
+          { prefix: data.prefix, ...editable, ...buildDiscountAndBenefit(data),
+            ...(data.redeem_from ? { redeem_from: data.redeem_from } : {}) },
           onSuccess,
           onError
         )
@@ -132,8 +135,9 @@ export const useData = (modal, coupon) => {
     }
   };
 
-  const onSuccess = () => {
+  const onSuccess = (created) => {
     setLoading(false);
+    setCreatedCode(created?.code || null);
     setIsOpenAlert(true);
     modal.hideModal();
     reset(defaultValues());
@@ -176,6 +180,8 @@ export const useData = (modal, coupon) => {
     redemptions,
     isOpenAlert,
     setIsOpenAlert,
+    createdCode,
+    setCreatedCode,
     revokeOk,
     setRevokeOk,
     errorMsg,

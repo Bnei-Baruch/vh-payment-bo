@@ -46,6 +46,8 @@ const CouponModal = ({ useModal, coupon }) => {
     redemptions,
     isOpenAlert,
     setIsOpenAlert,
+    createdCode,
+    setCreatedCode,
     revokeOk,
     setRevokeOk,
     errorMsg,
@@ -243,20 +245,43 @@ const CouponModal = ({ useModal, coupon }) => {
             <Controller
               name="redeem_until"
               control={control}
-              render={({ field: { onChange, value } }) => (
+              rules={{ required: isEditMode }}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <FormControl focused style={{ flex: 1 }}>
                   <InputLabel style={{ fontSize: 16 }}>{t("Coupons.redeemUntil")}</InputLabel>
                   <TextField
                     type="date"
                     value={value}
                     onChange={onChange}
+                    error={!!error}
                     style={{ marginTop: 16 }}
-                    helperText={!value ? t("Coupons.redeemUntilHint") : undefined}
+                    helperText={!isEditMode && !value ? t("Coupons.redeemUntilHint") : undefined}
                   />
                 </FormControl>
               )}
             />
           </Box>
+
+          {!isEditMode && (
+            <Box display="flex" style={{ gap: 16 }}>
+              <Controller
+                name="redeem_from"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <FormControl focused style={{ flex: 1 }}>
+                    <InputLabel style={{ fontSize: 16 }}>{t("Coupons.redeemFrom")}</InputLabel>
+                    <TextField
+                      type="date"
+                      value={value}
+                      onChange={onChange}
+                      style={{ marginTop: 16 }}
+                      helperText={!value ? t("Coupons.redeemFromHint") : undefined}
+                    />
+                  </FormControl>
+                )}
+              />
+            </Box>
+          )}
 
           <Controller
             name="description"
@@ -331,8 +356,10 @@ const CouponModal = ({ useModal, coupon }) => {
         confirmBtnTitle="Coupons.revoke"
       />
 
-      <Snackbar open={isOpenAlert} autoHideDuration={4000} onClose={() => setIsOpenAlert(false)}>
-        <Alert severity="success" variant="filled">{t("Coupons.saveSuccess")}</Alert>
+      <Snackbar open={isOpenAlert} autoHideDuration={6000} onClose={() => { setIsOpenAlert(false); setCreatedCode(null); }}>
+        <Alert severity="success" variant="filled">
+          {createdCode ? t("Coupons.created", { code: createdCode }) : t("Coupons.saveSuccess")}
+        </Alert>
       </Snackbar>
 
       <Snackbar open={revokeOk} autoHideDuration={4000} onClose={() => setRevokeOk(false)}>
