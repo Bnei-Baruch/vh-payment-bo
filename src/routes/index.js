@@ -4,6 +4,7 @@ import async from "../components/Async";
 import { DASHBOARD_ROUTES } from "./dashboardRoutes";
 import PeopleIcon from "@material-ui/icons/People";
 import InsertDriveFileOutlinedIcon from "@material-ui/icons/InsertDriveFileOutlined";
+import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 
 const CustomerAnalytics = async(() => import("../pages/Analytics/Customers"));
 const CustomerOrders = async(() => import("../pages/Analytics/Orders"));
@@ -41,6 +42,7 @@ const Membership = async(() =>
   import("../pages/HelpHaver/Membership/Membership")
 );
 const HHGrants = async(() => import("../pages/HelpHaver/Grants/Grants"));
+const Coupons = async(() => import("../pages/Coupons/Coupons"));
 
 const sideRoutes = [
   // {
@@ -161,6 +163,14 @@ const sideRoutes = [
       //   component: Events,
       // },
     ],
+  },
+  {
+    path: DASHBOARD_ROUTES.Coupons,
+    id: "Coupons",
+    icon: <LocalOfferIcon />,
+    enableHeader: true,
+    breadcrumbs: [{ name: "Coupons", path: DASHBOARD_ROUTES.Coupons }],
+    component: Coupons,
   },
 ];
 
@@ -366,6 +376,14 @@ const dashboardRoutes = [
         component: Events,
       },
     ],
+  },
+  {
+    path: DASHBOARD_ROUTES.Coupons,
+    id: "Coupons",
+    icon: <LocalOfferIcon />,
+    enableHeader: true,
+    breadcrumbs: [{ name: "Coupons", path: DASHBOARD_ROUTES.Coupons }],
+    component: Coupons,
   },
 ];
 
