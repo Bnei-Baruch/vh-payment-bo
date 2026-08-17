@@ -50,9 +50,8 @@ const DonationsProperties = ({ dp, accountID, finalPrice, t }) => (
     <Row label={t("PriceCalculator.primaryAccountId")} value={accountID} />
     <Row label={t("PriceCalculator.finalPrice")} value={`${finalPrice?.amount} ${finalPrice?.currency?.toUpperCase()}`} />
     <Row label={t("PriceCalculator.emailsQueried")} value={dp.primary_email_count} />
-    {dp.spouse_account_id ? (
+    {dp.spouse_keycloak_id ? (
       <>
-        <Row label={t("PriceCalculator.spouseAccount")} value={dp.spouse_account_id} />
         <Row label={t("PriceCalculator.spouseKeycloakId")} value={dp.spouse_keycloak_id} />
         <Row label={t("PriceCalculator.spouseEmailsQueried")} value={dp.spouse_email_count} />
         <Row label={t("PriceCalculator.spouseGetsDiscount")} value={dp.spouse_gets_discount ? t("PriceCalculator.yes") : t("PriceCalculator.no")} />
