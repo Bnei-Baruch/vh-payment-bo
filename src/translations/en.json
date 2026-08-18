@@ -80,7 +80,6 @@
       "primaryAccountId": "Account ID",
       "emailsQueried": "Emails Queried",
       "donations": "Donations",
-      "donationsFetched": "Donations Fetched",
       "fetchNote": "Fetch Note",
       "fetchedEmails": "Fetched Emails",
       "spouse": "Spouse",
@@ -97,7 +96,6 @@
       "discountError": "Data Unavailable",
       "priceUnreliable": "⚠ Price cannot be trusted — discount data unavailable",
       "explain": "Explain",
-      "fetchError": "Fetch Error",
       "yes": "Yes",
       "no": "No",
       "noSpouse": "No spouse linked"
