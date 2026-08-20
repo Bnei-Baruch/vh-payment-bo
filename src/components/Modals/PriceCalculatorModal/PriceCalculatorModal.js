@@ -50,9 +50,8 @@ const DonationsProperties = ({ dp, accountID, finalPrice, t }) => (
     <Row label={t("PriceCalculator.primaryAccountId")} value={accountID} />
     <Row label={t("PriceCalculator.finalPrice")} value={`${finalPrice?.amount} ${finalPrice?.currency?.toUpperCase()}`} />
     <Row label={t("PriceCalculator.emailsQueried")} value={dp.primary_email_count} />
-    {dp.spouse_account_id ? (
+    {dp.spouse_keycloak_id ? (
       <>
-        <Row label={t("PriceCalculator.spouseAccount")} value={dp.spouse_account_id} />
         <Row label={t("PriceCalculator.spouseKeycloakId")} value={dp.spouse_keycloak_id} />
         <Row label={t("PriceCalculator.spouseEmailsQueried")} value={dp.spouse_email_count} />
         <Row label={t("PriceCalculator.spouseGetsDiscount")} value={dp.spouse_gets_discount ? t("PriceCalculator.yes") : t("PriceCalculator.no")} />
@@ -60,18 +59,11 @@ const DonationsProperties = ({ dp, accountID, finalPrice, t }) => (
     ) : (
       <Row label={t("PriceCalculator.spouse")} value={t("PriceCalculator.noSpouse")} />
     )}
-    <Row label={t("PriceCalculator.donationsFetched")} value={dp.donations_fetched ? t("PriceCalculator.yes") : t("PriceCalculator.no")} />
     {dp.donations_fetched_emails?.length > 0 && (
       <Row label={t("PriceCalculator.fetchedEmails")} value={dp.donations_fetched_emails.join(", ")} />
     )}
     {dp.donations_fetch_note && (
       <Row label={t("PriceCalculator.fetchNote")} value={dp.donations_fetch_note} />
-    )}
-    {dp.donations_fetch_error && (
-      <Row
-        label={<span style={{ color: "#c62828", fontWeight: 600 }}>{t("PriceCalculator.fetchError")}</span>}
-        value={<span style={{ color: "#c62828" }}>{dp.donations_fetch_error}</span>}
-      />
     )}
   </Box>
 );
