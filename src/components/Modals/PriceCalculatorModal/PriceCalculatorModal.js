@@ -5,11 +5,7 @@ import {
   Button,
   Dialog,
   Divider,
-  MenuItem,
-  Select,
   Typography,
-  FormControl,
-  InputLabel,
   CircularProgress,
 } from "@material-ui/core";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
@@ -17,13 +13,6 @@ import { useTranslation } from "react-i18next";
 
 import { ApiCustomers } from "../../../redux/api/customersApi";
 import countries from "../../../constants/countries";
-
-const PRICING_VERSIONS = [
-  { value: "", label: "Default — backend decides" },
-  { value: "v1", label: "V1 — Static pricing" },
-  { value: "v2", label: "V2 — Country-based tiered pricing" },
-  { value: "t1", label: "T1 — Tier 1 rollout (IL/NIS → v2, others → v1)" },
-];
 
 const Row = ({ label, value }) => (
   <Box display="flex" justifyContent="space-between" mb={0.5}>
@@ -92,7 +81,6 @@ const DiscountCard = ({ discount, v2, t }) => (
 
 export const PriceCalculatorModal = ({ useModal, keycloakId }) => {
   const { t } = useTranslation();
-  const [pricingVersion, setPricingVersion] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -108,7 +96,7 @@ export const PriceCalculatorModal = ({ useModal, keycloakId }) => {
     setResult(null);
     setError(null);
     try {
-      const { data } = await ApiCustomers.getMonthlyPrice(keycloakId, pricingVersion);
+      const { data } = await ApiCustomers.getMonthlyPrice(keycloakId);
       setResult(data);
     } catch (err) {
       setError(err?.response?.data?.error || t("PriceCalculator.error"));
@@ -131,19 +119,6 @@ export const PriceCalculatorModal = ({ useModal, keycloakId }) => {
         <Typography variant="h3" align="center" style={{ marginBottom: 24, fontWeight: 700 }}>
           {t("PriceCalculator.title")}
         </Typography>
-
-        <FormControl variant="outlined" style={{ marginBottom: 24 }}>
-          <InputLabel>{t("PriceCalculator.pricingVersion")}</InputLabel>
-          <Select
-            value={pricingVersion}
-            onChange={(e) => { setPricingVersion(e.target.value); setResult(null); }}
-            label={t("PriceCalculator.pricingVersion")}
-          >
-            {PRICING_VERSIONS.map(({ value, label }) => (
-              <MenuItem key={value} value={value}>{label}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
 
         <Button
           onClick={handleCalculate}
@@ -169,7 +144,6 @@ export const PriceCalculatorModal = ({ useModal, keycloakId }) => {
                 <Row label={t("PriceCalculator.currency")} value={result.currency?.toUpperCase()} />
               </>
             )}
-            <Row label={t("PriceCalculator.version")} value={result.pricing_version} />
 
             {v2 && (
               <>

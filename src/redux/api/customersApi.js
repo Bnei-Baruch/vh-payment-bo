@@ -162,10 +162,9 @@ export const ApiCustomers = new (class Api {
       method: "delete",
     });
   }
-  getMonthlyPrice(keycloakId, pricingVersion) {
-    const params = pricingVersion ? `?pricing_version=${pricingVersion}` : "";
+  getMonthlyPrice(keycloakId) {
     return axios({
-      url: `/pay/v2/pricing/monthly/${keycloakId}${params}`,
+      url: `/pay/v2/pricing/monthly/${keycloakId}`,
       method: "get",
       timeout: PRICING_TIMEOUT_MS,
     });
