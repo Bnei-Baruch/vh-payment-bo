@@ -20,8 +20,15 @@ import { useData } from "./useData";
 
 export const AddSpecialEntry = ({ useModal, email, keycloakId }) => {
   const { t } = useTranslation();
-  const { loading, isOpenAlert, setIsOpenAlert, control, onPressSubmit } =
-    useData(useModal, email, keycloakId);
+  const {
+    loading,
+    isOpenAlert,
+    setIsOpenAlert,
+    errorMsg,
+    setErrorMsg,
+    control,
+    onPressSubmit,
+  } = useData(useModal, email, keycloakId);
 
   return (
     <>
@@ -182,6 +189,15 @@ export const AddSpecialEntry = ({ useModal, email, keycloakId }) => {
       >
         <Alert severity="success" variant="filled">
           {t("Specials.newEntrySuccessfullyAdded")}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={!!errorMsg}
+        autoHideDuration={5000}
+        onClose={() => setErrorMsg("")}
+      >
+        <Alert severity="error" variant="filled" onClose={() => setErrorMsg("")}>
+          {errorMsg}
         </Alert>
       </Snackbar>
     </>

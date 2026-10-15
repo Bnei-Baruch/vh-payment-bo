@@ -12,6 +12,7 @@ export const useData = (useModal, email, keycloakId) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const { control, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
@@ -29,7 +30,12 @@ export const useData = (useModal, email, keycloakId) => {
   const onSubmit = (data) => {
     setLoading(true);
 
-    dispatch(addSpecialEntry(data, onSuccess));
+    dispatch(addSpecialEntry(data, onSuccess, onError));
+  };
+
+  const onError = (message) => {
+    setLoading(false);
+    setErrorMsg(message);
   };
 
   const onSuccess = () => {
@@ -54,6 +60,8 @@ export const useData = (useModal, email, keycloakId) => {
     control,
     isOpenAlert,
     setIsOpenAlert,
+    errorMsg,
+    setErrorMsg,
     onPressSubmit: handleSubmit(onSubmit),
   };
 };
