@@ -79,6 +79,7 @@ export const AddSpecialEntry = ({ useModal, email, keycloakId }) => {
                   disabled={!!email}
                   onChange={onChange}
                   error={!!error?.message}
+                  helperText={error ? t("Specials.emailRequired") : ""}
                   style={{ marginTop: 16, minWidth: 267 }}
                 />
               </FormControl>
