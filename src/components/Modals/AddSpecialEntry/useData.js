@@ -29,6 +29,7 @@ export const useData = (useModal, email, keycloakId) => {
 
   const onSubmit = (data) => {
     setLoading(true);
+    setErrorMsg("");
 
     dispatch(addSpecialEntry(data, onSuccess, onError));
   };
@@ -42,7 +43,17 @@ export const useData = (useModal, email, keycloakId) => {
     setLoading(false);
     setIsOpenAlert(true);
     useModal.hideModal();
-    reset();
+    // Back to the prefilled values, not blanks: the prefilled fields are
+    // disabled, and the effect below doesn't run again while the modal stays
+    // mounted, so a blank required email would block the next add.
+    reset({
+      keycloak_id: keycloakId || "",
+      email: email || "",
+      start_date: "",
+      end_date: "",
+      category: "",
+      subcategory: "",
+    });
   };
 
   useEffect(() => {
