@@ -176,7 +176,7 @@ export const fetchSpecials = () => {
   };
 };
 
-export const addSpecialEntry = (payload, callback) => {
+export const addSpecialEntry = (payload, callback, onError) => {
   return async (dispatch) => {
     try {
       await ApiCustomers.addSpecialEntry(payload);
@@ -185,6 +185,7 @@ export const addSpecialEntry = (payload, callback) => {
       callback();
     } catch (e) {
       console.log("Create new entry failed", e);
+      onError?.(e?.response?.data?.error || "Request failed");
     }
   };
 };
