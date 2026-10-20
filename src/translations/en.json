@@ -403,6 +403,7 @@
       "addNewEntry": "Add New Entry",
       "submit": "Submit",
       "newEntrySuccessfullyAdded": "New entry successfully added",
+      "emailRequired": "Email is required",
       "startDate": "Start Date",
       "endDate": "End Date",
       "createdAt": "Created At",
