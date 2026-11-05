@@ -79,15 +79,7 @@ export const AddSpecialEntry = ({ useModal, email, keycloakId }) => {
                   disabled={!!email}
                   onChange={onChange}
                   error={!!error?.message}
-                  helperText={
-                    error
-                      ? t(
-                          error.type === "email"
-                            ? "Specials.emailInvalid"
-                            : "Specials.emailRequired"
-                        )
-                      : ""
-                  }
+                  helperText={error ? t(error.message) : ""}
                   style={{ marginTop: 16, minWidth: 267 }}
                 />
               </FormControl>
@@ -202,8 +194,9 @@ export const AddSpecialEntry = ({ useModal, email, keycloakId }) => {
       </Snackbar>
       <Snackbar
         open={!!errorMsg}
-        autoHideDuration={5000}
-        // Keep the server error up while the user fixes the form.
+        autoHideDuration={null}
+        // Keep the server error up while the user fixes the form: only the X
+        // closes it, not a timeout or a click in the form.
         onClose={(_, reason) => reason !== "clickaway" && setErrorMsg("")}
       >
         <Alert severity="error" variant="filled" onClose={() => setErrorMsg("")}>
