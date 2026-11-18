@@ -63,6 +63,11 @@ export const useData = () => {
     visible: false,
     message: "",
   });
+  const [isUpdatingCard, setIsUpdatingCard] = useState(false);
+  // The state alone does not stop a second click: every click before the next
+  // render sees isUpdatingCard as false. One admin sent 23 card renewals for an
+  // order in 9 seconds, each opening its own Pelecard page.
+  const updatingCard = useRef(false);
   const [selectedSpouse, setSelectedSpouse] = useState(null);
   const [spouseData, setSpouseData] = useState(null);
 
@@ -614,6 +619,12 @@ export const useData = () => {
   };
 
   const onUpdateCardPress = async () => {
+    if (updatingCard.current) {
+      return;
+    }
+    updatingCard.current = true;
+    setIsUpdatingCard(true);
+
     try {
       const payload = {
         OrderLanguage: language.toUpperCase(),
@@ -635,12 +646,36 @@ export const useData = () => {
       const { url } = await ApiPayments.requestUpdateCard(payload);
 
       if (url) {
+        // Stays disabled: the browser is leaving for Pelecard's page.
         window.location.href = url;
+        return;
       }
+      throw new Error("no payment page URL in the response");
     } catch (error) {
-      console.log("Failed to update card", error);
+      console.error("Failed to update card", error);
+      setAlert({
+        visible: true,
+        type: "error",
+        message: t("UserDetails.failedToUpdateCard"),
+      });
     }
+
+    updatingCard.current = false;
+    setIsUpdatingCard(false);
   };
+
+  // Back from Pelecard's page can restore this page from the browser's cache,
+  // button still disabled.
+  useEffect(() => {
+    const onPageShow = (event) => {
+      if (event.persisted) {
+        updatingCard.current = false;
+        setIsUpdatingCard(false);
+      }
+    };
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
+  }, []);
 
   return {
     alert,
@@ -672,6 +707,7 @@ export const useData = () => {
     confirmationInfo,
     isEnabledSaveBtn,
     onUpdateCardPress,
+    isUpdatingCard,
     isEditablePayment,
     onDeleteNoteClick,
     onPressAddSpecial,
