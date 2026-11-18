@@ -80,6 +80,7 @@ export default function UserDetails() {
     confirmationInfo,
     isEnabledSaveBtn,
     onUpdateCardPress,
+    isUpdatingCard,
     onPressAddSpecial,
     isEditablePayment,
     onDeleteNoteClick,
@@ -612,6 +613,7 @@ export default function UserDetails() {
         {hasCreditCard && (
           <Button
             onClick={onUpdateCardPress}
+            disabled={isUpdatingCard}
             startIcon={<EditIcon />}
             className="button"
           >
