@@ -618,6 +618,11 @@ export const useData = () => {
     priceCalculatorModal.showModal();
   };
 
+  const resetUpdatingCard = () => {
+    updatingCard.current = false;
+    setIsUpdatingCard(false);
+  };
+
   const onUpdateCardPress = async () => {
     if (updatingCard.current) {
       return;
@@ -645,12 +650,11 @@ export const useData = () => {
 
       const { url } = await ApiPayments.requestUpdateCard(payload);
 
-      if (url) {
-        // Stays disabled: the browser is leaving for Pelecard's page.
-        window.location.href = url;
-        return;
+      if (!url) {
+        throw new Error("no payment page URL in the response");
       }
-      throw new Error("no payment page URL in the response");
+      // Stays disabled: the browser is leaving for Pelecard's page.
+      window.location.href = url;
     } catch (error) {
       console.error("Failed to update card", error);
       setAlert({
@@ -658,10 +662,8 @@ export const useData = () => {
         type: "error",
         message: t("UserDetails.failedToUpdateCard"),
       });
+      resetUpdatingCard();
     }
-
-    updatingCard.current = false;
-    setIsUpdatingCard(false);
   };
 
   // Back from Pelecard's page can restore this page from the browser's cache,
@@ -669,8 +671,7 @@ export const useData = () => {
   useEffect(() => {
     const onPageShow = (event) => {
       if (event.persisted) {
-        updatingCard.current = false;
-        setIsUpdatingCard(false);
+        resetUpdatingCard();
       }
     };
     window.addEventListener("pageshow", onPageShow);
